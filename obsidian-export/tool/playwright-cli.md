@@ -2,7 +2,7 @@
 source: https://github.com/microsoft/playwright-cli
 category: tool
 sub_categories: [agent, workflow]
-tags: [javascript, typescript, playwright, browser-automation, cli, test-generation, web-scraping, claude-code]
+tags: [javascript, playwright, browser-automation, CLI, test-generation, claude-code, nodejs, skills]
 language: 
 ingested: 2026-04-09
 source_updated: unknown
@@ -17,34 +17,34 @@ status: active
 - リポジトリ: https://github.com/microsoft/playwright-cli
 - カテゴリ: tool
 - サブカテゴリ: agent, workflow
-- タグ: javascript, typescript, playwright, browser-automation, cli, test-generation, web-scraping, claude-code
+- タグ: javascript, playwright, browser-automation, CLI, test-generation, claude-code, nodejs, skills
 - 最終確認日: 2026-04-09
 
 ## 概要
-playwright-cliはPlaywrightをCLIインターフェースで操作するためのツールで、AIコーディングエージェント向けにSKILL形式でブラウザ自動化を提供する。MCPと比較してトークン効率が高く、コンパクトなコマンド群でページ操作・テスト生成・ネットワークモック・動画録画などを実現する。
+playwright-cliはPlaywrightをCLIコマンドとして操作できるツールで、コーディングエージェント（Claude Code等）向けにSKILLS形式で提供される。ブラウザ自動化・テスト生成・ネットワークモック・セッション管理・動画録画など豊富な操作をトークン効率よく実行できる。MCPに比べてコンテキストウィンドウを節約しながらブラウザ自動化を行うことに特化している。
 
 ## 設計思想
-LLMのコンテキストウィンドウ効率を最大化するため、MCPのようなリッチなツールスキーマではなくCLIコマンドとSKILLファイルを採用。各コマンドはPlaywright TypeScriptコードを自動生成し、インタラクティブな操作からテストコードへの変換をシームレスに行う。セッション分離・永続プロファイル・インメモリデフォルトでセキュリティと利便性を両立する。
+LLMコーディングエージェントのトークン効率を最優先とし、大きなツールスキーマやアクセシビリティツリーをモデルコンテキストに読み込まない設計。SKILLSファイル（Markdown）をエージェントに提供することで、CLIコマンドの使い方を簡潔に伝えるアーキテクチャ。セッション分離・永続プロファイル・並列ブラウザ操作を標準サポートし、Playwright本体に依存してCLI薄層として実装されている。
 
 ## 主要コンポーネント
-- playwright-cli.js: CLIエントリーポイント。Playwrightのprogramモジュールを介してコマンドを実行する。
-- skills/playwright-cli/SKILL.md: コーディングエージェントが読み込む全コマンドのリファレンス定義ファイル。
-- scripts/update.js: Playwright依存関係のバージョンアップ時にスキルとREADMEを自動同期するスクリプト。
-- references/: テスト生成・リクエストモック・セッション管理・動画録画などのユースケース別詳細ガイド群。
-- .claude/skills/: Claude Code向けのdevスキル定義。依存関係ロールアップ手順を含む。
+- playwright-cli.js: CLIエントリポイント。Playwrightのプログラムモジュールを呼び出す薄いラッパー
+- skills/playwright-cli/SKILL.md: エージェント向けスキル定義。全コマンドのリファレンスとして機能するソースオブトゥルース
+- skills/playwright-cli/references/: テスト生成・リクエストモック・セッション管理・トレース・動画録画など機能別の詳細リファレンス群
+- scripts/update.js: Playwright依存バージョン更新時にスキルファイルとREADMEを同期する自動化スクリプト
+- .claude/skills/dev/: リポジトリメンテナンス（依存バージョンのロール等）向け開発者用スキル定義
 
 ## 実装パターン
-- SKILL-based agent integration: playwright-cli install --skillsでエージェントのワークスペースにSKILLファイルをインストールし、エージェントがCLIコマンドを自律的に使用できるようにする。
-- ref-based element targeting: snapshotコマンドでe1/e2形式のref番号を取得し、以降のコマンドでそのrefを指定してDOM要素を操作する。CSS/ロールロケータも併用可能。
-- code generation on action: すべてのCLI操作がPlaywright TypeScriptコードを自動出力し、そのままテストファイルへコピー可能にする。
-- named session isolation: -s=nameフラグで複数の独立したブラウザコンテキストを並列管理し、Cookie/ストレージを分離する。
-- run-code escape hatch: CLIコマンドでカバーできない高度なシナリオにrun-codeでPlaywrightの任意のコードを直接実行できるエスケープハッチを提供する。
+- SKILL-driven CLI: Markdownで記述されたSKILLSファイルをエージェントにインストールし、CLIコマンドの使い方をコンテキスト効率よく提供するパターン
+- ref-based element targeting: スナップショットから取得したref（e1, e2...）を使って要素を指定することで、DOM構造をLLMコンテキストに大量展開せずに操作するパターン
+- named session isolation: -s=フラグでブラウザセッションを名前で分離し、クッキー・ストレージ・履歴を独立させて並列操作するパターン
+- run-code escape hatch: CLIコマンドでカバーできない高度なシナリオをrun-codeで任意のPlaywright TypeScriptコードを実行して対応するパターン
+- code generation on action: CLIで実行した各アクションに対応するPlaywright TypeScriptコードが自動出力され、テストファイルに直接コピーできるパターン
 
 ## 適用シーン
-AIコーディングエージェント(Claude Code, GitHub Copilotなど)によるWebアプリのE2Eテスト自動化、ブラウザ操作からのPlaywrightテストコード生成、Webスクレイピング、ネットワークモックを用いたフロントエンド開発、認証状態の保存・再利用、デバッグ用トレース・動画録画。
+Claude CodeやGitHub CopilotなどのコーディングエージェントによるWebアプリのE2Eテスト自動化・テストコード生成・ブラウザ操作の自動化に最適。トークン消費を抑えながらブラウザ自動化を行いたいエージェントワークフロー、複数サイトの並列スクレイピング、認証状態の保存・再利用が必要なテストシナリオに有用。
 
 ## 注意点・制約
-CLIはPlaywright本体のmonorepoで開発されており、このリポジトリ自体はラッパーと配布パッケージ。動画録画やトレースはオーバーヘッドとディスク消費を伴う。デフォルトはヘッドレスかつインメモリセッションのため、永続化が必要な場合は--persistentフラグが必要。認証状態ファイルをgitにコミットしないよう注意が必要。
+CLIはPlaywright本体（playwright npm package）に強く依存しており、バージョン追随のためのロール作業が定期的に必要。グローバルインストールが必要な場合あり（npxフォールバックあり）。ヘッドレスがデフォルトのため視覚確認には--headedフラグが必要。セッションはデフォルトでインメモリのみで永続化にはオプション指定が必要。MCP比で永続的なブラウザコンテキストや豊富な内省機能は劣る。
 
 
 ## 関連ナレッジ
