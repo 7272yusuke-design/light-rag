@@ -1,0 +1,32 @@
+{
+  "openclaw": {
+    "description": "仮想通貨自動取引エージェント",
+    "categories": ["agent", "crypto", "framework"],
+    "tags": ["trading", "multi-agent", "python", "ccxt", "freqtrade"],
+    "context": "仮想通貨自動取引、エージェント、DeFi、取引所API"
+  },
+  "virtual-protocol": {
+    "description": "Virtual Protocol関連開発",
+    "categories": ["crypto", "webapp", "agent"],
+    "tags": ["web3", "typescript", "react"],
+    "context": "Virtual Protocol、トークン、Web3開発"
+  },
+  "website": {
+    "description": "Webサイト構築案件",
+    "categories": ["website", "framework"],
+    "tags": ["react", "nextjs", "framer-motion", "animation"],
+    "context": "Webサイト、LP、アニメーション、フロントエンド"
+  },
+  "webapp": {
+    "description": "Webアプリケーション開発",
+    "categories": ["webapp", "framework", "infra"],
+    "tags": ["react", "nextjs", "supabase", "fastapi"],
+    "context": "Webアプリ、認証、DB設計、API"
+  },
+  "workflow": {
+    "description": "n8nワークフロー自動化",
+    "categories": ["workflow", "tool"],
+    "tags": ["n8n", "mcp", "pipeline"],
+    "context": "ワークフロー自動化、n8n、イベント駆動"
+  }
+}
