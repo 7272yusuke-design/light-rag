@@ -42,3 +42,10 @@ echo "=== 完了 ==="
 echo "LightRAG投入テキスト: $LIGHTRAG_TEXT"
 echo "Obsidian MD: $OBSIDIAN_DIR/$REPO_NAME/"
 echo "SKILL.md: $SKILL_DIR/${REPO_NAME}.SKILL.md"
+
+echo ""
+echo "=== [6/6] Git: 変更をpush ==="
+cd /docker/lightrag
+git add obsidian-export/ skills-export/
+git commit -m "knowledge: add ${REPO_NAME}" || echo "No changes to commit"
+git push || echo "WARN: git push failed"
