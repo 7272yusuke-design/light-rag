@@ -1,0 +1,27 @@
+{
+  "name": "skill-creator",
+  "title": "SKILL: skill-creator",
+  "source": "Claude Code 公式 SKILL (examples)",
+  "category": "skills",
+  "sub_categories": [
+    "agent",
+    "workflow"
+  ],
+  "tags": [
+    "skill-creation",
+    "evaluation",
+    "claude-code",
+    "meta-skill",
+    "testing"
+  ],
+  "language": "",
+  "source_updated": "unknown",
+  "body": "# SKILL: skill-creator\n\n## 基本情報\n- ソース: Claude Code 公式 SKILL (examples)\n- カテゴリ: tool\n- サブカテゴリ: agent, workflow\n- 対象技術: Claude Code SKILL\n- タグ: skill-creation, evaluation, claude-code, meta-skill, testing\n- 最終確認日: 2026-04-09\n\n## 概要\n新しいSKILLの作成・改善・評価を行うメタスキル。ユーザーの意図を把握し、SKILL.mdのドラフト作成、テストケース実行、定量・定性評価、反復改善、トリガー最適化までの全サイクルをガイドする。\n\n## 使用トリガー\nSKILLの新規作成、既存SKILLの編集・最適化、SKILLの評価・ベンチマーク、トリガー精度の改善\n\n## SKILL作成の核心プロセス\n1. Intent Capture: 何をするSKILLか、いつトリガーするか、出力形式は何か\n2. Interview & Research: エッジケース、入出力形式、成功基準、依存関係を詰める\n3. SKILL.md作成: frontmatter(name, description) + Markdown本体\n4. テストケース作成・実行: テストプロンプトでSKILL適用結果を検証\n5. 評価: generate_review.pyで定性評価 + 定量ベンチマーク\n6. 反復改善: フィードバックに基づきSKILL書き直し\n7. トリガー最適化: run_loop.pyでdescriptionを自動最適化\n8. パッケージング: package_skill.pyで.skillファイル生成\n\n## SKILLの構造\nskill-name/\n├── SKILL.md (必須: YAMLフロントマター + Markdown指示)\n├── scripts/ (決定論的タスク用実行コード)\n├── references/ (必要時にコンテキストにロードするドキュメント)\n└── assets/ (テンプレート、アイコン等の出力素材)\n\n## Progressive Disclosure (3層ローディング)\n1. Metadata (name + description): 常にコンテキスト内 (~100語)\n2. SKILL.md本体: トリガー時にロード (<500行が理想)\n3. Bundled resources: 必要時のみ (無制限、スクリプトはロードなしで実行可)\n\n## SKILL.md記述のベストプラクティス\n- descriptionはトリガーの主要メカニズム。やや「押しが強め」に書く\n- SKILL.md本体は500行以下。超える場合は階層化+参照先への誘導\n- 「驚き最小の原則」: ユーザーが予想しない動作をしない\n- 参照ファイルはSKILL.mdから明確にポインタを設置\n- ドメイン別に参照ファイルを分割(例: aws.md, gcp.md, azure.md)\n\n## トリガー最適化の仕組み\n- SKILLはavailable_skillsリストにname+descriptionで表示される\n- Claudeはdescriptionに基づいてSKILLを参照するか判断\n- 単純な1ステップタスクはSKILLをトリガーしにくい（Claude自力で処理）\n- 複雑・マルチステップ・専門的クエリは確実にトリガー\n- run_loop.pyで60%train/40%testに分割し、反復最適化（最大5回）\n\n## 関連技術\nClaude Code, subagents, eval-viewer, package_skill.py, run_loop.py\n",
+  "related": [
+    "docx-creation",
+    "pdf-processing",
+    "pptx-creation",
+    "xlsx-processing",
+    "frontend-design"
+  ]
+}

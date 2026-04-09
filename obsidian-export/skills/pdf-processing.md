@@ -1,0 +1,41 @@
+---
+source: Claude Code 公式 SKILL
+category: skills
+sub_categories: []
+tags: [pdf, python, document-processing, text-extraction]
+language: 
+ingested: 2026-04-09
+source_updated: unknown
+status: active
+---
+
+# SKILL: pdf-processing
+
+# SKILL: pdf-processing
+
+## 基本情報
+- ソース: Claude Code 公式 SKILL
+- カテゴリ: tool
+- サブカテゴリ: 
+- 対象技術: pdf
+- タグ: pdf, python, document-processing, text-extraction
+- 最終確認日: 2026-04-09
+
+## 概要
+PDFの作成・結合・分割・回転・ウォーターマーク・フォーム記入・暗号化・OCR等の処理スキル。
+
+## 使用トリガー
+.pdfの作成、結合、分割、テキスト抽出、フォーム記入
+
+## 主要手順
+pypdfで基本操作、pdfplumberでテーブル抽出、FORMS.mdでフォーム記入手順参照。
+
+## ベストプラクティス
+テーブル抽出にはpdfplumber。フォーム記入はFORMS.md準拠。
+
+## 関連技術
+pypdf, pdfplumber, pdftotext, pdftoppm
+
+
+## 関連ナレッジ
+- (なし)

@@ -1,0 +1,20 @@
+{
+  "name": "docx-creation",
+  "title": "SKILL: docx-creation",
+  "source": "Claude Code 公式 SKILL",
+  "category": "skills",
+  "sub_categories": [
+    "webapp"
+  ],
+  "tags": [
+    "docx",
+    "word",
+    "document-generation",
+    "javascript",
+    "xml"
+  ],
+  "language": "",
+  "source_updated": "unknown",
+  "body": "# SKILL: docx-creation\n\n## 基本情報\n- ソース: Claude Code 公式 SKILL\n- カテゴリ: tool\n- サブカテゴリ: webapp\n- 対象技術: docx\n- タグ: docx, word, document-generation, javascript, xml\n- 最終確認日: 2026-04-09\n\n## 概要\nWord文書(.docx)の作成・読み取り・編集・操作スキル。docx-jsによる新規作成、XML直接編集、pandocによるテキスト抽出、LibreOfficeによる変換をカバー。\n\n## 使用トリガー\nWord doc, .docx, レポート, メモ, レター等のWord文書リクエスト\n\n## 主要手順\n新規作成はdocx-js(npm)。既存編集はunpack→XML編集→repack。読み取りはpandoc。バリデーションはvalidate.py。ページサイズはDXA単位で明示指定必須。\n\n## ベストプラクティス\nページサイズ明示指定。作成後validate.py検証。.docはLibreOfficeで変換後処理。\n\n## 関連技術\npandoc, LibreOffice, docx-js, XML\n",
+  "related": []
+}

@@ -1,0 +1,17 @@
+{
+  "name": "file-reading",
+  "title": "SKILL: file-reading",
+  "source": "Claude Code 公式 SKILL",
+  "category": "skills",
+  "sub_categories": [],
+  "tags": [
+    "file-handling",
+    "python",
+    "cli",
+    "data-extraction"
+  ],
+  "language": "",
+  "source_updated": "unknown",
+  "body": "# SKILL: file-reading\n\n## 基本情報\n- ソース: Claude Code 公式 SKILL\n- カテゴリ: tool\n- サブカテゴリ: \n- 対象技術: 全ファイル形式\n- タグ: file-handling, python, cli, data-extraction\n- 最終確認日: 2026-04-09\n\n## 概要\nファイル拡張子に基づき最適な読み取り方法をディスパッチするルータースキル。PDF,DOCX,XLSX,CSV,JSON,画像,アーカイブ対応。\n\n## 使用トリガー\n/mnt/user-data/uploads/パス、uploaded_filesブロック\n\n## 主要手順\n1.拡張子判定 2.statでサイズ確認 3.最小限読み取り 4.専用SKILLへハンドオフ\n\n## ベストプラクティス\ncatで直接読まない。バイナリは専用ツール。大きいファイルはサンプリング。\n\n## 関連技術\npandoc, pdfinfo, openpyxl, pandas, jq\n",
+  "related": []
+}

@@ -1,0 +1,20 @@
+{
+  "name": "pptx-creation",
+  "title": "SKILL: pptx-creation",
+  "source": "Claude Code 公式 SKILL",
+  "category": "skills",
+  "sub_categories": [
+    "website"
+  ],
+  "tags": [
+    "pptx",
+    "powerpoint",
+    "presentation",
+    "javascript",
+    "design"
+  ],
+  "language": "",
+  "source_updated": "unknown",
+  "body": "# SKILL: pptx-creation\n\n## 基本情報\n- ソース: Claude Code 公式 SKILL\n- カテゴリ: tool\n- サブカテゴリ: website\n- 対象技術: pptx\n- タグ: pptx, powerpoint, presentation, javascript, design\n- 最終確認日: 2026-04-09\n\n## 概要\nPowerPointの作成・読み取り・編集スキル。テンプレート編集とpptxgenjs新規作成の2方式。デザインガイドライン含む。\n\n## 使用トリガー\nデッキ、スライド、プレゼンテーション、.pptx作成・編集\n\n## 主要手順\n読み取りはmarkitdown。テンプレート編集はunpack→XML→repack。新規はpptxgenjs。\n\n## ベストプラクティス\n退屈なスライド禁止。各スライドにビジュアル要素必須。大胆なカラーパレット。\n\n## 関連技術\npptxgenjs, markitdown, python-pptx, XML\n",
+  "related": []
+}

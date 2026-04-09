@@ -1,0 +1,41 @@
+---
+source: Claude Code 公式 SKILL
+category: skills
+sub_categories: [agent]
+tags: [anthropic, claude, api, documentation, llm]
+language: 
+ingested: 2026-04-09
+source_updated: unknown
+status: active
+---
+
+# SKILL: product-self-knowledge
+
+# SKILL: product-self-knowledge
+
+## 基本情報
+- ソース: Claude Code 公式 SKILL
+- カテゴリ: tool
+- サブカテゴリ: agent
+- 対象技術: Anthropic製品
+- タグ: anthropic, claude, api, documentation, llm
+- 最終確認日: 2026-04-09
+
+## 概要
+Anthropic製品(Claude Code, API, claude.ai)の正確な情報提供スキル。製品別ドキュメントルーティングと公式URL参照。
+
+## 使用トリガー
+Claude Code/API/claude.aiの機能・価格・制限、Anthropic SDK利用
+
+## 主要手順
+1.製品特定 2.適切なリソース参照(APIはdocs.claude.com、Codeはclaude_code_docs_map、claude.aiはsupport.claude.com) 3.ソースURL付き回答
+
+## ベストプラクティス
+推測より正確性。製品混同しない。公式URL必須。不確かならURL案内。
+
+## 関連技術
+Anthropic API, Claude Code, claude.ai
+
+
+## 関連ナレッジ
+- (なし)

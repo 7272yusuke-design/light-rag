@@ -1,0 +1,20 @@
+{
+  "name": "xlsx-processing",
+  "title": "SKILL: xlsx-processing",
+  "source": "Claude Code 公式 SKILL",
+  "category": "skills",
+  "sub_categories": [
+    "webapp"
+  ],
+  "tags": [
+    "excel",
+    "spreadsheet",
+    "python",
+    "financial-modeling",
+    "data-analysis"
+  ],
+  "language": "",
+  "source_updated": "unknown",
+  "body": "# SKILL: xlsx-processing\n\n## 基本情報\n- ソース: Claude Code 公式 SKILL\n- カテゴリ: tool\n- サブカテゴリ: webapp\n- 対象技術: xlsx\n- タグ: excel, spreadsheet, python, financial-modeling, data-analysis\n- 最終確認日: 2026-04-09\n\n## 概要\nExcelスプレッドシートの作成・編集・分析スキル。pandas/openpyxl操作、財務モデル色分け規約、数式構築ルール。\n\n## 使用トリガー\n.xlsx/.xlsm/.csv/.tsvの作成・編集・分析\n\n## 主要手順\n読み取りはpandas。書き込みはopenpyxl書式付き。数式再計算はLibreOffice。財務モデルは色分けルール(青=入力,黒=数式,緑=参照)。\n\n## ベストプラクティス\nハードコードでなく数式。仮定値は別セル。数式エラーゼロ。年度は文字列。負数は括弧。\n\n## 関連技術\nopenpyxl, pandas, LibreOffice, xlrd\n",
+  "related": []
+}

@@ -1,0 +1,18 @@
+{
+  "name": "pdf-reading",
+  "title": "SKILL: pdf-reading",
+  "source": "Claude Code 公式 SKILL",
+  "category": "skills",
+  "sub_categories": [],
+  "tags": [
+    "pdf",
+    "python",
+    "ocr",
+    "text-extraction",
+    "data-extraction"
+  ],
+  "language": "",
+  "source_updated": "unknown",
+  "body": "# SKILL: pdf-reading\n\n## 基本情報\n- ソース: Claude Code 公式 SKILL\n- カテゴリ: tool\n- サブカテゴリ: \n- 対象技術: pdf\n- タグ: pdf, python, ocr, text-extraction, data-extraction\n- 最終確認日: 2026-04-09\n\n## 概要\nPDF読み取り・検査・コンテンツ抽出特化スキル。コンテンツインベントリ、ラスタライズ、埋め込み抽出、タイプ別読み取り戦略。\n\n## 使用トリガー\nPDF内容確認、テキスト抽出、テーブル抽出、スキャンPDF OCR\n\n## 主要手順\n1.pdfinfo+pdftotext 1ページでインベントリ 2.pdfimagesで画像確認 3.pypdf/pdfplumberでテキスト抽出 4.pdftoppmでラスタライズ\n\n## ベストプラクティス\nまずpdfinfo+pdftotext 1ページで確認。図表はラスタライズ。スキャンPDFはOCR。\n\n## 関連技術\npypdf, pdfplumber, pdftotext, pdftoppm, pdfinfo\n",
+  "related": []
+}

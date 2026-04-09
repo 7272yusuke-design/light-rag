@@ -1,0 +1,20 @@
+{
+  "name": "frontend-design",
+  "title": "SKILL: frontend-design",
+  "source": "Claude Code 公式 SKILL",
+  "category": "skills",
+  "sub_categories": [
+    "website"
+  ],
+  "tags": [
+    "frontend",
+    "react",
+    "css",
+    "ui-design",
+    "animation"
+  ],
+  "language": "",
+  "source_updated": "unknown",
+  "body": "# SKILL: frontend-design\n\n## 基本情報\n- ソース: Claude Code 公式 SKILL\n- カテゴリ: tool\n- サブカテゴリ: website\n- 対象技術: HTML/CSS/JS, React, Vue\n- タグ: frontend, react, css, ui-design, animation\n- 最終確認日: 2026-04-09\n\n## 概要\n独自性ある本番品質フロントエンドUI作成スキル。ジェネリックAIデザイン回避、大胆な美的方向性重視。\n\n## 使用トリガー\nWebコンポーネント、LP、ダッシュボード、React/HTML/CSSレイアウト構築\n\n## 主要手順\n1.目的・トーン・制約明確化 2.大胆な美的方向選択 3.タイポグラフィこだわり(Arial/Inter禁止) 4.CSS変数でカラー管理 5.アニメーション追加\n\n## ベストプラクティス\n汎用フォント禁止。紫グラデーション×白背景回避。毎回異なるデザイン。\n\n## 関連技術\nreact, CSS, framer-motion, Tailwind, Three.js\n",
+  "related": []
+}

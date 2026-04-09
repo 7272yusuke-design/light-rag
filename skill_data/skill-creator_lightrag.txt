@@ -1,0 +1,54 @@
+# SKILL: skill-creator
+
+## 基本情報
+- ソース: Claude Code 公式 SKILL (examples)
+- カテゴリ: tool
+- サブカテゴリ: agent, workflow
+- 対象技術: Claude Code SKILL
+- タグ: skill-creation, evaluation, claude-code, meta-skill, testing
+- 最終確認日: 2026-04-09
+
+## 概要
+新しいSKILLの作成・改善・評価を行うメタスキル。ユーザーの意図を把握し、SKILL.mdのドラフト作成、テストケース実行、定量・定性評価、反復改善、トリガー最適化までの全サイクルをガイドする。
+
+## 使用トリガー
+SKILLの新規作成、既存SKILLの編集・最適化、SKILLの評価・ベンチマーク、トリガー精度の改善
+
+## SKILL作成の核心プロセス
+1. Intent Capture: 何をするSKILLか、いつトリガーするか、出力形式は何か
+2. Interview & Research: エッジケース、入出力形式、成功基準、依存関係を詰める
+3. SKILL.md作成: frontmatter(name, description) + Markdown本体
+4. テストケース作成・実行: テストプロンプトでSKILL適用結果を検証
+5. 評価: generate_review.pyで定性評価 + 定量ベンチマーク
+6. 反復改善: フィードバックに基づきSKILL書き直し
+7. トリガー最適化: run_loop.pyでdescriptionを自動最適化
+8. パッケージング: package_skill.pyで.skillファイル生成
+
+## SKILLの構造
+skill-name/
+├── SKILL.md (必須: YAMLフロントマター + Markdown指示)
+├── scripts/ (決定論的タスク用実行コード)
+├── references/ (必要時にコンテキストにロードするドキュメント)
+└── assets/ (テンプレート、アイコン等の出力素材)
+
+## Progressive Disclosure (3層ローディング)
+1. Metadata (name + description): 常にコンテキスト内 (~100語)
+2. SKILL.md本体: トリガー時にロード (<500行が理想)
+3. Bundled resources: 必要時のみ (無制限、スクリプトはロードなしで実行可)
+
+## SKILL.md記述のベストプラクティス
+- descriptionはトリガーの主要メカニズム。やや「押しが強め」に書く
+- SKILL.md本体は500行以下。超える場合は階層化+参照先への誘導
+- 「驚き最小の原則」: ユーザーが予想しない動作をしない
+- 参照ファイルはSKILL.mdから明確にポインタを設置
+- ドメイン別に参照ファイルを分割(例: aws.md, gcp.md, azure.md)
+
+## トリガー最適化の仕組み
+- SKILLはavailable_skillsリストにname+descriptionで表示される
+- Claudeはdescriptionに基づいてSKILLを参照するか判断
+- 単純な1ステップタスクはSKILLをトリガーしにくい（Claude自力で処理）
+- 複雑・マルチステップ・専門的クエリは確実にトリガー
+- run_loop.pyで60%train/40%testに分割し、反復最適化（最大5回）
+
+## 関連技術
+Claude Code, subagents, eval-viewer, package_skill.py, run_loop.py
