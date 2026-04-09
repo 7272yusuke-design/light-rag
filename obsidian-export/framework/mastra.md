@@ -2,7 +2,7 @@
 source: https://github.com/mastra-ai/mastra
 category: framework
 sub_categories: [agent, workflow]
-tags: [TypeScript, LLM, multi-agent, RAG, MCP, AI-SDK, monorepo, observability]
+tags: [typescript, llm, multi-agent, rag, mcp, ai-sdk, monorepo, observability]
 language: 
 ingested: 2026-04-09
 source_updated: unknown

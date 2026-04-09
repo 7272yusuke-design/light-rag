@@ -2,7 +2,7 @@
 source: https://github.com/comfyanonymous/ComfyUI
 category: framework
 sub_categories: [webapp, workflow]
-tags: [python, stable-diffusion, image-generation, node-based, diffusion-models, pytorch, aiohttp, SQLAlchemy]
+tags: [python, stable-diffusion, image-generation, node-based, diffusion-models, pytorch, aiohttp, sqlalchemy]
 language: 
 ingested: 2026-04-09
 source_updated: unknown

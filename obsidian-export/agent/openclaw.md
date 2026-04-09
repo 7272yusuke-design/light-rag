@@ -2,7 +2,7 @@
 source: https://github.com/openclaw/openclaw
 category: agent
 sub_categories: [framework, protocol]
-tags: [Swift, Kotlin, TypeScript, AI-assistant, multi-platform, voice-interface, plugin-system, LLM-gateway]
+tags: [swift, kotlin, typescript, ai-assistant, multi-platform, voice-interface, plugin-system, llm-gateway]
 language: 
 ingested: 2026-04-09
 source_updated: unknown

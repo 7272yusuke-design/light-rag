@@ -2,7 +2,7 @@
 source: https://github.com/n8n-io/n8n
 category: framework
 sub_categories: [agent, workflow, tool]
-tags: [TypeScript, n8n, LangChain, MCP, LangGraph, automation, multi-agent, low-code]
+tags: [typescript, n8n, langchain, mcp, langgraph, automation, multi-agent, low-code]
 language: 
 ingested: 2026-04-09
 source_updated: unknown

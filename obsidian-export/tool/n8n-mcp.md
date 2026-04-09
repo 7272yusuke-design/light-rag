@@ -2,7 +2,7 @@
 source: https://github.com/czlonkowski/n8n-mcp
 category: tool
 sub_categories: [agent, workflow]
-tags: [TypeScript, MCP, n8n, SQLite, workflow-automation, AI-integration, node-validation, Docker]
+tags: [typescript, mcp, n8n, sqlite, workflow-automation, ai-integration, node-validation, docker]
 language: 
 ingested: 2026-04-09
 source_updated: unknown

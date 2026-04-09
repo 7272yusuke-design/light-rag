@@ -2,7 +2,7 @@
 source: https://github.com/modelcontextprotocol/servers
 category: framework
 sub_categories: [tool, protocol]
-tags: [TypeScript, Python, MCP, model-context-protocol, LLM-integration, SSE, stdio-transport, multi-transport]
+tags: [typescript, python, mcp, llm-integration, sse, stdio-transport, multi-transport]
 language: 
 ingested: 2026-04-09
 source_updated: unknown

@@ -2,7 +2,7 @@
 source: https://github.com/HKUDS/LightRAG
 category: framework
 sub_categories: [webapp, tool]
-tags: [python, typescript, RAG, knowledge-graph, LLM, FastAPI, React, graph-database, vector-database]
+tags: [python, typescript, rag, knowledge-graph, llm, fastapi, react, graph-database, vector-database]
 language: 
 ingested: 2026-04-09
 source_updated: unknown

@@ -2,7 +2,7 @@
 source: https://github.com/crewaiinc/crewai
 category: framework
 sub_categories: [agent, workflow]
-tags: [python, multi-agent, LLM, RAG, MCP, crewai, orchestration, autonomous-agents]
+tags: [python, multi-agent, llm, rag, mcp, crewai, orchestration, autonomous-agents]
 language: 
 ingested: 2026-04-09
 source_updated: unknown
