@@ -35,7 +35,7 @@ echo ""
 echo "=== [5/5] SKILL.md: エージェント用スキル定義を生成 ==="
 SKILL_DIR="${SCRIPT_DIR}/../skills-export"
 mkdir -p "$SKILL_DIR"
-source "$SCRIPT_DIR/../.env" && python3 "$SCRIPT_DIR/generate_skill.py" "$META_JSON" -o "$SKILL_DIR" || echo "WARN: SKILL.md生成をスキップ"
+bash "$SCRIPT_DIR/generate_skill.sh" "$META_JSON" -o "$SKILL_DIR" || echo "WARN: SKILL.md生成をスキップ"
 
 echo ""
 echo "=== 完了 ==="
