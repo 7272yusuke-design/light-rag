@@ -12,7 +12,9 @@ REPO_NAME=$(echo "$REPO_URL" | sed 's|.*/||;s|\.git$||' | tr '[:upper:]' '[:lowe
 REPOMIX_OUT="$WORK_DIR/${REPO_NAME}_repomix.md"
 
 echo "=== [1/4] Repomix: リポジトリをテキスト化 ==="
-repomix --remote "$REPO_URL" --compress --style markdown -o "$REPOMIX_OUT"
+repomix --remote "$REPO_URL" --compress --style markdown \
+  --ignore "**/*.test.*,**/*.spec.*,**/tests/**,**/test/**,**/__tests__/**,**/cassettes/**,**/fixtures/**,**/node_modules/**,**/*.yaml,**/*.yml,**/dist/**,**/build/**,.git/**" \
+  -o "$REPOMIX_OUT"
 
 echo ""
 echo "=== [2/4] LLM: 構造化要約を生成 ==="
