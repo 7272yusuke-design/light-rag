@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""Repomix出力 → OpenRouter LLM → 構造化要約生成"""
+import argparse
+import json
+import os
+import re
+import sys
+import requests
+
+OPENROUTER_API = "https://openrouter.ai/api/v1/chat/completions"
+
+def get_api_key():
+    key = os.environ.get("OPENROUTER_API_KEY", "")
+    if not key:
+        envfile = os.path.join(os.path.dirname(__file__), "..", ".env")
+        if os.path.exists(envfile):
+            for line in open(envfile):
+                if line.startswith("LLM_BINDING_API_KEY="):
+                    key = line.split("=", 1)[1].strip().strip('"')
+    if not key:
+        print("ERROR: OpenRouter APIキーが見つかりません", file=sys.stderr)
+        sys.exit(1)
+    return key
+
+CLASSIFY_PROMPT = """あなたは技術ナレッジの分類エキスパートです。
+以下のリポジトリ情報を分析し、JSON形式で出力してください。JSONのみを出力し、他のテキストは含めないでください。
+
+## カテゴリ（以下から最も適切な1つを選択）
+framework, pattern, tool, protocol, infra, crypto, website, webapp, agent, workflow
+
+## サブカテゴリ（該当するものを0〜3個選択）
+上記カテゴリリストから選択
+
+## タグ（3〜8個を自由に生成）
+- 言語タグ（必須）
+- 技術・ライブラリ名
+- 実装パターン名
+- ドメイン名
+
+禁止: 汎用的すぎるタグ(code, development, programming)、3単語以上のタグ、カテゴリ名と同一のタグ
+
+## 出力JSON
+{
+  "category": "...",
+  "sub_categories": ["..."],
+  "tags": ["..."],
+  "summary": "1-3文でリポジトリの目的を説明",
+  "design_philosophy": "アーキテクチャや設計哲学",
+  "key_components": [{"name": "...", "role": "..."}],
+  "implementation_patterns": [{"name": "...", "description": "..."}],
+  "use_cases": "どういうプロジェクトに役立つか",
+  "caveats": "制限・注意点"
+}
+
+---
+リポジトリ情報:
+"""
+
+def call_llm(api_key: str, prompt: str, model: str = "anthropic/claude-sonnet-4.6") -> str:
+    r = requests.post(
+        OPENROUTER_API,
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        json={"model": model, "max_tokens": 4096, "messages": [{"role": "user", "content": prompt}]},
+        timeout=120,
+    )
+    r.raise_for_status()
+    return r.json()["choices"][0]["message"]["content"]
+
+def extract_json(text: str) -> dict:
+    # ```json ... ``` ブロックがあれば抽出
+    m = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
+    if m:
+        return json.loads(m.group(1))
+    # そのままパース
+    return json.loads(text)
+
+def build_lightrag_text(repo_url: str, meta: dict) -> str:
+    """DATA-SCHEMAテンプレートに沿ったLightRAG投入テキスト"""
+    components = "\n".join(f"- {c['name']}: {c['role']}" for c in meta.get("key_components", []))
+    patterns = "\n".join(f"- {p['name']}: {p['description']}" for p in meta.get("implementation_patterns", []))
+    tags = ", ".join(meta.get("tags", []))
+    sub_cats = ", ".join(meta.get("sub_categories", []))
+    from datetime import date
+    
+    return f"""# {repo_url.rstrip('/').split('/')[-1]}
+
+## 基本情報
+- リポジトリ: {repo_url}
+- カテゴリ: {meta.get('category', '')}
+- サブカテゴリ: {sub_cats}
+- タグ: {tags}
+- 最終確認日: {date.today().isoformat()}
+
+## 概要
+{meta.get('summary', '')}
+
+## 設計思想
+{meta.get('design_philosophy', '')}
+
+## 主要コンポーネント
+{components}
+
+## 実装パターン
+{patterns}
+
+## 適用シーン
+{meta.get('use_cases', '')}
+
+## 注意点・制約
+{meta.get('caveats', '')}
+"""
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("repomix_file", help="Repomix出力ファイル")
+    p.add_argument("--repo-url", required=True, help="GitHubリポジトリURL")
+    p.add_argument("--model", default="anthropic/claude-sonnet-4.6")
+    p.add_argument("--output-dir", default="/tmp")
+    args = p.parse_args()
+
+    # Repomix出力を読み込み（大きすぎる場合は先頭を切り詰め）
+    text = open(args.repomix_file).read()
+    max_chars = 80000  # ~20kトークン目安
+    if len(text) > max_chars:
+        print(f"WARN: 入力を{max_chars}文字に切り詰め ({len(text)} → {max_chars})", file=sys.stderr)
+        text = text[:max_chars]
+
+    api_key = get_api_key()
+    
+    print("LLMで構造化要約を生成中...", file=sys.stderr)
+    prompt = CLASSIFY_PROMPT + text
+    raw = call_llm(api_key, prompt, args.model)
+    meta = extract_json(raw)
+
+    # リポジトリ名
+    repo_name = args.repo_url.rstrip("/").split("/")[-1].lower()
+    meta["name"] = repo_name
+    meta["source"] = args.repo_url
+
+    # LightRAG投入テキスト生成
+    lightrag_text = build_lightrag_text(args.repo_url, meta)
+    lightrag_path = os.path.join(args.output_dir, f"{repo_name}_lightrag.txt")
+    with open(lightrag_path, "w") as f:
+        f.write(lightrag_text)
+
+    # Obsidian用メタデータJSON
+    meta["body"] = lightrag_text
+    meta["title"] = repo_name
+    meta_path = os.path.join(args.output_dir, f"{repo_name}_meta.json")
+    with open(meta_path, "w") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+
+    print(f"LightRAGテキスト: {lightrag_path}", file=sys.stderr)
+    print(f"メタデータJSON: {meta_path}", file=sys.stderr)
+    
+    # パス情報をstdoutに出力（シェルスクリプトで拾う）
+    print(json.dumps({"lightrag_text": lightrag_path, "meta_json": meta_path}))
+
+if __name__ == "__main__":
+    main()
