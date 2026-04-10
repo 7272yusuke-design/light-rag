@@ -7,49 +7,28 @@ OBSIDIAN_DIR="${SCRIPT_DIR}/../obsidian-export"
 mkdir -p "$WORK_DIR"
 REPO_NAME=$(echo "$REPO_URL" | sed 's|.*/||;s|\.git$||' | tr '[:upper:]' '[:lower:]')
 REPOMIX_OUT="$WORK_DIR/${REPO_NAME}_repomix.md"
-CLONE_DIR="$WORK_DIR/${REPO_NAME}_clone"
-GRAPH_REPORT="$CLONE_DIR/graphify-out/GRAPH_REPORT.md"
 
-echo "=== [0/6] Clone: リポジトリをローカルに取得 ==="
-rm -rf "$CLONE_DIR"
-git clone --depth 1 "$REPO_URL" "$CLONE_DIR" 2>&1 | tail -3
-
-echo ""
-echo "=== [1/6] graphify: コード構造を解析 ==="
-graphify "$CLONE_DIR" 2>&1 | tail -5
-if [ -f "$GRAPH_REPORT" ]; then
-    echo "GRAPH_REPORT.md 生成済み ($(wc -l < "$GRAPH_REPORT") lines)"
-else
-    echo "WARN: GRAPH_REPORT.md なし（スキップ）"
-    GRAPH_REPORT=""
-fi
-
-echo ""
-echo "=== [2/6] Repomix: リポジトリをテキスト化 ==="
-repomix "$CLONE_DIR" --compress --style markdown \
-  --ignore "**/*.test.*,**/*.spec.*,**/tests/**,**/test/**,**/__tests__/**,**/cassettes/**,**/fixtures/**,**/node_modules/**,**/*.yaml,**/*.yml,**/dist/**,**/build/**,.git/**,**/graphify-out/**" \
+echo "=== [1/5] Repomix: リポジトリをテキスト化 ==="
+repomix --remote "$REPO_URL" --compress --style markdown \
+  --ignore "**/*.test.*,**/*.spec.*,**/tests/**,**/test/**,**/__tests__/**,**/cassettes/**,**/fixtures/**,**/node_modules/**,**/*.yaml,**/*.yml,**/dist/**,**/build/**,.git/**" \
   -o "$REPOMIX_OUT"
 
 echo ""
-echo "=== [3/6] LLM: 構造化要約を生成 ==="
-SUMMARIZE_ARGS="$REPOMIX_OUT --repo-url $REPO_URL --output-dir $WORK_DIR"
-if [ -n "$GRAPH_REPORT" ]; then
-    SUMMARIZE_ARGS="$SUMMARIZE_ARGS --graph-report $GRAPH_REPORT"
-fi
-PATHS_JSON=$(python3 "$SCRIPT_DIR/summarize_repo.py" $SUMMARIZE_ARGS)
+echo "=== [2/5] LLM: 構造化要約を生成 ==="
+PATHS_JSON=$(python3 "$SCRIPT_DIR/summarize_repo.py" "$REPOMIX_OUT" --repo-url "$REPO_URL" --output-dir "$WORK_DIR")
 LIGHTRAG_TEXT=$(echo "$PATHS_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin)['lightrag_text'])")
 META_JSON=$(echo "$PATHS_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin)['meta_json'])")
 
 echo ""
-echo "=== [4/6] LightRAG: 知識DBに投入 ==="
+echo "=== [3/5] LightRAG: 知識DBに投入 ==="
 python3 "$SCRIPT_DIR/submit_to_lightrag.py" "$LIGHTRAG_TEXT"
 
 echo ""
-echo "=== [5/6] Obsidian: 学習用MD出力 ==="
+echo "=== [4/5] Obsidian: 学習用MD出力 ==="
 python3 "$SCRIPT_DIR/export_obsidian.py" "$META_JSON" -o "$OBSIDIAN_DIR"
 
 echo ""
-echo "=== [6/6] SKILL.md: エージェント用スキル定義を生成 ==="
+echo "=== [5/5] SKILL.md: エージェント用スキル定義を生成 ==="
 SKILL_DIR="${SCRIPT_DIR}/../skills-export"
 mkdir -p "$SKILL_DIR"
 bash "$SCRIPT_DIR/generate_skill.sh" "$META_JSON" -o "$SKILL_DIR" || echo "WARN: SKILL.md生成をスキップ"
