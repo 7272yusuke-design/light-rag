@@ -116,6 +116,7 @@ def main():
     p.add_argument("--repo-url", required=True, help="GitHubリポジトリURL")
     p.add_argument("--model", default="anthropic/claude-sonnet-4.6")
     p.add_argument("--output-dir", default="/tmp")
+    p.add_argument("--graph-report", default="", help="graphify GRAPH_REPORT.mdのパス")
     args = p.parse_args()
 
     # Repomix出力を読み込み（大きすぎる場合は先頭を切り詰め）
@@ -128,7 +129,12 @@ def main():
     api_key = get_api_key()
     
     print("LLMで構造化要約を生成中...", file=sys.stderr)
-    prompt = CLASSIFY_PROMPT + text
+    graph_context = ""
+    if args.graph_report and os.path.exists(args.graph_report):
+        graph_text = open(args.graph_report).read()[:8000]
+        graph_context = f"\n\n## コード構造解析（graphify）\n{graph_text}\n"
+        print("graphify GRAPH_REPORT.mdを追加コンテキストとして使用", file=sys.stderr)
+    prompt = CLASSIFY_PROMPT + graph_context + text
     raw = call_llm(api_key, prompt, args.model)
     meta = extract_json(raw)
 
