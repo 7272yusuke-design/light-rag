@@ -59,9 +59,20 @@ def search_knowledge(query: str, mode: str = "hybrid", project: str = "") -> str
             if keywords:
                 search_query = f"{query} {' '.join(keywords[:3])}"
     try:
-        result = api_request("/query", method="POST", body={"query": search_query, "mode": mode})
-        if isinstance(result, dict) and "response" in result:
-            return result["response"]
+        result = api_request("/query/data", method="POST", body={"query": search_query, "mode": mode})
+        if isinstance(result, dict) and result.get("status") == "success":
+            data = result.get("data", {})
+            # 生チャンクをClaude.aiが合成しやすい形に整形
+            chunks = []
+            for key, items in data.items():
+                if isinstance(items, list):
+                    for item in items[:10]:
+                        if isinstance(item, dict):
+                            content = item.get("content", item.get("description", str(item)))
+                            chunks.append(f"[{key}] {str(content)[:500]}")
+                        elif isinstance(item, str):
+                            chunks.append(f"[{key}] {item[:500]}")
+            return "\n\n".join(chunks) if chunks else json.dumps(data, ensure_ascii=False)[:4000]
         return json.dumps(result, ensure_ascii=False)[:4000]
     except Exception as e:
         return f"Search error: {e}"
