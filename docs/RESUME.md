@@ -19,8 +19,8 @@ Git: https://github.com/7272yusuke-design/light-rag
 - docs/ARCHITECTURE.md（システム設計）
 - docs/DATA-SCHEMA.md（データ構造ルール）
 
-現在のフェーズ: Phase 1-5完了
-直近の作業状態: 42ドキュメント投入済み、検索稼働中、Claude Code MCP連携済み、graphify導入済み
+現在のフェーズ: Phase 1-6完了、Phase 7（バージョンアップ）進行中
+直近の作業状態: 51ドキュメント投入済み（うち4件レベル3）、summarize_repo.pyリトライ改修済み、KNOWLEDGE-INDEX自動生成対応
 
 ---
 
@@ -112,134 +112,19 @@ VPS (76.13.187.66)
 - [x] ナレッジ42件投入（不正ドキュメント10件削除済み）
 
 ### 残タスク
-- [ ] 知見フィードバックの半自動化（手動運用で開始、必要に応じて自動化）
-- [ ] Obsidian Vault構成の最適化（運用しながら必要に応じて）
+- [ ] OpenRouter APIキーローテーション（セキュリティ。即対応）
+- [ ] ドメイン取得 → Cloudflare Named Tunnel → MCP固定URL化（現状動作中のためスキップ可）
+- [ ] プロジェクト固有ナレッジ投入（OpenClaw CostGuard、バグ修正パターン、jizokuka-ai）
+- [ ] 検索品質ベンチマーク（テストクエリ10件、合格基準8/10）
+- [ ] 中期: langgraph/crewai/browser-use レベル3化
+- [ ] 中期: ingest_github.sh改修（Option C: 実装チャンク自動抽出）
+- [x] DATA-SCHEMA.mdにバグパターンテンプレート追加
+- [x] KNOWLEDGE-INDEX.md自動生成スクリプト化（update_knowledge_index.py）
+- [x] ccxt/freqtrade/n8n/openclaw レベル3化
+- [x] ARCHITECTURE.md投入
+- [x] 新規9リポジトリ投入（career-ops, stripe-cli, FFmpeg, cli, vercel, llmfit, autoresearch, OpenSpace, claude-peers-mcp）
+- [x] summarize_repo.py リトライ+フォールバック+コード例自動生成（レベル1相当）
 
 ---
 
-## 蓄積済みナレッジ（42件）
-
-### GitHub OSS (32)
-| 名前 | カテゴリ | 説明 |
-|---|---|---|
-| CrewAI | framework | マルチエージェントフレームワーク |
-| LightRAG | framework | 知識グラフRAG |
-| n8n | framework | ワークフロー自動化 |
-| ComfyUI | framework | 画像生成パイプライン |
-| ComfyUI-to-Python-Extension | tool | ComfyUIワークフロー→Pythonコード変換 |
-| comfyui-api-wrapper | tool | ComfyUI APIラッパー |
-| comfy_api_simplified | tool | ComfyUI API簡易クライアント |
-| Mastra | framework | TypeScriptエージェントフレームワーク |
-| MCP servers | framework | Model Context Protocolサーバー集 |
-| OpenClaw公式 | agent | AIアシスタントフレームワーク |
-| ruflo | agent | Claude Code用マルチエージェントスワームオーケストレーター |
-| agency-agents | agent | 144専門エージェント定義集（12部門） |
-| graphify | tool | コード・ドキュメントを知識グラフに変換するClaude Code SKILL |
-| n8n-mcp | tool | n8n用MCPサーバー |
-| n8n-as-code | tool | n8nワークフローのGitOps管理 |
-| notebooklm-py | tool | NotebookLM非公式Python API + Agent Skill |
-| obsidian-skills | agent | Obsidian Vault操作用Agent Skills |
-| anthropic-cookbook | pattern | Claude API活用パターン集 |
-| langgraph | framework | エージェントステートマシンフレームワーク |
-| supabase | framework | BaaS（認証・DB・リアルタイム） |
-| shadcn-ui | framework | UIコンポーネントライブラリ |
-| vercel-ai | framework | Vercel AI SDK（Webアプリ×AI連携） |
-| ccxt | framework | 仮想通貨取引所API統合ライブラリ |
-| awesome-compose | pattern | Docker Composeパターン集 |
-| gws-cli | tool | Google Workspace CLI + 100+ Agent Skills |
-| cli-anything | tool | ソフトウェアCLI化フレームワーク |
-| browser-use | tool | LLMブラウザ自動操作 |
-| freqtrade | agent | 暗号通貨自動売買botフレームワーク |
-| playwright-cli | tool | Agent Skills対応ブラウザ操作CLI |
-| framer-motion | framework | Reactアニメーションライブラリ |
-| NeMo-Agent-Toolkit | agent | NVIDIAマルチエージェントツールキット |
-| awesome-design-md | website | 人気サイトのDESIGN.mdコレクション |
-
-### ドキュメント (1)
-| 名前 | カテゴリ | 説明 |
-|---|---|---|
-| Building LLM-Powered Applications with Claude | pattern | LLMアプリ構築ガイド |
-
-### Claude Code SKILL (9)
-| 名前 | 対象技術 |
-|---|---|
-| skill-creator | SKILL作成メタスキル |
-| docx-creation | Word文書 |
-| pdf-processing | PDF処理 |
-| pdf-reading | PDF読み取り |
-| pptx-creation | PowerPoint |
-| xlsx-processing | Excel |
-| frontend-design | フロントエンドUI |
-| file-reading | ファイル読み取りルーター |
-| product-self-knowledge | Anthropic製品情報 |
-
-### MCP連携
-| コンポーネント | 説明 |
-|---|---|
-| mcp_lightrag.py | Claude CodeからLightRAG検索を可能にするMCPサーバー（search_knowledge + list_knowledge + list_projects） |
-
----
-
-## パイプラインコマンド
-
-リポジトリ投入（Git自動push付き）:
-  cd /docker/lightrag && ./scripts/ingest_github.sh <GitHub URL>
-
-ナレッジ検索（ターミナル）:
-  ./scripts/search_knowledge.sh "検索クエリ" [mode] [project]
-  # project: openclaw, virtual-protocol, website, webapp, workflow
-
-ナレッジ検索（Claude Code MCP）:
-  Claude Code内でsearch_knowledgeツールを使用（project引数でフィルタリング可能）
-
-タグ正規化（dry run / 実行）:
-  python3 scripts/normalize_tags.py
-  python3 scripts/normalize_tags.py --fix
-
-重複チェック:
-  python3 scripts/check_duplicates.py
-
-鮮度チェック（確認 / 修正）:
-  python3 scripts/check_freshness.py
-  python3 scripts/check_freshness.py --fix
-
----
-
-## ファイル構成
-
-/docker/lightrag/
-├── .env                    # 環境変数（git外）
-├── .gitignore
-├── docker-compose.yml
-├── config/
-│   └── project_profiles.json  # プロジェクト別フィルタ定義
-├── docs/
-│   └── AGENT-API-GUIDE.md  # エージェントAPI利用ガイド
-├── scripts/
-│   ├── ingest_github.sh    # GitHub投入パイプライン（Git自動push付き）
-│   ├── summarize_repo.py   # LLM構造化要約（--graph-reportオプション対応）
-│   ├── submit_to_lightrag.py # LightRAG API投入
-│   ├── export_obsidian.py  # Obsidian MD生成
-│   ├── search_knowledge.sh # ナレッジ検索（プロジェクトフィルタ対応）
-│   ├── mcp_lightrag.py     # Claude Code用MCPサーバー（3ツール）
-│   ├── normalize_tags.py   # タグ正規化
-│   ├── check_duplicates.py # 重複検知
-│   └── check_freshness.py  # 鮮度チェック
-├── skill_data/             # SKILL構造化テキスト
-├── obsidian-export/        # Obsidian Vault（GitHub閲覧）
-│   ├── agent/
-│   ├── framework/
-│   ├── skills/
-│   └── tool/
-└── .git/
-
-## 注意事項
-
-- .envはgitに含めない。VPS上でのみ管理
-- コンテナは restart: unless-stopped なのでVPS再起動後は自動復帰
-- Ollamaは systemctl enable ollama 済み
-- Claude CodeはVPS上にインストール済み（npm global）
-- MCP lightragはプロジェクトスコープ（/docker/lightrag）で登録済み
-- graphifyはpip global（graphifyy）でインストール済み。Claude Code内で /graphify として使用
-- 計画ファイル（GSD-PLAN.md, ARCHITECTURE.md, DATA-SCHEMA.md, RESUME.md）はClaude.aiプロジェクトファイルで管理
-- 開発環境はHostingerのWebターミナル（SSH不要）。コマンドはsshプレフィックスなし
+## 蓄積済みナレッジ（51件）

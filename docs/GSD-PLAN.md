@@ -155,3 +155,31 @@ Claude.aiプロジェクトからLightRAG APIを検索し、現在のプロジ�
 | Phase 4 | 2026-04-09 | 中 | ✅ 完了 |
 | Phase 5 | 2026-04-09 | 中 | ✅ 完了 |
 | Phase 6 | 2026-04-10 | 中 | ✅ 完了 |
+
+---
+
+## Phase 7: バージョンアップ（2026-04-11〜）
+
+### 目標
+プロジェクト手順の簡素化、セキュリティ修正、ナレッジ品質向上、パイプライン改善。
+
+### 完了済み
+- [x] DATA-SCHEMA.mdにバグパターンテンプレート追加
+- [x] KNOWLEDGE-INDEX.md自動生成スクリプト（update_knowledge_index.py）
+- [x] ccxt/freqtrade/n8n/openclaw レベル0→3（手動差し替え）
+- [x] ARCHITECTURE.md投入
+- [x] 新規9リポジトリ投入（51件に拡大）
+- [x] summarize_repo.pyにリトライ+フォールバック+コード例自動生成追加
+- [x] ingest_github.sh末尾にインデックス自動更新追加
+
+### 残タスク
+- [ ] OpenRouter APIキーローテーション
+- [ ] ドメイン取得→Named Tunnel→MCP固定URL化
+- [ ] プロジェクト固有ナレッジ投入（来週）
+- [ ] 検索品質ベンチマーク（Phase 3完了後）
+- [ ] langgraph/crewai/browser-use レベル3化（中期）
+- [ ] ingest_github.sh Option C対応（中期）
+
+| Phase | 期間 | 状態 |
+|---|---|---|
+| Phase 7 | 2026-04-11〜 | 🔄 進行中 |
