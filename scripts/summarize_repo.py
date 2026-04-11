@@ -49,8 +49,16 @@ framework, pattern, tool, protocol, infra, crypto, website, webapp, agent, workf
   "key_components": [{"name": "...", "role": "..."}],
   "implementation_patterns": [{"name": "...", "description": "..."}],
   "use_cases": "どういうプロジェクトに役立つか",
-  "caveats": "制限・注意点"
+  "caveats": "制限・注意点",
+  "code_examples": [{"title": "例のタイトル", "code": "コードスニペット", "explanation": "説明"}]
 }
+
+## code_examples について
+リポジトリの主要な使い方を示すコードサンプルを最低3件生成してください。
+- 基本的な初期化・セットアップ
+- メインのユースケース
+- エラーハンドリング例
+コードはそのまま実行可能な形式で出力してください。
 
 ---
 リポジトリ情報:
@@ -67,12 +75,14 @@ def call_llm(api_key: str, prompt: str, model: str = "anthropic/claude-sonnet-4.
     return r.json()["choices"][0]["message"]["content"]
 
 def extract_json(text: str) -> dict:
-    # ```json ... ``` ブロックがあれば抽出
-    m = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
-    if m:
-        return json.loads(m.group(1))
-    # そのままパース
-    return json.loads(text)
+    """JSONを抽出。失敗時はNoneを返す"""
+    try:
+        m = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
+        if m:
+            return json.loads(m.group(1))
+        return json.loads(text)
+    except (json.JSONDecodeError, AttributeError):
+        return None
 
 def build_lightrag_text(repo_url: str, meta: dict) -> str:
     """DATA-SCHEMAテンプレートに沿ったLightRAG投入テキスト"""
@@ -108,6 +118,9 @@ def build_lightrag_text(repo_url: str, meta: dict) -> str:
 
 ## 注意点・制約
 {meta.get('caveats', '')}
+
+## コード例
+{chr(10).join(f"### {ex.get('title','例')}{chr(10)}{chr(10)}    {ex.get('code','').replace(chr(10), chr(10) + '    ')}{chr(10)}{chr(10)}{ex.get('explanation','')}" for ex in meta.get('code_examples', []))}
 """
 
 def main():
@@ -135,8 +148,31 @@ def main():
         graph_context = f"\n\n## コード構造解析（graphify）\n{graph_text}\n"
         print("graphify GRAPH_REPORT.mdを追加コンテキストとして使用", file=sys.stderr)
     prompt = CLASSIFY_PROMPT + graph_context + text
-    raw = call_llm(api_key, prompt, args.model)
-    meta = extract_json(raw)
+    meta = None
+    for attempt in range(3):
+        try:
+            raw = call_llm(api_key, prompt, args.model)
+            meta = extract_json(raw)
+            if meta:
+                break
+            print(f"WARN: JSON解析失敗 (attempt {attempt+1}/3), リトライ...", file=sys.stderr)
+        except Exception as e:
+            print(f"WARN: LLM呼び出し失敗 (attempt {attempt+1}/3): {e}", file=sys.stderr)
+    
+    if not meta:
+        print("WARN: LLM要約失敗。READMEベースのフォールバック生成", file=sys.stderr)
+        repo_name = args.repo_url.rstrip("/").split("/")[-1].lower()
+        meta = {
+            "category": "tool",
+            "sub_categories": [],
+            "tags": [],
+            "summary": text[:200].replace("\n", " "),
+            "design_philosophy": "",
+            "key_components": [],
+            "implementation_patterns": [],
+            "use_cases": "",
+            "caveats": "自動要約に失敗したため簡易版。手動でレベルアップ推奨。",
+        }
 
     # リポジトリ名
     repo_name = args.repo_url.rstrip("/").split("/")[-1].lower()
