@@ -28,5 +28,26 @@
     "categories": ["workflow", "tool"],
     "tags": ["n8n", "mcp", "pipeline"],
     "context": "ワークフロー自動化、n8n、イベント駆動"
+  },
+  "l1-external": {
+    "description": "外部OSSナレッジ（GitHub/SKILL/ドキュメント）",
+    "categories": ["framework", "tool", "agent", "pattern", "protocol", "infra", "website", "webapp", "workflow"],
+    "tags": [],
+    "context": "外部ライブラリ・フレームワークの使い方",
+    "layer": "l1"
+  },
+  "l2-combination": {
+    "description": "検証済み組み合わせパターン（複数L1の接続実装）",
+    "categories": ["combination"],
+    "tags": ["original"],
+    "context": "複数技術の組み合わせ、接続パターン、統合実装",
+    "layer": "l2"
+  },
+  "l3-package": {
+    "description": "独自パッケージ（検証済み自作モジュール）",
+    "categories": ["package"],
+    "tags": ["original", "tested"],
+    "context": "自作ツール、独自モジュール、派生パッケージ",
+    "layer": "l3"
   }
 }
