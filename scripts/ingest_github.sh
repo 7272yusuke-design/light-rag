@@ -42,3 +42,6 @@ git push || echo "WARN: git push failed"
 
 echo ""
 echo "=== 完了 ==="
+
+# ナレッジインデックス自動更新
+python3 /docker/lightrag/scripts/update_knowledge_index.py
