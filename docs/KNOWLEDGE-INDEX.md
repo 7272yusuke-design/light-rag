@@ -27,28 +27,28 @@
 | NeMo-Agent-Toolkit | NVIDIA/NeMo-Agent-Toolkit | 0 | python, LLM, multi-agent, LangChain, MCP, RAG, observability, plugin-architecture | NVIDIA ... |
 | servers | modelcontextprotocol/servers | 0 | TypeScript, Python, MCP, model-context-protocol, LLM-integration, SSE, stdio-transport, multi-transport |  |
 
-## エージェント・自動化 (7件)
+## エージェント・自動化 (9件)
 
 | 名前 | ソース | レベル | タグ | 概要 |
 |------|--------|--------|------|------|
 | agency-agents | msitarzewski/agency-agents | 0 | markdown, prompt-engineering, multi-agent, LLM, role-playing, system-prompt, AI-personas, agent-design |  |
+| autoresearch | karpathy/autoresearch | 0 | python, pytorch, llm-pretraining, autonomous-research, hyperparameter-tuning, self-evolving, experiment-managemen... |  |
 | career-ops | santifer/career-ops | 0 | AI-agent, job-search, Claude, Go, Node.js, bubbletea, ATS-optimization, Puppeteer | career-opsはAIエージェントを活用した求人... |
 | claude-peers-mcp | louislva/claude-peers-mcp | 0 | typescript, bun, MCP, sqlite, peer-discovery, claude-code, inter-agent-messaging, daemon | claude-... |
 | freqtrade | freqtrade/freqtrade | 0 | python, algorithmic-trading, backtesting, hyperopt, freqai, ccxt, machine-learning, cryptocurrency |  |
 | obsidian-skills | kepano/obsidian-skills | 0 | obsidian, markdown, PKM, claude-code, agent-skills, YAML, json-canvas, knowledge-management | Obsidian... |
 | openclaw | openclaw/openclaw | 0 | swift, kotlin, typescript, ai-assistant, multi-platform, voice-interface, plugin-system, llm-gateway |  |
+| OpenSpace | HKUDS/OpenSpace | 0 | python, ai-agent, self-evolving, skill-sharing, mcp, token-optimization, claude-code, quality-monitoring |  |
 | ruflo | ruvnet/ruflo | 0 | TypeScript, JavaScript, Svelte, multi-agent, swarm, MCP, SPARC, hive-mind | Claude-Flowは、Claude AIを活用したマルチエージェントオーケスト... |
 
-## ツール・ユーティリティ (21件)
+## ツール・ユーティリティ (19件)
 
 | 名前 | ソース | レベル | タグ | 概要 |
 |------|--------|--------|------|------|
-| anthropic-cookbook | anthropics/anthropic-cookbook | 0 | - 最終確認日: 2026-04-11 | This file is a merged representation of a subset of the code |
 | cli | googleworkspace/cli | 0 | rust, google-workspace, cli, google-api, discovery-api, oauth2, automation, ai-agent | GWS is a Rust-based CLI tool t... |
 | comfy_api_simplified | deimos-deimos/comfy_api_simplified | 0 | python, comfyui, mcp, websocket, image-generation, stable-diffusion, api-wrapper | Co... |
 | ComfyUI-to-Python-Extension | pydn/ComfyUI-to-Python-Extension | 0 | python, comfyui, code-generation, stable-diffusion, ast-generation, cli, custom-nodes, workflow-expor... |  |
 | graphify | safishamsi/graphify | 0 | python, knowledge-graph, AST-extraction, tree-sitter, networkx, LLM-integration, community-detection, code-analysis |  |
-| langgraph | langchain-ai/langgraph | 0 | - 最終確認日: 2026-04-11 | This file is a merged representation of a subset of the code |
 | llmfit | AlexsJones/llmfit | 0 | rust, react, tauri, llm, hardware-detection, gguf, model-selection, tui | LLMFit はローカルマシンのハードウェアスペック（RAM/VRAM）を自動検出し、実... |
 | n8n-as-code | EtienneLescot/n8n-as-code | 0 | typescript, n8n, gitops, monorepo, vscode-extension, cli, workflow-automation, mcp | n8n-as-code (n8nac... |
 | n8n-mcp | czlonkowski/n8n-mcp | 0 | TypeScript, MCP, n8n, SQLite, workflow-automation, AI-integration, node-validation, Docker | n8n-MCP is a Model C... |
