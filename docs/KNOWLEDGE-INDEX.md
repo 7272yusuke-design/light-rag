@@ -1,4 +1,4 @@
-# ナレッジインデックス（LightRAG 蓄積済み 全42件）
+# ナレッジインデックス（LightRAG 蓄積済み 全43件）
 
 > 自動生成ファイル。`python3 scripts/update_knowledge_index.py` で更新。
 
@@ -13,33 +13,33 @@
 
 ---
 
-## フレームワーク・ライブラリ (14件)
+## フレームワーク・ライブラリ (13件)
 
 | 名前 | ソース | レベル | タグ | 概要 |
 |------|--------|--------|------|------|
 | ai | vercel/ai | 0 | TypeScript, AI-SDK, LLM, streaming, multi-provider, tool-calling, Next.js, MCP | Vercel AI SDKは、TypeScript/JavaScript向けのAIアプリ... |
-| ccxt | ccxt/ccxt | 0 | typescript, python, csharp, golang, cryptocurrency, exchange-api, websocket, trading | CCXTは100以上の暗号通貨取引所に対応した統一APIライブラリで、... |
+| ccxt | ccxt/ccxt | 0 | python, typescript, cryptocurrency, exchange-api, websocket, trading, async, rest-api |  |
 | CLI-Anything | HKUDS/CLI-Anything | 0 | python, typescript, cli, ai-agent, gui-automation, repl, click, plugin-architecture | CLI-Anything is a fram... |
 | ComfyUI | comfyanonymous/ComfyUI | 0 | python, stable-diffusion, image-generation, node-based, diffusion-models, pytorch, aiohttp, SQLAlchemy |  |
 | comfyui-api-wrapper | ai-dock/comfyui-api-wrapper | 0 | python, fastapi, comfyui, stable-diffusion, image-generation, websocket, async-queue, s3-upload |  |
 | crewai | crewaiinc/crewai | 0 | python, multi-agent, LLM, RAG, MCP, crewai, orchestration, autonomous-agents | CrewAIはLLMを活用した自律型マルチエージェントシステムを構... |
-| freqtrade | freqtrade/freqtrade | 0 | python, algorithmic-trading, backtesting, hyperopt, freqai, ccxt, machine-learning, cryptocurrency | Freqtr... |
 | langgraph | langchain-ai/langgraph | 0 | python, langgraph, pregel, state-machine, multi-agent, checkpointing, LLM, graph-execution | LangGraph ... |
 | LightRAG | HKUDS/LightRAG | 0 | python, typescript, RAG, knowledge-graph, LLM, FastAPI, React, graph-database, vector-database | LightRAG is a prod... |
 | mastra | mastra-ai/mastra | 0 | TypeScript, LLM, multi-agent, RAG, MCP, AI-SDK, monorepo, observability | Mastraは、TypeScriptで構築されたAIエージェント・ワークフロ... |
 | motion | framer/motion | 0 | TypeScript, React, animation, WAAPI, layout-animation, motion, framer-motion, spring-physics | Motion（旧Framer Motion）は... |
-| n8n | n8n-io/n8n | 0 | TypeScript, n8n, LangChain, MCP, LangGraph, automation, multi-agent, low-code | n8nはノードベースのワークフロー自動化プラットフォームであり、AIエ... |
+| n8n | n8n-io/n8n | 0 | typescript, n8n, workflow-automation, low-code, ai-agent, langchain, webhook, api-integration | n8nはノードベ... |
 | NeMo-Agent-Toolkit | NVIDIA/NeMo-Agent-Toolkit | 0 | python, LLM, multi-agent, LangChain, MCP, RAG, observability, plugin-architecture | NVIDIA ... |
 | servers | modelcontextprotocol/servers | 0 | TypeScript, Python, MCP, model-context-protocol, LLM-integration, SSE, stdio-transport, multi-transport |  |
 
-## エージェント・自動化 (5件)
+## エージェント・自動化 (6件)
 
 | 名前 | ソース | レベル | タグ | 概要 |
 |------|--------|--------|------|------|
 | agency-agents | msitarzewski/agency-agents | 0 | markdown, prompt-engineering, multi-agent, LLM, role-playing, system-prompt, AI-personas, agent-design |  |
 | browser-use | browser-use/browser-use | 0 | python, browser-automation, LLM, playwright, CDP, multi-LLM, web-scraping, asyncio | browser-use is a Py... |
+| freqtrade | freqtrade/freqtrade | 0 | python, algorithmic-trading, backtesting, hyperopt, freqai, ccxt, machine-learning, cryptocurrency |  |
 | obsidian-skills | kepano/obsidian-skills | 0 | obsidian, markdown, PKM, claude-code, agent-skills, YAML, json-canvas, knowledge-management | Obsidian... |
-| openclaw | openclaw/openclaw | 0 | Swift, Kotlin, TypeScript, AI-assistant, multi-platform, voice-interface, plugin-system, LLM-gateway | OpenCl... |
+| openclaw | openclaw/openclaw | 0 | swift, kotlin, typescript, ai-assistant, multi-platform, voice-interface, plugin-system, llm-gateway |  |
 | ruflo | ruvnet/ruflo | 0 | TypeScript, JavaScript, Svelte, multi-agent, swarm, MCP, SPARC, hive-mind | Claude-Flowは、Claude AIを活用したマルチエージェントオーケスト... |
 
 ## ツール・ユーティリティ (17件)
@@ -89,8 +89,9 @@
 |------|--------|--------|------|------|
 | awesome-design-md | VoltAgent/awesome-design-md | 0 | markdown, design-system, design-tokens, UI-components, AI-agent, LLM-context, style-guide | 著名... |
 
-## その他 (1件)
+## その他 (2件)
 
 | 名前 | ソース | レベル | タグ | 概要 |
 |------|--------|--------|------|------|
 | Building LLM-Powered Applications with Claude |  | 0 | — |  |
+| アーキテクチャ設計: LightRAG ナレッジパイプライン | GitHub OSS / Claude SKILL / 技術ドキュメント | 0 | — |  |
