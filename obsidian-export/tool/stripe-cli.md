@@ -2,7 +2,7 @@
 source: https://github.com/stripe/stripe-cli
 category: tool
 sub_categories: [workflow, infra]
-tags: [golang, stripe-api, webhook, cli, grpc, openapi, plugin-system, websocket]
+tags: [golang, stripe-api, cli, webhook, grpc, openapi, plugin-system, payment]
 language: 
 ingested: 2026-04-11
 source_updated: unknown
@@ -17,37 +17,37 @@ status: active
 - リポジトリ: https://github.com/stripe/stripe-cli
 - カテゴリ: tool
 - サブカテゴリ: workflow, infra
-- タグ: golang, stripe-api, webhook, cli, grpc, openapi, plugin-system, websocket
+- タグ: golang, stripe-api, cli, webhook, grpc, openapi, plugin-system, payment
 - 最終確認日: 2026-04-11
 
 ## 概要
-Stripe CLIは、Stripe APIとのローカル開発・テストを支援するコマンドラインツールです。Webhookのローカルフォワーディング、APIリクエストの送信、イベントのトリガー、ログのテーリング、サンプルプロジェクトの生成などの機能を提供します。gRPCベースのRPCサービスを内蔵し、IDEプラグインや外部ツールとの連携も可能です。
+Stripe CLIは、StripeのAPIとWebhookをローカル開発環境でテスト・操作するための公式コマンドラインツールです。Webhookのリアルタイムリスニング、APIリクエストの送信、イベントのトリガー、ログのテーリングなどの機能を提供します。gRPCベースのRPCサービスレイヤーを持ち、プラグインシステムによって機能を拡張できます。
 
 ## 設計思想
-OpenAPI仕様から自動生成されたCLIコマンド群を核とし、gRPCによるRPCサービス層でプラグインやIDEとのインテグレーションを実現。WebSocketを用いたリアルタイムイベントストリーミング、プロファイルベースの設定管理、プラットフォーム別ビルドを考慮した設計。コード生成（gen/）により仕様変更への追従を自動化している。
+Go言語で実装されたCLIツールで、cobra/cobraベースのコマンド構造を採用。OpenAPI仕様から自動生成されたリソースコマンド群を持ち、gRPCを介したRPCサービスレイヤーでUI/デーモン分離を実現。プラグインはgRPCプロトコルで通信する独立プロセスとして実装され、WebSocketを使ったWebhookプロキシが開発時のイベント受信を担う。
 
 ## 主要コンポーネント
-- pkg/proxy: StripeサーバーからローカルエンドポイントへのWebhookイベントフォワーディング
-- pkg/rpcservice: gRPCベースのRPCサービス。IDE・プラグインとのIPC通信を担当
-- pkg/plugins: サードパーティプラグインの管理・実行ランタイム（gRPCプロトコル）
-- pkg/logtailing: Stripe APIリクエストログのリアルタイムストリーミング
-- pkg/login: OAuth/APIキーベースの認証フロー（ポーリング・インタラクティブ）
-- gen/: OpenAPI仕様からCLIコマンドおよびリソーススペックを自動生成
-- pkg/websocket: StripeダッシュボードとのWebSocket接続管理
-- rpc/: Protocol BuffersによるgRPCサービス定義
+- proxy/proxy.go: WebSocketを通じてStripeサーバーからWebhookイベントをローカルエンドポイントに転送するプロキシ
+- rpcservice/: gRPCベースのサービス層。listen、login、trigger、fixtures等の機能をRPCとして公開
+- rpc/*.proto: CLI機能のgRPCインターフェース定義（listen、login、trigger、logs等）
+- pkg/cmd/resources/resources_gen.go: OpenAPI仕様から自動生成されたStripe APIリソースコマンド群
+- plugins/: gRPCプロトコルを使ったサードパーティプラグインのランタイム管理
+- logtailing/tailer.go: StripeダッシュボードのAPIログをリアルタイムでストリーミングするテーラー
+- stripeauth/client.go: デバイス認証フローを処理するStripe認証クライアント
+- gen/: OpenAPI仕様からリソースコマンドやイベントリストを自動生成するコードジェネレーター
 
 ## 実装パターン
-- OpenAPI駆動コード生成: gen/配下のテンプレートとOpenAPIスペックからCLIコマンド・リソーススペックを自動生成し、API仕様との同期を維持
-- gRPC Plugin Interface: プラグインとのプロセス間通信にgRPCを採用し、バージョン互換性のある拡張可能なインターフェースを提供
-- WebSocket Event Streaming: WebSocketを介してStripeのリアルタイムイベント・ログをサブスクライブし、ローカルにフォワード
-- Profile-based Config: 複数のStripeアカウント・環境をプロファイルで管理し、設定の切り替えを容易にする
-- Fixture-based Testing: JSONフィクスチャを用いたAPIレスポンスのモック・再現によるカナリアテスト
+- OpenAPI Code Generation: spec3.cli.jsonのOpenAPI定義からGoのリソースコマンドを自動生成。gen/gen_resources_cmds.goがテンプレートベースでresources_gen.goを生成する
+- gRPC Plugin System: プラグインを独立したgRPCサーバープロセスとして実行し、CLIがクライアントとして通信。バージョン管理・自動更新機能付き
+- WebSocket Webhook Proxy: StripeサーバーとのWebSocket接続を維持し、受信したWebhookイベントをローカルHTTPエンドポイントに転送
+- Fixture-based Testing: JSONフィクスチャファイルを使いStripe APIリソースの作成・操作シナリオを定義し再現可能なテスト環境を構築
+- Profile-based Config: 複数のStripeアカウント/環境をプロファイルとして管理し、APIキーや設定を切り替え可能
 
 ## 適用シーン
-Stripe決済を統合するWebアプリ・バックエンドの開発者がローカル環境でWebhookをテストする場合、Stripe APIを素早く探索・呼び出したい場合、CI/CDパイプラインでのStripe連携テスト自動化、IDEプラグイン開発でStripe機能を組み込む場合に有用。
+Stripe決済を統合するWebアプリ・バックエンドの開発者が、ローカル環境でWebhookをテストしたり、APIリクエストをCLIから直接実行したり、Stripeイベントをシミュレートしたりする際に使用。CI/CDパイプラインでのStripeインテグレーションテストにも活用できる。
 
 ## 注意点・制約
-Stripe固有のツールであり汎用性はない。OpenAPI仕様の自動生成部分はStripe内部プロセスに依存するため外部からの更新は困難。プラグインシステムはgRPCバージョン互換性に注意が必要。Windowsサポートは一部機能（ANSI、uname等）で別実装が必要。
+Stripe固有のツールであり他の決済サービスには使用不可。WebhookリスニングはStripeサーバーへのWebSocket接続を必要とするためオフライン環境では動作しない。プラグインはgRPCプロトコルの特定バージョンに依存するため互換性管理が必要。OpenAPI仕様からの自動生成コードは手動編集不可。
 
 
 ## 関連ナレッジ
