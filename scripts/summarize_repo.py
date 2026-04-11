@@ -50,15 +50,31 @@ framework, pattern, tool, protocol, infra, crypto, website, webapp, agent, workf
   "implementation_patterns": [{"name": "...", "description": "..."}],
   "use_cases": "どういうプロジェクトに役立つか",
   "caveats": "制限・注意点",
-  "code_examples": [{"title": "例のタイトル", "code": "コードスニペット", "explanation": "説明"}]
+  "code_examples": [{"title": "例のタイトル", "code": "コードスニペット", "explanation": "説明"}],
+  "error_handling": [{"scenario": "エラーシナリオ", "code": "対処コード", "explanation": "説明"}],
+  "best_practices": ["ベストプラクティス1", "ベストプラクティス2"],
+  "gotchas": ["注意点・ハマりポイント1", "注意点2"]
 }
 
 ## code_examples について
-リポジトリの主要な使い方を示すコードサンプルを最低3件生成してください。
+リポジトリの主要な使い方を示すコードサンプルを最低5件生成してください。
 - 基本的な初期化・セットアップ
-- メインのユースケース
+- メインのユースケース（2-3件）
+- 高度なユースケース
 - エラーハンドリング例
-コードはそのまま実行可能な形式で出力してください。
+コードはそのまま実行可能な形式で、引数・戻り値・型を明記してください。
+
+## error_handling について
+よくあるエラーシナリオと対処法を最低2件生成してください。
+- 例外クラスの階層（あれば）
+- リトライ戦略
+- フォールバック処理
+
+## best_practices について
+本番環境で使う際のベストプラクティスを5件以上挙げてください。
+
+## gotchas について
+初心者がハマりやすいポイントを3件以上挙げてください。
 
 ---
 リポジトリ情報:
@@ -121,6 +137,15 @@ def build_lightrag_text(repo_url: str, meta: dict) -> str:
 
 ## コード例
 {chr(10).join(f"### {ex.get('title','例')}{chr(10)}{chr(10)}    {ex.get('code','').replace(chr(10), chr(10) + '    ')}{chr(10)}{chr(10)}{ex.get('explanation','')}" for ex in meta.get('code_examples', []))}
+
+## エラーハンドリング
+{chr(10).join(f"### {ex.get('scenario','')}{chr(10)}{chr(10)}    {ex.get('code','').replace(chr(10), chr(10) + '    ')}{chr(10)}{chr(10)}{ex.get('explanation','')}" for ex in meta.get('error_handling', []))}
+
+## ベストプラクティス
+{chr(10).join(f"- {bp}" for bp in meta.get('best_practices', []))}
+
+## 注意点・ハマりポイント
+{chr(10).join(f"- {g}" for g in meta.get('gotchas', []))}
 """
 
 def main():
