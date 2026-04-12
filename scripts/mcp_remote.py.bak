@@ -38,19 +38,6 @@ TOOLS = [
         "name": "list_projects",
         "description": "List available project filters for knowledge search.",
         "inputSchema": {"type": "object", "properties": {}}
-    },
-    {
-        "name": "upload_document",
-        "description": "Upload a document to the LightRAG knowledge base. Accepts file_name and text content. Use to add knowledge directly without file transfer.",
-        "inputSchema": {
-            "type": "object",
-            "properties": {
-                "file_name": {"type": "string", "description": "File name e.g. skill-docx-l3.txt"},
-                "content": {"type": "string", "description": "Full document text"},
-                "overwrite": {"type": "boolean", "default": False, "description": "Delete existing doc with same name before upload"}
-            },
-            "required": ["file_name", "content"]
-        }
     }
 ]
 
@@ -130,48 +117,7 @@ def do_list_projects(args):
     return "\n".join(lines) if lines else "No project profiles configured."
 
 
-
-def do_upload_document(args):
-    file_name = args.get("file_name", "")
-    content = args.get("content", "")
-    overwrite = args.get("overwrite", False)
-    if not file_name or not content:
-        return "Error: file_name and content are required"
-    token = get_token()
-    # overwrite: delete existing
-    if overwrite:
-        try:
-            result = api_request("/documents")
-            items = result.get("statuses", {}).get("processed", [])
-            for doc in items:
-                if doc.get("file_path", "") == file_name:
-                    req = urllib.request.Request(
-                        f"{LIGHTRAG_URL}/documents/{doc['id']}",
-                        headers={"Authorization": f"Bearer {token}"},
-                        method="DELETE"
-                    )
-                    urllib.request.urlopen(req)
-                    import time; time.sleep(3)
-                    token = get_token()
-                    break
-        except Exception as e:
-            return f"Error deleting old doc: {e}"
-    # multipart upload
-    boundary = "----MCP_UPLOAD_BOUNDARY_2026"
-    body = f"--{boundary}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{file_name}\"\r\nContent-Type: text/plain\r\n\r\n{content}\r\n--{boundary}--\r\n".encode("utf-8")
-    req = urllib.request.Request(
-        f"{LIGHTRAG_URL}/documents/upload",
-        data=body,
-        headers={"Authorization": f"Bearer {token}", "Content-Type": f"multipart/form-data; boundary={boundary}"},
-        method="POST"
-    )
-    with urllib.request.urlopen(req) as resp:
-        result = json.load(resp)
-    status = result.get("status", "unknown")
-    msg = result.get("message", "")
-    return f"Status: {status} | {msg} | Size: {len(content)} bytes"
-
-HANDLERS = {"search_knowledge": do_search, "list_knowledge": do_list_knowledge, "list_projects": do_list_projects, "upload_document": do_upload_document}
+HANDLERS = {"search_knowledge": do_search, "list_knowledge": do_list_knowledge, "list_projects": do_list_projects}
 
 
 def rpc_response(id, result):
