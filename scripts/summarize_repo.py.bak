@@ -84,41 +84,21 @@ def call_llm(api_key: str, prompt: str, model: str = "anthropic/claude-sonnet-4.
     r = requests.post(
         OPENROUTER_API,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        json={"model": model, "max_tokens": 8192, "messages": [{"role": "user", "content": prompt}]},
+        json={"model": model, "max_tokens": 4096, "messages": [{"role": "user", "content": prompt}]},
         timeout=120,
     )
     r.raise_for_status()
     return r.json()["choices"][0]["message"]["content"]
 
 def extract_json(text: str) -> dict:
-    """JSONを抽出。複数パターンで試行。失敗時はNoneを返す"""
-    # パターン1: ```json ... ```
+    """JSONを抽出。失敗時はNoneを返す"""
     try:
         m = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
         if m:
             return json.loads(m.group(1))
+        return json.loads(text)
     except (json.JSONDecodeError, AttributeError):
-        pass
-    # パターン2: <json> ... </json>
-    try:
-        m = re.search(r"<json>\s*([\s\S]*?)</json>", text)
-        if m:
-            return json.loads(m.group(1))
-    except (json.JSONDecodeError, AttributeError):
-        pass
-    # パターン3: そのままパース
-    try:
-        return json.loads(text.strip())
-    except (json.JSONDecodeError, ValueError):
-        pass
-    # パターン4: 最初の { から最後の } まで
-    try:
-        start = text.index("{")
-        end = text.rindex("}") + 1
-        return json.loads(text[start:end])
-    except (ValueError, json.JSONDecodeError):
-        pass
-    return None
+        return None
 
 def build_lightrag_text(repo_url: str, meta: dict) -> str:
     """DATA-SCHEMAテンプレートに沿ったLightRAG投入テキスト"""

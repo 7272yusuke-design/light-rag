@@ -1,6 +1,6 @@
-# ナレッジインデックス（LightRAG 蓄積済み 全42件）
+# ナレッジインデックス（LightRAG 蓄積済み 全48件）
 
-> 自動生成ファイル。`python3 scripts/update_knowledge_index.py` で更新。
+> 最終更新: 2026-04-12
 
 ## 実装レベル定義
 
@@ -13,79 +13,101 @@
 
 ---
 
-## フレームワーク・ライブラリ (9件)
+## フレームワーク・ライブラリ (23件)
 
-| 名前 | ソース | レベル | タグ | 概要 |
-|------|--------|--------|------|------|
-| ccxt | ccxt/ccxt | 0 | python, typescript, cryptocurrency, exchange-api, websocket, trading, async, rest-api |  |
-| CLI-Anything | HKUDS/CLI-Anything | 0 | python, typescript, cli, ai-agent, gui-automation, repl, click, plugin-architecture | CLI-Anything is a fram... |
-| comfyui-api-wrapper | ai-dock/comfyui-api-wrapper | 0 | python, fastapi, comfyui, stable-diffusion, image-generation, websocket, async-queue, s3-upload |  |
-| FFmpeg | FFmpeg/FFmpeg | 0 | C, ffmpeg, multimedia, video-codec, audio-codec, transcoding, libavcodec, SIMD | FFmpegはオープンソースのマルチメディア処理フレームワークで、動画... |
-| LightRAG | HKUDS/LightRAG | 0 | python, typescript, RAG, knowledge-graph, LLM, FastAPI, React, graph-database, vector-database | LightRAG is a prod... |
-| motion | framer/motion | 0 | TypeScript, React, animation, WAAPI, layout-animation, motion, framer-motion, spring-physics | Motion（旧Framer Motion）は... |
-| n8n | n8n-io/n8n | 0 | typescript, n8n, workflow-automation, low-code, ai-agent, langchain, webhook, api-integration | n8nはノードベ... |
-| NeMo-Agent-Toolkit | NVIDIA/NeMo-Agent-Toolkit | 0 | python, LLM, multi-agent, LangChain, MCP, RAG, observability, plugin-architecture | NVIDIA ... |
-| servers | modelcontextprotocol/servers | 0 | TypeScript, Python, MCP, model-context-protocol, LLM-integration, SSE, stdio-transport, multi-transport |  |
+| 名前 | ソース | レベル | サイズ | タグ |
+|------|--------|--------|--------|------|
+| CLI-Anything | HKUDS/CLI-Anything | 2 | 13,610 | Python, TypeScript, CLI, AI-agent, GUI-automation, harness,  |
+| ComfyUI-to-Python-Extension | pydn/ComfyUI-to-Python-Extension | 2 | 12,184 | python, comfyui, code-generation, stable-diffusion, ast-gene |
+| FFmpeg | FFmpeg/FFmpeg | 2 | 14,816 | C, FFmpeg, libavcodec, libavformat, libavfilter, multimedia, |
+| LightRAG | HKUDS/LightRAG | 3 | 17,614 | python, RAG, knowledge-graph, LLM, vector-database, graph-RA |
+| NeMo-Agent-Toolkit | NVIDIA/NeMo-Agent-Toolkit | 2 | 14,947 | python, LangChain, LangGraph, multi-agent, RAG, LLM, NeMo, o |
+| OpenSpace | HKUDS/OpenSpace | 3 | 21,085 | python, multi-agent, MCP, LLM, tool-use, grounding, skill-en |
+| agency-agents | msitarzewski/agency-agents | 2 | 11,260 | markdown, prompt-engineering, multi-agent, LLM, system-promp |
+| ai | vercel/ai | 3 | 15,122 | typescript, llm, streaming, multi-provider, tool-calling, ne |
+| autoresearch | karpathy/autoresearch | 2 | 10,488 | python, pytorch, LLM-training, autonomous-agent, GPT, Muon-o |
+| browser-use | browser-use/browser-use | 3 | 16,714 | python, browser-automation, LLM, CDP, playwright, web-scrapi |
+| ccxt | ccxt/ccxt | 2 | 13,993 | typescript, python, go, csharp, php, cryptocurrency, exchang |
+| crewai | crewai-inc/crewai | 3 | 19,208 | python, multi-agent, LLM, RAG, MCP, orchestration, crewai |
+| firecrawl | firecrawl/firecrawl | 2 | 12,506 | TypeScript, Python, Rust, web-scraping, LLM-extraction, REST |
+| freqtrade | freqtrade/freqtrade | 3 | 16,685 | python, trading-bot, backtesting, ccxt, hyperopt, freqai, ma |
+| langgraph | langchain-ai/langgraph | 3 | 15,492 | python, langgraph, langchain, graph-execution, state-machine |
+| mastra | mastra-ai/mastra | 2 | 13,567 | typescript, llm, multi-agent, rag, mcp, docusaurus, ai-sdk,  |
+| motion | framer/motion | 2 | 13,247 | typescript, react, animation, motion, web-animation-api, lay |
+| n8n | n8n-io/n8n | 3 | 15,870 | typescript, n8n, LangChain, LangGraph, AI-agent, automation, |
+| ruflo | ruvnet/ruflo | 2 | 14,890 | TypeScript, JavaScript, Claude-AI, multi-agent, swarm, MCP,  |
+| servers | modelcontextprotocol/servers | 2 | 13,955 | TypeScript, Python, MCP, LLM, server-sdk, stdio, SSE, HTTP-s |
+| supabase | supabase/supabase | 3 | 15,743 | TypeScript, Next.js, MDX, documentation, Supabase, GraphQL,  |
+| ui | shadcn-ui/ui | 2 | 12,460 | typescript, shadcn-ui, cli, component-registry, tailwindcss, |
+| vercel | vercel/vercel | 2 | 11,054 | TypeScript, Rust, CLI, deployment, Vercel, serverless, monor |
 
-## エージェント・自動化 (9件)
+## エージェント・自動化 (12件)
 
-| 名前 | ソース | レベル | タグ | 概要 |
-|------|--------|--------|------|------|
-| agency-agents | msitarzewski/agency-agents | 0 | markdown, prompt-engineering, multi-agent, LLM, role-playing, system-prompt, AI-personas, agent-design |  |
-| autoresearch | karpathy/autoresearch | 0 | python, pytorch, llm-pretraining, autonomous-research, hyperparameter-tuning, self-evolving, experiment-managemen... |  |
-| career-ops | santifer/career-ops | 0 | AI-agent, job-search, Claude, Go, Node.js, bubbletea, ATS-optimization, Puppeteer | career-opsはAIエージェントを活用した求人... |
-| claude-peers-mcp | louislva/claude-peers-mcp | 0 | typescript, bun, MCP, sqlite, peer-discovery, claude-code, inter-agent-messaging, daemon | claude-... |
-| freqtrade | freqtrade/freqtrade | 0 | python, algorithmic-trading, backtesting, hyperopt, freqai, ccxt, machine-learning, cryptocurrency |  |
-| obsidian-skills | kepano/obsidian-skills | 0 | obsidian, markdown, PKM, claude-code, agent-skills, YAML, json-canvas, knowledge-management | Obsidian... |
-| openclaw | openclaw/openclaw | 0 | swift, kotlin, typescript, ai-assistant, multi-platform, voice-interface, plugin-system, llm-gateway |  |
-| OpenSpace | HKUDS/OpenSpace | 0 | python, ai-agent, self-evolving, skill-sharing, mcp, token-optimization, claude-code, quality-monitoring |  |
-| ruflo | ruvnet/ruflo | 0 | TypeScript, JavaScript, Svelte, multi-agent, swarm, MCP, SPARC, hive-mind | Claude-Flowは、Claude AIを活用したマルチエージェントオーケスト... |
+| 名前 | ソース | レベル | サイズ | タグ |
+|------|--------|--------|--------|------|
+| anthropic-cookbook | anthropics/anthropic-cookbook | 3 | 19,667 | python, jupyter, claude-api, LLM, RAG, multi-agent, prompt-e |
+| awesome-design-md | VoltAgent/awesome-design-md | 2 | 13,473 | markdown, design-system, AI-agent, UI-tokens, LLM-prompt, de |
+| career-ops | santifer/career-ops | 3 | 18,142 | Go, JavaScript, job-search, AI-agent, Claude, TUI, automatio |
+| claude-peers-mcp | louislva/claude-peers-mcp | 2 | 13,721 | TypeScript, Bun, MCP, Claude, peer-discovery, SQLite, inter- |
+| cli | cli/cli | 2 | 9,094 | golang, github-cli, gh, git, REST-API, GraphQL, attestation, |
+| codex-plugin-cc | openai/codex-plugin-cc | 2 | 11,033 | claude-code, openai-codex, javascript, plugin, code-review,  |
+| comfy_api_simplified | deimos-deimos/comfy_api_simplified | 2 | 12,067 | python, comfyui, websocket, image-generation, mcp-server, st |
+| graphify | safishamsi/graphify | 2 | 12,695 | python, knowledge-graph, code-analysis, LLM-context, claude- |
+| n8n-as-code | EtienneLescot/n8n-as-code | 2 | 9,779 | TypeScript, n8n, CLI, VSCode-extension, MCP, GitOps, workflo |
+| n8n-mcp | czlonkowski/n8n-mcp | 2 | 12,180 | typescript, mcp, n8n, sqlite, docker, workflow-automation, a |
+| notebooklm-py | teng-lin/notebooklm-py | 2 | 14,361 | python, notebooklm, google-ai, cli-tool, asyncio, playwright |
+| obsidian-skills | kepano/obsidian-skills | 2 | 8,948 | obsidian, markdown, pkm, agent-skills, yaml, json-canvas, cl |
 
-## ツール・ユーティリティ (19件)
+## ツール・ユーティリティ (1件)
 
-| 名前 | ソース | レベル | タグ | 概要 |
-|------|--------|--------|------|------|
-| cli | googleworkspace/cli | 0 | rust, google-workspace, cli, google-api, discovery-api, oauth2, automation, ai-agent | GWS is a Rust-based CLI tool t... |
-| comfy_api_simplified | deimos-deimos/comfy_api_simplified | 0 | python, comfyui, mcp, websocket, image-generation, stable-diffusion, api-wrapper | Co... |
-| ComfyUI-to-Python-Extension | pydn/ComfyUI-to-Python-Extension | 0 | python, comfyui, code-generation, stable-diffusion, ast-generation, cli, custom-nodes, workflow-expor... |  |
-| graphify | safishamsi/graphify | 0 | python, knowledge-graph, AST-extraction, tree-sitter, networkx, LLM-integration, community-detection, code-analysis |  |
-| llmfit | AlexsJones/llmfit | 0 | rust, react, tauri, llm, hardware-detection, gguf, model-selection, tui | LLMFit はローカルマシンのハードウェアスペック（RAM/VRAM）を自動検出し、実... |
-| n8n-as-code | EtienneLescot/n8n-as-code | 0 | typescript, n8n, gitops, monorepo, vscode-extension, cli, workflow-automation, mcp | n8n-as-code (n8nac... |
-| n8n-mcp | czlonkowski/n8n-mcp | 0 | TypeScript, MCP, n8n, SQLite, workflow-automation, AI-integration, node-validation, Docker | n8n-MCP is a Model C... |
-| notebooklm-py | teng-lin/notebooklm-py | 0 | python, notebooklm, cli, google-api, async, playwright, rpc, automation | notebooklm-py is a Python CLI ... |
-| SKILL: docx-creation | Claude Code 公式 SKILL | 0 | docx, word, document-generation, javascript, xml | Word文書(.docx)の作成・読み取り・編集・操作スキル。docx-jsによる新規作成、XML直接編集、pandoc |
-| SKILL: file-reading | Claude Code 公式 SKILL | 0 | file-handling, python, cli, data-extraction | ファイル拡張子に基づき最適な読み取り方法をディスパッチするルータースキル。PDF,DOCX,XLSX,CSV,JSON, |
-| SKILL: frontend-design | Claude Code 公式 SKILL | 0 | frontend, react, css, ui-design, animation | 独自性ある本番品質フロントエンドUI作成スキル。ジェネリックAIデザイン回避、大胆な美的方向性重視... |
-| SKILL: pdf-processing | Claude Code 公式 SKILL | 0 | pdf, python, document-processing, text-extraction | PDFの作成・結合・分割・回転・ウォーターマーク・フォーム記入・暗号化・OCR等の処理スキル。 |
-| SKILL: pdf-reading | Claude Code 公式 SKILL | 0 | pdf, python, ocr, text-extraction, data-extraction | PDF読み取り・検査・コンテンツ抽出特化スキル。コンテンツインベントリ、ラスタライズ、埋め込み抽出、タイプ別読み取り戦略 |
-| SKILL: pptx-creation | Claude Code 公式 SKILL | 0 | pptx, powerpoint, presentation, javascript, design | PowerPointの作成・読み取り・編集スキル。テンプレート編集とpptxgenjs新規作成の2方式。デザインガイドラ |
-| SKILL: product-self-knowledge | Claude Code 公式 SKILL | 0 | anthropic, claude, api, documentation, llm | Anthropic製品(Claude Code, API, claude.ai)の正確な情報提供スキル。製品別ド... |
-| SKILL: skill-creator | Claude Code 公式 SKILL (examples) | 0 | skill-creation, evaluation, claude-code, meta-skill, testing | 新しいSKILLの作成・改善・評価を行う... |
-| SKILL: xlsx-processing | Claude Code 公式 SKILL | 0 | excel, spreadsheet, python, financial-modeling, data-analysis | Excelスプレッドシートの作成・編集・分析スキル。pandas/openpyxl操作、財務モデル色... |
-| stripe-cli | stripe/stripe-cli | 0 | golang, stripe-api, webhook, cli, grpc, openapi, plugin-system, websocket | Stripe CLIは、Stripe APIとのローカル開発・テストを支... |
-| vercel | vercel/vercel | 0 | TypeScript, Rust, Python, CLI, Vercel, deployment, monorepo, serverless | Vercel CLIおよびVercelプラットフォームのSDK・ビルドユーティリティを含む... |
+| 名前 | ソース | レベル | サイズ | タグ |
+|------|--------|--------|--------|------|
+| stripe-cli | stripe/stripe-cli | 2 | 9,331 | golang, stripe-api, webhook, cli, grpc, openapi, devtools, p |
 
-## Webサイト・UI (1件)
+## Webサイト・UI (2件)
 
-| 名前 | ソース | レベル | タグ | 概要 |
-|------|--------|--------|------|------|
-| ui | shadcn-ui/ui | 0 | TypeScript, React, Next.js, Tailwind-CSS, shadcn-ui, component-library, design-system, RTL-support | shadcn/uiの公式ドキュメントサイト... |
+| 名前 | ソース | レベル | サイズ | タグ |
+|------|--------|--------|--------|------|
+| comfyui-api-wrapper | ai-dock/comfyui-api-wrapper | 2 | 14,246 | python, ComfyUI, asyncio, aiohttp, stable-diffusion, image-g |
+| llmfit | AlexsJones/llmfit | 2 | 8,167 | rust, llm, hardware-detection, tui, tauri, react, gguf, mode |
 
 ## インフラ・DevOps (1件)
 
-| 名前 | ソース | レベル | タグ | 概要 |
-|------|--------|--------|------|------|
-| awesome-compose | docker/awesome-compose | 0 | docker-compose, multi-language, containerization, nginx, postgresql, react, golang, python | Docker Comp... |
+| 名前 | ソース | レベル | サイズ | タグ |
+|------|--------|--------|--------|------|
+| awesome-compose | docker/awesome-compose | 2 | 9,675 | docker-compose, multi-language, containerization, nginx, pos |
 
-## パターン集 (1件)
+## スキル (9件)
 
-| 名前 | ソース | レベル | タグ | 概要 |
-|------|--------|--------|------|------|
-| awesome-design-md | VoltAgent/awesome-design-md | 0 | markdown, design-system, design-tokens, UI-components, AI-agent, LLM-context, style-guide | 著名... |
+| 名前 | ソース | レベル | サイズ | タグ |
+|------|--------|--------|--------|------|
+| SKILL: docx-creation | Claude Code 公式 SKILL | 0 | 285 | docx, word, document-generation, javascript, xml |
+| SKILL: file-reading | Claude Code 公式 SKILL | 0 | 260 | file-handling, python, cli, data-extraction, routing |
+| SKILL: frontend-design | Claude Code 公式 SKILL | 0 | 261 | frontend, react, css, ui-design, animation, tailwind |
+| SKILL: pdf-processing | Claude Code 公式 SKILL | 0 | 290 | pdf, python, document-processing, text-extraction, form-fill |
+| SKILL: pdf-reading | Claude Code 公式 SKILL | 0 | 258 | pdf, python, ocr, text-extraction, data-extraction |
+| SKILL: pptx-creation | Claude Code 公式 SKILL | 0 | 259 | pptx, powerpoint, presentation, javascript, pptxgenjs |
+| SKILL: product-self-knowledge | Claude Code 公式 SKILL | 0 | 266 | anthropic, claude, api, documentation, product-info |
+| SKILL: skill-creator | Claude Code 公式 SKILL | 0 | 331 | skill-creation, evaluation, testing, meta-skill, claude-code |
+| SKILL: xlsx-processing | Claude Code 公式 SKILL | 0 | 250 | excel, spreadsheet, python, openpyxl, pandas |
 
-## その他 (2件)
+---
 
-| 名前 | ソース | レベル | タグ | 概要 |
-|------|--------|--------|------|------|
-| Building LLM-Powered Applications with Claude |  | 0 | — |  |
-| アーキテクチャ設計: LightRAG ナレッジパイプライン | GitHub OSS / Claude SKILL / 技術ドキュメント | 0 | — |  |
+## 逆引き表（やりたいこと → ナレッジ）
+
+| やりたいこと | 関連ナレッジ |
+|---|---|
+| 仮想通貨自動売買 | ccxt, freqtrade |
+| AIエージェント構築 | crewai, langgraph, agency-agents, NeMo-Agent-Toolkit |
+| Webスクレイピング | firecrawl, browser-use |
+| ワークフロー自動化 | n8n, n8n-as-code, n8n-mcp, mastra |
+| UIコンポーネント | shadcn-ui, framer-motion, awesome-design-md |
+| MCP連携 | servers, claude-peers-mcp, n8n-mcp |
+| ドキュメント生成 | SKILL:docx, SKILL:pdf, SKILL:pptx, SKILL:xlsx |
+| RAGパイプライン | LightRAG, firecrawl |
+| 画像生成ワークフロー | comfyui-api-wrapper, comfy_api_simplified, ComfyUI-to-Python-Extension |
+| コード分析・構造化 | graphify, repomix |
+| デプロイ・インフラ | vercel, awesome-compose, supabase |
+| スキル作成・評価 | SKILL:skill-creator, OpenSpace, obsidian-skills |
+| 自律研究・実験管理 | autoresearch |
+| CLI開発 | cli(GitHub CLI), stripe-cli, llmfit |
