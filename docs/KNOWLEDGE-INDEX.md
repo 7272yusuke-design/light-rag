@@ -1,120 +1,148 @@
-# ナレッジインデックス（LightRAG 蓄積済み 全51件）
+# KNOWLEDGE-INDEX.md — LightRAGナレッジベース インデックス
 
-> 最終更新: 2026-04-12
-> DB内60件中、SKILL旧版9件は重複のため除外。実質51件。
+> 最終更新: 2026-04-15（移行完了後）
+> 総数: 65件（移行前74件 → 8件削除 + 10件再構成）
+> 最適レンジ: 80-120件
 
-## 実装レベル定義
+## レイヤー構成サマリー
 
-| レベル | 内容 |
-|--------|------|
-| 0 | 概要・設計思想のみ |
-| 1 | コードサンプルあり（最低3件） |
-| 2 | 引数・戻り値・例外が明記 |
-| 3 | エラーハンドリング・テスト例・ベストプラクティスあり |
-
----
-
-## フレームワーク・ライブラリ (24件)
-
-| 名前 | ソース | レベル | サイズ | タグ |
-|------|--------|--------|--------|------|
-| CLI-Anything | HKUDS/CLI-Anything | 2 | 13,610 | Python, TypeScript, CLI, AI-agent, GUI-automation, harness,  |
-| ComfyUI-to-Python-Extension | pydn/ComfyUI-to-Python-Extension | 2 | 12,184 | python, comfyui, code-generation, stable-diffusion, ast-gene |
-| FFmpeg | FFmpeg/FFmpeg | 2 | 14,816 | C, FFmpeg, libavcodec, libavformat, libavfilter, multimedia, |
-| LightRAG | HKUDS/LightRAG | 3 | 17,614 | python, RAG, knowledge-graph, LLM, vector-database, graph-RA |
-| NeMo-Agent-Toolkit | NVIDIA/NeMo-Agent-Toolkit | 2 | 14,947 | python, LangChain, LangGraph, multi-agent, RAG, LLM, NeMo, o |
-| OpenSpace | HKUDS/OpenSpace | 3 | 21,085 | python, multi-agent, MCP, LLM, tool-use, grounding, skill-en |
-| agency-agents | msitarzewski/agency-agents | 2 | 11,260 | markdown, prompt-engineering, multi-agent, LLM, system-promp |
-| ai | vercel/ai | 3 | 15,122 | typescript, llm, streaming, multi-provider, tool-calling, ne |
-| autoresearch | karpathy/autoresearch | 2 | 10,488 | python, pytorch, LLM-training, autonomous-agent, GPT, Muon-o |
-| browser-use | browser-use/browser-use | 3 | 16,714 | python, browser-automation, LLM, CDP, playwright, web-scrapi |
-| ccxt | ccxt/ccxt | 2 | 13,993 | typescript, python, go, csharp, php, cryptocurrency, exchang |
-| crewai | crewai-inc/crewai | 3 | 19,208 | python, multi-agent, LLM, RAG, MCP, orchestration, crewai |
-| firecrawl | firecrawl/firecrawl | 2 | 12,506 | TypeScript, Python, Rust, web-scraping, LLM-extraction, REST |
-| freqtrade | freqtrade/freqtrade | 3 | 16,685 | python, trading-bot, backtesting, ccxt, hyperopt, freqai, ma |
-| langgraph | langchain-ai/langgraph | 3 | 15,492 | python, langgraph, langchain, graph-execution, state-machine |
-| mastra | mastra-ai/mastra | 2 | 13,567 | typescript, llm, multi-agent, rag, mcp, docusaurus, ai-sdk,  |
-| motion | framer/motion | 2 | 13,247 | typescript, react, animation, motion, web-animation-api, lay |
-| n8n | n8n-io/n8n | 3 | 15,870 | typescript, n8n, LangChain, LangGraph, AI-agent, automation, |
-| openclaw | openclaw/openclaw | 3 | 16,749 | TypeScript, Swift, Kotlin, AI-assistant, multi-platform, plu |
-| ruflo | ruvnet/ruflo | 2 | 14,890 | TypeScript, JavaScript, Claude-AI, multi-agent, swarm, MCP,  |
-| servers | modelcontextprotocol/servers | 2 | 13,955 | TypeScript, Python, MCP, LLM, server-sdk, stdio, SSE, HTTP-s |
-| supabase | supabase/supabase | 3 | 15,743 | TypeScript, Next.js, MDX, documentation, Supabase, GraphQL,  |
-| ui | shadcn-ui/ui | 2 | 12,460 | typescript, shadcn-ui, cli, component-registry, tailwindcss, |
-| vercel | vercel/vercel | 2 | 11,054 | TypeScript, Rust, CLI, deployment, Vercel, serverless, monor |
-
-## エージェント・自動化 (14件)
-
-| 名前 | ソース | レベル | サイズ | タグ |
-|------|--------|--------|--------|------|
-| Building LLM-Powered Applications with Claude | anthropics/skills | 3 | 29,136 | claude-api, anthropic-sdk, prompt-caching, managed-agents, p |
-| anthropic-cookbook | anthropics/anthropic-cookbook | 3 | 19,667 | python, jupyter, claude-api, LLM, RAG, multi-agent, prompt-e |
-| awesome-design-md | VoltAgent/awesome-design-md | 2 | 13,473 | markdown, design-system, AI-agent, UI-tokens, LLM-prompt, de |
-| career-ops | santifer/career-ops | 3 | 18,142 | Go, JavaScript, job-search, AI-agent, Claude, TUI, automatio |
-| claude-peers-mcp | louislva/claude-peers-mcp | 2 | 13,721 | TypeScript, Bun, MCP, Claude, peer-discovery, SQLite, inter- |
-| cli | cli/cli | 2 | 9,094 | golang, github-cli, gh, git, REST-API, GraphQL, attestation, |
-| codex-plugin-cc | openai/codex-plugin-cc | 2 | 11,033 | claude-code, openai-codex, javascript, plugin, code-review,  |
-| comfy_api_simplified | deimos-deimos/comfy_api_simplified | 2 | 12,067 | python, comfyui, websocket, image-generation, mcp-server, st |
-| graphify | safishamsi/graphify | 2 | 12,695 | python, knowledge-graph, code-analysis, LLM-context, claude- |
-| n8n-as-code | EtienneLescot/n8n-as-code | 2 | 9,779 | TypeScript, n8n, CLI, VSCode-extension, MCP, GitOps, workflo |
-| n8n-mcp | czlonkowski/n8n-mcp | 2 | 12,180 | typescript, mcp, n8n, sqlite, docker, workflow-automation, a |
-| notebooklm-py | teng-lin/notebooklm-py | 2 | 14,361 | python, notebooklm, google-ai, cli-tool, asyncio, playwright |
-| obsidian-skills | kepano/obsidian-skills | 2 | 8,948 | obsidian, markdown, pkm, agent-skills, yaml, json-canvas, cl |
-| playwright-cli | microsoft/playwright-cli | 2 | 12,087 | typescript, nodejs, playwright, browser-automation, cli, tes |
-
-## ツール・ユーティリティ (1件)
-
-| 名前 | ソース | レベル | サイズ | タグ |
-|------|--------|--------|--------|------|
-| stripe-cli | stripe/stripe-cli | 2 | 9,331 | golang, stripe-api, webhook, cli, grpc, openapi, devtools, p |
-
-## Webサイト・UI (2件)
-
-| 名前 | ソース | レベル | サイズ | タグ |
-|------|--------|--------|--------|------|
-| comfyui-api-wrapper | ai-dock/comfyui-api-wrapper | 2 | 14,246 | python, ComfyUI, asyncio, aiohttp, stable-diffusion, image-g |
-| llmfit | AlexsJones/llmfit | 2 | 8,167 | rust, llm, hardware-detection, tui, tauri, react, gguf, mode |
-
-## インフラ・DevOps (1件)
-
-| 名前 | ソース | レベル | サイズ | タグ |
-|------|--------|--------|--------|------|
-| awesome-compose | docker/awesome-compose | 2 | 9,675 | docker-compose, multi-language, containerization, nginx, pos |
-
-## スキル (9件)
-
-| 名前 | ソース | レベル | サイズ | タグ |
-|------|--------|--------|--------|------|
-| SKILL: docx-creation | Claude Code 公式 SKILL | 1 | 1,213 | docx, word, document-generation, javascript, xml, pandoc |
-| SKILL: file-reading | Claude Code 公式 SKILL | 0 | 865 | file-handling, python, routing, pdf, docx, xlsx, csv, json,  |
-| SKILL: frontend-design | Claude Code 公式 SKILL | 0 | 627 | frontend, react, html, css, ui-design, animation, tailwind |
-| SKILL: pdf-processing | Claude Code 公式 SKILL | 0 | 917 | pdf, python, pypdf, reportlab, pikepdf, fillpdfs, ocr |
-| SKILL: pdf-reading | Claude Code 公式 SKILL | 1 | 1,122 | pdf, python, ocr, pdfplumber, pypdf, text-extraction, table- |
-| SKILL: pptx-creation | Claude Code 公式 SKILL | 0 | 827 | pptx, powerpoint, presentation, pptxgenjs, javascript |
-| SKILL: product-self-knowledge | Claude Code 公式 SKILL | 0 | 441 | anthropic, claude, api, claude-code, pricing, models |
-| SKILL: skill-creator | Claude Code 公式 SKILL | 0 | 331 | skill-creation, evaluation, testing, meta-skill, claude-code |
-| SKILL: xlsx-processing | Claude Code 公式 SKILL | 0 | 814 | excel, spreadsheet, python, openpyxl, pandas, chart |
+| レイヤー | 件数 | 割合 | 目標 |
+|---------|------|------|------|
+| L3（実装） | 45件 | 69% | 50-60% |
+| L2（パターン） | 9件 | 14% | 20-25% |
+| L1（コンテキスト） | 7件 | 11% | 15-25% |
+| 旧形式（未分類） | 4件 | 6% | 0% |
 
 ---
 
-## 逆引き表（やりたいこと → ナレッジ）
+## L3: 実装ナレッジ（45件）
 
-| やりたいこと | 関連ナレッジ |
-|---|---|
-| 仮想通貨自動売買 | ccxt, freqtrade |
-| AIエージェント構築 | crewai, langgraph, agency-agents, NeMo-Agent-Toolkit |
-| Webスクレイピング | firecrawl, browser-use |
-| ワークフロー自動化 | n8n, n8n-as-code, n8n-mcp, mastra |
-| UIコンポーネント | shadcn-ui, framer-motion, awesome-design-md |
-| MCP連携 | servers, claude-peers-mcp, n8n-mcp |
-| ドキュメント生成 | SKILL:docx, SKILL:pdf, SKILL:pptx, SKILL:xlsx |
-| RAGパイプライン | LightRAG, firecrawl |
-| 画像生成ワークフロー | comfyui-api-wrapper, comfy_api_simplified, ComfyUI-to-Python-Extension |
-| コード分析・構造化 | graphify |
-| デプロイ・インフラ | vercel, awesome-compose, supabase |
-| スキル作成・評価 | SKILL:skill-creator, OpenSpace, obsidian-skills |
-| 自律研究・実験管理 | autoresearch |
-| CLI開発 | cli(GitHub CLI), stripe-cli, llmfit |
-| ブラウザ自動化 | browser-use, playwright-cli |
-| Claude API活用 | anthropic-cookbook, Building LLM |
-| マルチエージェント協調 | claude-peers-mcp, codex-plugin-cc, ruflo |
+### フレームワーク・ライブラリ（19件）
+| # | ドキュメント | カテゴリ | 主要用途 |
+|---|------------|---------|---------|
+| 1 | Next.js — フルスタックReactフレームワーク | framework | Webアプリ・LP |
+| 2 | Stripe SDK — 決済・サブスクリプション API | framework | 決済 |
+| 3 | Resend + React Email — トランザクショナルメールAPI | tool | メール送信 |
+| 4 | inngest — Durable Workflow Orchestration | framework | ワークフロー |
+| 5 | tweepy — X (Twitter) API Python SDK | framework | SNS連携 |
+| 6 | instagrapi — Instagram Private API Python SDK | framework | SNS連携 |
+| 7 | ccxt — 仮想通貨取引所API | framework | 取引 |
+| 8 | freqtrade — 自動取引・バックテスト | framework | 取引 |
+| 9 | langgraph — グラフベースエージェント | framework | エージェント |
+| 10 | crewai — マルチエージェントオーケストレーション | framework | エージェント |
+| 11 | mastra — TypeScript LLMエージェント | framework | エージェント |
+| 12 | ai (Vercel AI SDK) — マルチプロバイダーLLM | framework | LLM統合 |
+| 13 | motion (framer-motion) — Reactアニメーション | framework | UI |
+| 14 | LightRAG — グラフRAGフレームワーク | framework | ナレッジ管理 |
+| 15 | n8n — ワークフロー自動化 | workflow | 自動化 |
+| 16 | ComfyUI API/サーバー | framework | 画像生成 |
+| 17 | ComfyUI グラフ実行エンジン | framework | 画像生成 |
+| 18 | supabase — BaaS/データベース | website | データベース |
+| 19 | NeMo-Agent-Toolkit — NVIDIA エージェント | framework | エージェント |
+
+### ツール・CLI（12件）
+| # | ドキュメント | カテゴリ | 主要用途 |
+|---|------------|---------|---------|
+| 20 | MCP Servers — MCPサーバー開発リファレンス | framework | MCP開発 |
+| 21 | graphify — ナレッジグラフビルダー | tool | コード解析 |
+| 22 | playwright-cli — ブラウザ自動化CLI | tool | ブラウザ自動化 |
+| 23 | firecrawl — Webスクレイピング | tool | データ収集 |
+| 24 | ui (shadcn-ui) — UIコンポーネント | tool | UI |
+| 25 | awesome-design-md — デザインシステム | website | デザイン |
+| 26 | notebooklm-py — NotebookLM CLI（完全版） | tool | リサーチ |
+| 27 | cli (GitHub CLI) — gh コマンド | tool | GitHub操作 |
+| 28 | stripe-cli — Stripe CLI | tool | 決済開発 |
+| 29 | vercel — Vercel CLI | tool | デプロイ |
+| 30 | n8n-as-code — n8n GitOps | tool | ワークフロー |
+| 31 | servers (MCP公式リファレンス) | tool | MCP参照 |
+
+### Claude Code SKILL（9件）
+| # | ドキュメント | カテゴリ | 主要用途 |
+|---|------------|---------|---------|
+| 32 | skill-docx | skill | Word文書 |
+| 33 | skill-pdf | skill | PDF作成 |
+| 34 | skill-pdf-reading | skill | PDF読取 |
+| 35 | skill-pptx | skill | プレゼン |
+| 36 | skill-xlsx | skill | スプレッドシート |
+| 37 | skill-frontend-design | skill | フロントエンド |
+| 38 | skill-file-reading | skill | ファイル読取 |
+| 39 | skill-product-self-knowledge | skill | Anthropic製品情報 |
+| 40 | skill-creator | skill | スキル作成 |
+
+### スキルパック・コミュニティスキル（5件）
+| # | ドキュメント | カテゴリ | 主要用途 |
+|---|------------|---------|---------|
+| 41 | deep-research — 並列リサーチ | skill | リサーチ |
+| 42 | content-cascade — マルチプラットフォーム生成 | skill | コンテンツ |
+| 43 | yt-pipeline — YouTube自動リサーチ | skill | リサーチ |
+| 44 | hooks (Kallaway) — フック生成 | skill | コピーライティング |
+| 45 | site-teardown — Webサイト逆解析 | skill | 分析 |
+| 46 | dream — メモリ整理 | skill | メンテナンス |
+| 47 | page-cro — CRO最適化 | skill | マーケティング |
+| 48 | ai-seo — AI検索最適化 | skill | SEO |
+
+---
+
+## L2: パターンナレッジ（9件）
+
+| # | ドキュメント | カテゴリ | 主要用途 |
+|---|------------|---------|---------|
+| 1 | スキル設計パターン集 — 検証済みアーキタイプ4種 | pattern | スキル設計 |
+| 2 | SNSプラットフォーム別ライティングルール | pattern | コンテンツ |
+| 3 | スキル最適化手法 — 診断・改善 | pattern | スキル改善 |
+| 4 | mcollina/skills — Node.js ベストプラクティス | pattern | Node.js |
+| 5 | Building LLM-Powered Applications with Claude | pattern | LLMアプリ |
+| 6 | anthropic-cookbook — Claude APIクックブック | pattern | API活用 |
+
+---
+
+## L1: コンテキストナレッジ（7件）
+
+| # | ドキュメント | カテゴリ | 変更 |
+|---|------------|---------|------|
+| 1 | note.com Claude Code記事収益化パイプライン | context | L2→L1 |
+| 2 | きよびん — note.com著者キャラクター設定 | persona | pattern→L1 |
+| 3 | note.com 自動投稿 技術要件まとめ | context | タグ修正 |
+| 4 | Claude Code Masterclass カリキュラム構造分析 | research | pattern→L1 |
+| 5 | git-art — 記事自動生成パターン | context | pattern→L1 |
+| 6 | GitHub Actions × Claude Code 記事生成パターン集 | research | タグ修正 |
+| 7 | OpenClaw — 仮想通貨自動取引エージェントプロジェクト | context | agent→L1 |
+
+---
+
+## 旧形式（未分類・要整理）（6件）
+
+| # | ドキュメント | カテゴリ | 備考 |
+|---|------------|---------|------|
+| 1 | browser-use | agent | L3化検討 |
+| 2 | codex-plugin-cc | agent | 自動開発参考 |
+| 3 | agency-agents | agent | エージェント初期設定参考 |
+| 4 | obsidian-skills | agent | MD連動用 |
+| 5 | awesome-compose | infra | Docker Compose参照 |
+| 6 | cli (Google Workspace) | tool | GWS自動化用 |
+
+---
+
+## 移行ログ（2026-04-15）
+
+### Phase 1: 削除（8件）
+FFmpeg, OpenSpace, claude-peers-mcp, ruflo, n8n-mcp, ComfyUI-to-Python-Extension, comfyui-api-wrapper, comfy_api_simplified
+
+### Phase 2: L1再分類（6件）
+note.com収益化パイプライン(L2→L1), きよびん(pattern→L1), note.com自動投稿技術要件(タグ修正), Masterclass(pattern→L1), git-art(pattern→L1), GitHub Actions記事生成(タグ修正)
+
+### Phase 3: L3昇格 + L1再構成（4件）
+MCP Servers(L1→L3), graphify(L1→L3), playwright-cli(L1→L3), OpenClaw(agent→L1)
+
+### 旧版グラフデータ
+doc_statusから削除した旧ドキュメントのグラフ埋め込みは残存。検索結果に旧版チャンクが表示されることがあるが実害なし。完全クリーンアップにはLightRAGのグラフ再構築が必要（低優先）。
+
+---
+
+## 次のアクション
+
+1. APIキーローテーション（最優先・セキュリティ）
+2. GSD-PLAN / RESUME更新
+3. 旧形式6件のL3化検討（browser-use等）
+4. L2パターン拡充（現9件→目標15-20件）
+5. グラフ再構築（旧版データクリーンアップ、低優先）
