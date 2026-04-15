@@ -2,184 +2,110 @@
 
 ## プロジェクト概要
 
-LightRAGを「外部脳」として活用し、GitHub OSS・Claude Code SKILL・技術ドキュメントから知識を構造化・蓄積し、複数プロジェクトの開発に横断的に活用するための情報収集パイプラインを構築する。
+LightRAGを「外部脳」として活用し、GitHub OSS・Claude Code SKILL・技術ドキュメントから知識を構造化・蓄積し、複数プロジェクトの開発に横断的に活用するナレッジパイプラインを構築する。
 
 ## 前提条件
 
 - LightRAG基盤構築済み（VPS: 76.13.187.66:9621）
-- OpenRouter + Ollama (nomic-embed-text) で動作確認済み
+- MCP: Named Tunnel経由（https://mcp.7272yusuke.cloud/mcp）
+- OpenRouter + Ollama (nomic-embed-text 768dim) で動作中
 - 利用者: 1名（開発者本人）
-- 主要プロジェクト: OpenClaw（仮想通貨自動取引）、Virtual Protocol関連、その他開発案件
-- 開発領域: Website, Webアプリ, エージェント, n8nワークフロー
+- 主要プロジェクト: OpenClaw（仮想通貨自動取引）、note.com収益化パイプライン、その他開発案件
+- 開発領域: Website, Webアプリ, AIエージェント, n8nワークフロー
 
 ---
 
-## 知識の3層構造
+## ナレッジ3レイヤー構成
 
-| 層 | 内容 | 保存先 | 消費者 |
-|---|---|---|---|
-| 外部知識 | GitHub OSS, 公開SKILL, 技術ドキュメント | LightRAG + Obsidian(MD) | 開発者 + エージェント |
-| 開発知見 | トラブルシュート, 設計判断, 成功/失敗パターン | プロジェクト内SKILL | Claude Code（プロジェクト単位） |
-| プロジェクト実態 | 現在のコード, 構成, 規約 | Git | Claude Code |
+詳細は knowledge-layer-rules.md 参照。
 
-**原則:** 外部知識と開発知見は混ぜない。外部知識はプロジェクト横断で再利用可能な汎用性を持ち、開発知見はプロジェクト固有の文脈に依存する。
+| レイヤー | 定義 | 投入基準 |
+|---------|------|---------|
+| L3（実装） | 「作り方を知る」 | ドキュメントなしで実装開始できるレベル |
+| L2（パターン） | 「組み合わせ方を知る」 | 検証済みのパターンのみ |
+| L1（コンテキスト） | 「状況を知る」 | 意思決定に影響する情報のみ |
 
----
+最適比率: L3 50-60% / L2 20-25% / L1 15-25%
 
-## 採用技術スタック
-
-### リポジトリ → テキスト化
-- **Repomix** (npm) — リポジトリをAIフレンドリーなテキストに変換。--remoteでclone不要、--compressでTree-sitter圧縮（トークン約70%削減）。MCP対応、Claude Code SKILL生成機能あり。
-
-### 構造分析（設計レベルの理解）
-- **DeepWiki公式MCP** (https://mcp.deepwiki.com/mcp) — 無料・認証不要。リポジトリの設計構造・コンポーネント関係をWiki形式で提供。Claude CodeからMCP経由で利用。
-- **制約:** MCPプロトコル経由のみ（curlで直接叩けない）。VPSのbashパイプラインでは使えないため、Claude Code経由またはスクリプトでのMCPクライアント実装が必要。
-
-### コード構造解析
-- **graphify** (pip: graphifyy) — Claude Code SKILL。/graphify <dir> でコード・ドキュメント・PDFを知識グラフに変換。Tree-sitter ASTで20言語対応、71.5倍のトークン削減。LightRAGとの補完関係: LightRAGが外部知識、graphifyがプロジェクト内部構造理解。
-
-### LLM要約・分類
-- **OpenRouter** (既存) — Repomix出力をDATA-SCHEMAテンプレートに整形。カテゴリ・タグの自動判定を含む。
-
-### 知識DB
-- **LightRAG** (既存) — エンティティ抽出・知識グラフ・ハイブリッド検索。
-
-### 学習ノート出力
-- **Obsidian** — YAML frontmatter付きMDファイル。VPS上に生成、GitHubで閲覧。
-
-### エージェント連携
-- **mcp_lightrag.py** — Claude CodeからLightRAG APIを検索するMCPサーバー。MCP SDK (FastMCP) ベース、stdioトランスポート。
+投入ルール:
+- リポジトリ/ツールは最初からL3品質で投入（L0-L1からの段階的昇格は禁止）
+- 削除はDELETE API禁止（全消しバグ）。psql直接操作 + pg_dump必須
+- 未検証のアイデアは入れない
 
 ---
 
-## Phase 1: GitHub Ingestion Pipeline ✅
+## Phase 1-6: 基盤構築（2026-04-09〜04-10）✅
 
-### 目標
-GitHub URLを入力すると、リポジトリの技術知見を構造化してLightRAGに投入し、同時に学習用MDをObsidian向けに出力するスクリプトを作る。
-
-### 成果物
-- scripts/ingest_github.sh — メインスクリプト（URL入力 → 全自動）
-- scripts/summarize_repo.py — Repomix出力 → OpenRouter LLM要約 → 構造化テキスト生成
-- scripts/submit_to_lightrag.py — LightRAG APIへの投入ラッパー
-- scripts/export_obsidian.py — Obsidian用MDファイル生成
-- obsidian-export/ — 学習用MD出力先
-
-### タスク
-- [x] VPSにRepomixをインストール
-- [x] summarize_repo.py: Repomix出力をOpenRouterに送り構造化要約を生成
-- [x] submit_to_lightrag.py: LightRAG APIへの投入ラッパー
-- [x] export_obsidian.py: Obsidian用MD生成（frontmatter付き）
-- [x] ingest_github.sh: 上記を統合するメインスクリプト
-- [x] CrewAIリポジトリで動作検証
+| Phase | 内容 | 状態 |
+|---|---|---|
+| 1 | GitHub Ingestion Pipeline | ✅ |
+| 2 | SKILL Ingestion Pipeline | ✅ |
+| 3 | ナレッジ活用SKILL | ✅ |
+| 4 | データ管理・鮮度管理 | ✅ |
+| 5 | Cross-Project & Agent共有 | ✅ |
+| 6 | ナレッジ拡充（42件） | ✅ |
 
 ---
 
-## Phase 2: SKILL Ingestion Pipeline ✅
+## Phase 7: バージョンアップ（2026-04-11）✅
 
-### 目標
-Claude Code SKILLファイル（公式 + 公開コミュニティ製）をLightRAGに投入する。
-
-### 成果物
-- skill_data/ — SKILL構造化テキスト + メタデータJSON
-
-### タスク
-- [x] SKILLファイルの収集と分類（/mnt/skills/public/ + skill-creator）
-- [x] SKILL固有のメタデータ付与（カテゴリ、対象技術、利用シーン）
-- [x] LightRAGへ投入（9スキル）
-- [x] Obsidian用MD出力
-
----
-
-## Phase 3: ナレッジ活用SKILL ✅
-
-### 目標
-Claude.aiプロジェクトからLightRAG APIを検索し、現在のプロジェクトに適応した提案を生成できるようにする。
-
-### 成果物
-- scripts/search_knowledge.sh — LightRAG検索ラッパー
-- プロジェクト手順にナレッジ検索セクション追加
-
-### タスク
-- [x] LightRAG検索APIのラッパー作成
-- [x] プロジェクト手順にナレッジ検索の使い方を追加
-- [x] 検索テスト（SKILL作成方法の検索で有意な結果確認）
-
----
-
-## Phase 4: データ管理・鮮度管理 ✅
-
-### タスク
-- [x] タグ正規化スクリプト（normalize_tags.py — 大文字小文字統一、エイリアス解決）
-- [x] 重複・矛盾検知スクリプト（check_duplicates.py — タグ頻度、カテゴリ分布、ソースURL重複）
-- [x] 鮮度チェックスクリプト（check_freshness.py — 180日超過で警告、--fixでstatus更新）
-- [ ] Obsidian Vault構成の最適化（運用しながら必要に応じて）
-
----
-
-## Phase 5: Cross-Project & Agent共有 ✅
-
-### 目標
-複数プロジェクト・複数エージェント間でナレッジを共有する仕組み。
-
-### タスク
-- [x] Claude Code用MCPサーバー作成（mcp_lightrag.py — search_knowledge + list_knowledge + list_projects）
-- [x] Claude CodeからのLightRAG検索動作確認（MCP経由でナレッジ横断検索成功）
-- [x] プロジェクトタグによるフィルタリング（config/project_profiles.json + クエリ拡張）
-- [x] エージェントからのAPI利用ガイドライン（docs/AGENT-API-GUIDE.md）
-- [ ] 知見フィードバックの半自動化（手動運用で開始、必要に応じて自動化）
-- [x] ingest後のGit自動push（ingest_github.sh末尾に追加）
-
----
-
-## Phase 6: ナレッジ拡充 ✅
-
-### 目標
-42件のナレッジを蓄積し、主要ドメイン（agent, framework, tool, website）をカバーする。
-
-### タスク
-- [x] GitHub OSS 32件投入（agent, framework, tool, website, patternカテゴリ）
-- [x] Claude Code SKILL 9件投入
-- [x] ドキュメント1件投入
-- [x] 不正ドキュメント10件削除（agency-agentsのYAMLファイルが混入）
-- [x] graphifyインストール・Claude Code SKILL登録
-
----
-
-## スケジュール
-
-| Phase | 期間 | 優先度 | 状態 |
-|---|---|---|---|
-| Phase 1 | 2026-04-09 | 最高 | ✅ 完了 |
-| Phase 2 | 2026-04-09 | 高 | ✅ 完了 |
-| Phase 3 | 2026-04-09 | 高 | ✅ 完了 |
-| Phase 4 | 2026-04-09 | 中 | ✅ 完了 |
-| Phase 5 | 2026-04-09 | 中 | ✅ 完了 |
-| Phase 6 | 2026-04-10 | 中 | ✅ 完了 |
-
----
-
-## Phase 7: バージョンアップ（2026-04-11〜）
-
-### 目標
-プロジェクト手順の簡素化、セキュリティ修正、ナレッジ品質向上、パイプライン改善。
-
-### 完了済み
 - [x] DATA-SCHEMA.mdにバグパターンテンプレート追加
-- [x] KNOWLEDGE-INDEX.md自動生成スクリプト（update_knowledge_index.py）
-- [x] ccxt/freqtrade/n8n/openclaw レベル0→3（手動差し替え）
+- [x] KNOWLEDGE-INDEX.md自動生成スクリプト
+- [x] ccxt/freqtrade/n8n/openclaw レベル3化
 - [x] ARCHITECTURE.md投入
 - [x] 新規9リポジトリ投入（51件に拡大）
-- [x] summarize_repo.pyにリトライ+フォールバック+コード例自動生成追加
-- [x] ingest_github.sh末尾にインデックス自動更新追加
+- [x] summarize_repo.pyリトライ+フォールバック+コード例自動生成
 
-### 残タスク
-- [ ] OpenRouter APIキーローテーション
-- [ ] ドメイン取得→Named Tunnel→MCP固定URL化
-- [ ] プロジェクト固有ナレッジ投入（来週）
-- [ ] 検索品質ベンチマーク（Phase 3完了後）
-- [ ] langgraph/crewai/browser-use レベル3化（中期）
-- [ ] ingest_github.sh Option C対応（中期）
+---
 
-| Phase | 期間 | 状態 |
-|---|---|---|
-| Phase 7 | 2026-04-11〜 | 🔄 進行中 |
+## Phase 8: MCP安定化 + セキュリティ（2026-04-12）✅
+
+- [x] ドメイン取得（7272yusuke.cloud）
+- [x] Cloudflare Named Tunnel構築
+- [x] MCP固定URL化（https://mcp.7272yusuke.cloud/mcp）
+- [x] mcp-lightrag.service + cloudflared-mcp.service（systemd）
+- [x] Claude.aiからのMCPセッション安定動作確認
+- [x] 重複SKILL v1/v2の削除（62件→52件）
+- [x] DELETE APIバグ発見・pg_dumpからの復旧成功
+- [x] SKILL 9件をL3品質で再投入
+
+---
+
+## Phase 9: ナレッジ拡充 第2波（2026-04-13〜04-14）✅
+
+- [x] ComfyUI×2, tweepy, instagrapi, inngest投入
+- [x] スキルパック3つ処理（research/content/community）
+- [x] deep-research, yt-pipeline, content-cascade, hooks, site-teardown, dream, page-cro投入
+- [x] SNSライティングルール（L2）抽出・投入
+- [x] ai-seo, notebooklm-py完全版投入
+- [x] skill-verifier作成（Claudeception方式）
+- [x] 52件→74件に拡大
+
+---
+
+## Phase 10: 3レイヤー移行（2026-04-15）✅
+
+- [x] knowledge-layer-rules.md策定
+- [x] migration-plan.md策定（74件→65件計画）
+- [x] 不要8件削除（FFmpeg, OpenSpace, claude-peers-mcp, ruflo, n8n-mcp, ComfyUI重複3件）
+- [x] L1再分類6件（note.com系, きよびん, Masterclass, git-art, GitHub Actions）
+- [x] L3昇格3件（MCP Servers, graphify, playwright-cli）+ OpenClaw L1再構成
+- [x] 検索テスト合格 + KNOWLEDGE-INDEX.md更新 + git push
+- [x] GSD-PLAN / RESUME更新
+
+---
+
+## 現在の状態（2026-04-15）
+
+ナレッジベース: 65件
+- L3（実装）: 45件（69%）
+- L2（パターン）: 9件（14%）
+- L1（コンテキスト）: 7件（11%）
+- 旧形式: 6件（6%）
+
+## 残タスク（優先順）
+
+1. [ ] OpenRouter APIキーローテーション（最優先・セキュリティ）
+2. [ ] 旧形式6件のL3化検討（browser-use等）
+3. [ ] L2パターン拡充（現9件→目標15-20件）
+4. [ ] 旧版グラフデータクリーンアップ（低優先）

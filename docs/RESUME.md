@@ -2,7 +2,7 @@
 
 ## このドキュメントについて
 
-LightRAGナレッジパイプラインの作業を、新しいチャットセッションで再開する際の手順。Claude.aiまたはClaude Codeに渡す。
+LightRAGナレッジパイプラインの作業を再開する際の手順。Claude.aiプロジェクトに渡す。
 
 ---
 
@@ -14,117 +14,107 @@ VPS: 76.13.187.66
 作業ディレクトリ: /docker/lightrag/
 Git: https://github.com/7272yusuke-design/light-rag
 
-プロジェクトの計画書を読んでください:
+計画書:
 - docs/GSD-PLAN.md（全体計画とフェーズ）
 - docs/ARCHITECTURE.md（システム設計）
 - docs/DATA-SCHEMA.md（データ構造ルール）
+- docs/KNOWLEDGE-INDEX.md（ナレッジ一覧）
+- knowledge-layer-rules.md（3レイヤー管理ルール）※プロジェクトファイル
+- migration-plan.md（移行計画）※プロジェクトファイル
 
-現在のフェーズ: Phase 1-6完了、Phase 7（バージョンアップ）進行中
-直近の作業状態: 51ドキュメント投入済み（うち4件レベル3）、summarize_repo.pyリトライ改修済み、KNOWLEDGE-INDEX自動生成対応
+現在のフェーズ: Phase 1-10完了
+ナレッジベース: 65件（L3:45, L2:9, L1:7, 旧形式:6）
 
 ---
 
 ## 環境確認コマンド
 
-  cd /docker/lightrag && docker compose ps
-  systemctl status ollama --no-pager
-  curl -s http://localhost:9621/health || echo "LightRAG is down"
-  docker exec lightrag-postgres pg_isready -U lightrag
-  repomix --version
+    cd /docker/lightrag && docker compose ps
+    systemctl status ollama --no-pager
+    curl -s http://localhost:9621/health || echo "LightRAG is down"
+    docker exec lightrag-postgres pg_isready -U lightrag
+    systemctl status mcp-lightrag --no-pager
+    systemctl status cloudflared-mcp --no-pager
 
 ## 環境復旧（止まっていた場合）
 
-  sudo systemctl start ollama
-  cd /docker/lightrag && docker compose up -d
+    sudo systemctl start ollama
+    cd /docker/lightrag && docker compose up -d
+    sudo systemctl start mcp-lightrag
+    sudo systemctl start cloudflared-mcp
 
 ---
 
 ## 現在のインフラ構成
 
-VPS (76.13.187.66)
-├── Ollama (systemd, port 11434)
-│   └── nomic-embed-text (embedding, 768dim)
-├── Docker
-│   ├── lightrag-postgres (pgvector:pg16, port 5433)
-│   └── lightrag-server (port 9621, network_mode: host)
-│       ├── LLM: OpenRouter → anthropic/claude-sonnet-4.6
-│       ├── Embedding: Ollama → nomic-embed-text
-│       └── Storage: PostgreSQL + NetworkX
-├── Repomix (npm global, Node.js 20)
-├── Claude Code (npm global, VPS上で実行)
-│   └── MCP: lightrag → mcp_lightrag.py（search_knowledge + list_knowledge + list_projects）
-├── graphify (pip global, Claude Code SKILL)
-└── OpenClaw (Docker, port 46819) ※別プロジェクト
-
-## 採用ツール
-
-| ツール | 用途 | 利用方法 |
-|---|---|---|
-| Repomix | リポジトリ → テキスト化 | VPS CLI (repomix --remote) |
-| DeepWiki MCP | リポジトリ構造分析 | Claude Code MCP |
-| OpenRouter | LLM要約・自動分類 | VPS API（既存） |
-| LightRAG | 知識グラフDB | VPS Docker（既存） |
-| mcp_lightrag.py | Claude Code → LightRAG検索 | Claude Code MCP（stdio） |
-| graphify | コード構造解析 | Claude Code内で /graphify <dir> |
+    VPS (76.13.187.66)
+    +-- Ollama (systemd, port 11434)
+    |   +-- nomic-embed-text (embedding, 768dim)
+    +-- Docker
+    |   +-- lightrag-postgres (pgvector:pg16, port 5433)
+    |   +-- lightrag-server (port 9621, network_mode: host)
+    |       +-- LLM: OpenRouter -> anthropic/claude-sonnet-4.6
+    |       +-- Embedding: Ollama -> nomic-embed-text
+    |       +-- Storage: PostgreSQL + NetworkX
+    +-- MCP (port 9622, systemd)
+    |   +-- mcp-lightrag.service（ステートレスHTTP）
+    |   +-- cloudflared-mcp.service（Named Tunnel）
+    |       +-- https://mcp.7272yusuke.cloud/mcp
+    +-- Repomix (npm global)
+    +-- graphify (pip global, Claude Code SKILL)
+    +-- OpenClaw (Docker, port 46819) ※別プロジェクト
 
 ## 認証情報
 
-重要: .envファイルはgitに含まれていない。VPS上の /docker/lightrag/.env を参照。
-
-- WebUI: http://76.13.187.66:9621 → admin / LightRag@2026!
-- LightRAG API: Bearer token（login APIで取得）
-- OpenRouter: .env内の LLM_BINDING_API_KEY
-
-## API利用の定型パターン
-
-トークン取得:
-  curl -s -X POST "http://localhost:9621/login" -d "username=admin&password=LightRag@2026!" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])"
-
-ドキュメント投入:
-  curl -s -X POST "http://localhost:9621/documents/upload" -H "Authorization: Bearer $TOKEN" -F "file=@target.txt"
-
-ドキュメント削除:
-  curl -s -X DELETE "http://localhost:9621/documents/delete_document" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"doc_ids": ["doc-xxx"]}'
-
-検索:
-  curl -s -X POST "http://localhost:9621/query" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"query":"検索クエリ", "mode":"hybrid"}'
-
-ドキュメント一覧:
-  curl -s "http://localhost:9621/documents" -H "Authorization: Bearer $TOKEN"
+- WebUI: http://76.13.187.66:9621 -> admin / LightRag@2026!
+- .envはgit外。VPS上の /docker/lightrag/.env を参照
+- OpenRouter APIキーは要ローテーション（チャットで公開済み）
 
 ---
 
-## 進捗管理
+## ナレッジ3レイヤー構成（65件）
 
-### 完了済み
-- [x] LightRAG基盤構築（Docker + PostgreSQL + Ollama + OpenRouter）
-- [x] WebUI動作確認
-- [x] ドキュメント投入・検索の動作確認
-- [x] Gitリポジトリ初期push
-- [x] GSD計画書・アーキテクチャ・データスキーマ策定
-- [x] ツール選定（Repomix + DeepWiki MCP + OpenRouter）
-- [x] Phase 1: GitHub Ingestion Pipeline（ingest_github.sh完成）
-- [x] Phase 2: SKILL Ingestion（9スキル投入）
-- [x] Phase 3: ナレッジ活用SKILL（search_knowledge.sh + プロジェクト手順設定）
-- [x] Phase 4: データ管理（タグ正規化・重複検知・鮮度チェック）
-- [x] Phase 5: Cross-Project & Agent共有（MCP連携・プロジェクトフィルタリング・API利用ガイド・Git自動push）
-- [x] graphifyインストール・Claude Code SKILL登録
-- [x] ナレッジ42件投入（不正ドキュメント10件削除済み）
+### L3（実装）: 45件
+フレームワーク19: Next.js, Stripe SDK, Resend, inngest, tweepy, instagrapi, ccxt, freqtrade, langgraph, crewai, mastra, Vercel AI SDK, motion, LightRAG, n8n, ComfyUI x2, supabase, NeMo-Agent-Toolkit
+ツール12: MCP Servers, graphify, playwright-cli, firecrawl, shadcn-ui, awesome-design-md, notebooklm-py, gh-cli, stripe-cli, vercel, n8n-as-code, servers(旧版)
+SKILL 9: docx, pdf, pdf-reading, pptx, xlsx, frontend-design, file-reading, product-self-knowledge, skill-creator
+スキルパック8: deep-research, content-cascade, yt-pipeline, hooks, site-teardown, dream, page-cro, ai-seo
 
-### 残タスク
-- [ ] OpenRouter APIキーローテーション（セキュリティ。即対応）
-- [ ] ドメイン取得 → Cloudflare Named Tunnel → MCP固定URL化（現状動作中のためスキップ可）
-- [ ] プロジェクト固有ナレッジ投入（OpenClaw CostGuard、バグ修正パターン、jizokuka-ai）
-- [ ] 検索品質ベンチマーク（テストクエリ10件、合格基準8/10）
-- [ ] 中期: langgraph/crewai/browser-use レベル3化
-- [ ] 中期: ingest_github.sh改修（Option C: 実装チャンク自動抽出）
-- [x] DATA-SCHEMA.mdにバグパターンテンプレート追加
-- [x] KNOWLEDGE-INDEX.md自動生成スクリプト化（update_knowledge_index.py）
-- [x] ccxt/freqtrade/n8n/openclaw レベル3化
-- [x] ARCHITECTURE.md投入
-- [x] 新規9リポジトリ投入（career-ops, stripe-cli, FFmpeg, cli, vercel, llmfit, autoresearch, OpenSpace, claude-peers-mcp）
-- [x] summarize_repo.py リトライ+フォールバック+コード例自動生成（レベル1相当）
+### L2（パターン）: 9件
+スキル設計パターン集, SNSライティングルール, スキル最適化手法, mcollina/skills, Building LLM, anthropic-cookbook
+
+### L1（コンテキスト）: 7件
+note.com収益化パイプライン, きよびん, note.com自動投稿技術要件, Masterclass, git-art, GitHub Actions記事生成, OpenClaw
+
+### 旧形式: 6件
+browser-use, codex-plugin-cc, agency-agents, obsidian-skills, awesome-compose, cli(GWS)
 
 ---
 
-## 蓄積済みナレッジ（51件）
+## ナレッジ操作ルール
+
+### 投入
+- リポジトリ/ツールは最初からL3品質で投入
+- MCP upload_document（overwriteは不安定、新ファイル名推奨）
+- ファイル名: {name}-l1_lightrag.txt / -l2_ / -l3_
+
+### 削除
+- DELETE API禁止（全消しバグ）
+- 手順: pg_dump -> SELECT確認 -> DELETE（ID指定）
+
+    docker exec lightrag-postgres pg_dump -U lightrag lightrag > /tmp/lightrag_backup_$(date +%Y%m%d_%H%M).sql
+    docker exec lightrag-postgres psql -U lightrag lightrag -c "SELECT id, file_path FROM public.lightrag_doc_status WHERE file_path LIKE '%target%';"
+    docker exec lightrag-postgres psql -U lightrag lightrag -c "DELETE FROM public.lightrag_doc_status WHERE id IN ('doc-xxx');"
+
+### 検索
+
+    cd /docker/lightrag && ./scripts/search_knowledge.sh "検索クエリ"
+
+---
+
+## 残タスク（優先順）
+
+1. [ ] OpenRouter APIキーローテーション（最優先・セキュリティ）
+2. [ ] 旧形式6Ի�のL3化検討（browser-use等）
+3. [ ] L2パターン拡充（現9件→目標15-20件）
+4. [ ] 旧版グラフデータクリーンアップ（低優先）
