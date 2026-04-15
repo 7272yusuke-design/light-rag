@@ -2,7 +2,7 @@
 
 ## このドキュメントについて
 
-LightRAGナレッジパイプラインの作業を再開する際の手順。Claude.aiプロジェクトに渡す。
+LightRAGナレッジパイプラインの作業を再開する際の手順。セッション開始時にこのファイルを確認する。
 
 ---
 
@@ -14,16 +14,16 @@ VPS: 76.13.187.66
 作業ディレクトリ: /docker/lightrag/
 Git: https://github.com/7272yusuke-design/light-rag
 
-計画書:
-- docs/GSD-PLAN.md（全体計画とフェーズ）
-- docs/ARCHITECTURE.md（システム設計）
-- docs/DATA-SCHEMA.md（データ構造ルール）
-- docs/KNOWLEDGE-INDEX.md（ナレッジ一覧）
-- knowledge-layer-rules.md（3レイヤー管理ルール）※プロジェクトファイル
-- migration-plan.md（移行計画）※プロジェクトファイル
+計画書（全てVPS上 /docker/lightrag/docs/）:
+- RESUME.md（本ファイル）
+- GSD-PLAN.md（全体計画とフェーズ）
+- ARCHITECTURE.md（システム設計）
+- DATA-SCHEMA.md（データ構造ルール・3レイヤー管理ルール）
+- KNOWLEDGE-INDEX.md（ナレッジ一覧・移行ログ）
+- SYSTEM-SPEC.md（システム仕様）
 
-現在のフェーズ: Phase 1-10完了
-ナレッジベース: 65件（L3:45, L2:9, L1:7, 旧形式:6）
+現在のフェーズ: Phase 1-10完了、Phase 11進行中
+ナレッジベース: 69件（L3:47, L2:11, L1:7, グラフ残骸:4）
 
 ---
 
@@ -51,7 +51,7 @@ Git: https://github.com/7272yusuke-design/light-rag
     +-- Ollama (systemd, port 11434)
     |   +-- nomic-embed-text (embedding, 768dim)
     +-- Docker
-    |   +-- lightrag-postgres (pgvector:pg16, port 5433)
+    |   +-- lightrag-postgres (pgvector:pg16, port 5433, user: lightrag, db: lightrag)
     |   +-- lightrag-server (port 9621, network_mode: host)
     |       +-- LLM: OpenRouter -> anthropic/claude-sonnet-4.6
     |       +-- Embedding: Ollama -> nomic-embed-text
@@ -72,22 +72,21 @@ Git: https://github.com/7272yusuke-design/light-rag
 
 ---
 
-## ナレッジ3レイヤー構成（65件）
+## ナレッジ3レイヤー構成（69件）
 
-### L3（実装）: 45件
-フレームワーク19: Next.js, Stripe SDK, Resend, inngest, tweepy, instagrapi, ccxt, freqtrade, langgraph, crewai, mastra, Vercel AI SDK, motion, LightRAG, n8n, ComfyUI x2, supabase, NeMo-Agent-Toolkit
-ツール12: MCP Servers, graphify, playwright-cli, firecrawl, shadcn-ui, awesome-design-md, notebooklm-py, gh-cli, stripe-cli, vercel, n8n-as-code, servers(旧版)
+### L3（実装）: 47件
+フレームワーク19: Next.js, Stripe SDK, Resend, inngest, tweepy, instagrapi, ccxt, freqtrade, langgraph, crewai, mastra, Vercel AI SDK, motion, LightRAG, n8n, ComfyUI x2, RAG-Anything, NeMo-Agent-Toolkit
+ツール12: MCP Servers, graphify, playwright-cli, firecrawl, shadcn-ui, awesome-design-md, notebooklm-py, gh-cli, stripe-cli, vercel, n8n-as-code, supabase
 SKILL 9: docx, pdf, pdf-reading, pptx, xlsx, frontend-design, file-reading, product-self-knowledge, skill-creator
-スキルパック8: deep-research, content-cascade, yt-pipeline, hooks, site-teardown, dream, page-cro, ai-seo
+スキルパック7: deep-research, content-cascade, yt-pipeline, hooks, site-teardown, dream, page-cro
 
-### L2（パターン）: 9件
-スキル設計パターン集, SNSライティングルール, スキル最適化手法, mcollina/skills, Building LLM, anthropic-cookbook
+### L2（パターン）: 11件
+スキル設計パターン集, SNSライティングルール, ai-seo, スキル最適化手法, mcollina/skills, Building LLM, anthropic-cookbook, superpowers, GSD, browser-use, awesome-compose
 
 ### L1（コンテキスト）: 7件
 note.com収益化パイプライン, きよびん, note.com自動投稿技術要件, Masterclass, git-art, GitHub Actions記事生成, OpenClaw
 
-### 旧形式: 6件
-browser-use, codex-plugin-cc, agency-agents, obsidian-skills, awesome-compose, cli(GWS)
+### グラフ残骸: 4件（list_knowledgeでタグ空表示、ドキュメント本体は削除済み）
 
 ---
 
@@ -102,7 +101,7 @@ browser-use, codex-plugin-cc, agency-agents, obsidian-skills, awesome-compose, c
 - DELETE API禁止（全消しバグ）
 - 手順: pg_dump -> SELECT確認 -> DELETE（ID指定）
 
-    docker exec lightrag-postgres pg_dump -U lightrag lightrag > /tmp/lightrag_backup_$(date +%Y%m%d_%H%M).sql
+    docker exec lightrag-postgres pg_dump -U lightrag lightrag > /docker/lightrag/backups/pg_backup_$(date +%Y%m%d_%H%M).sql
     docker exec lightrag-postgres psql -U lightrag lightrag -c "SELECT id, file_path FROM public.lightrag_doc_status WHERE file_path LIKE '%target%';"
     docker exec lightrag-postgres psql -U lightrag lightrag -c "DELETE FROM public.lightrag_doc_status WHERE id IN ('doc-xxx');"
 
@@ -115,6 +114,14 @@ browser-use, codex-plugin-cc, agency-agents, obsidian-skills, awesome-compose, c
 ## 残タスク（優先順）
 
 1. [ ] OpenRouter APIキーローテーション（最優先・セキュリティ）
-2. [ ] 旧形式6Ի�のL3化検討（browser-use等）
-3. [ ] L2パターン拡充（現9件→目標15-20件）
+2. [ ] 未分類4件のL3/L2化検討（codex-plugin-cc, agency-agents, obsidian-skills, cli GWS）
+3. [ ] L2パターン拡充（現11件→目標15-20件）
 4. [ ] 旧版グラフデータクリーンアップ（低優先）
+
+---
+
+## Claude.aiプロジェクト スキル
+
+- combination-architect: ナレッジ組み合わせ→企画提案・設計・L2/L3投入
+- knowledge-navigator: ナレッジ検索→実装提案・技術選定・問題解決
+- skill-verifier: Claudeception方式でナレッジ/スキル品質検証

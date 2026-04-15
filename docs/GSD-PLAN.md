@@ -17,7 +17,7 @@ LightRAGを「外部脳」として活用し、GitHub OSS・Claude Code SKILL・
 
 ## ナレッジ3レイヤー構成
 
-詳細は knowledge-layer-rules.md 参照。
+詳細は DATA-SCHEMA.md 参照。
 
 | レイヤー | 定義 | 投入基準 |
 |---------|------|---------|
@@ -90,22 +90,35 @@ LightRAGを「外部脳」として活用し、GitHub OSS・Claude Code SKILL・
 - [x] 不要8件削除（FFmpeg, OpenSpace, claude-peers-mcp, ruflo, n8n-mcp, ComfyUI重複3件）
 - [x] L1再分類6件（note.com系, きよびん, Masterclass, git-art, GitHub Actions）
 - [x] L3昇格3件（MCP Servers, graphify, playwright-cli）+ OpenClaw L1再構成
+- [x] 新規投入3件（superpowers L2, RAG-Anything L3, GSD L2）
 - [x] 検索テスト合格 + KNOWLEDGE-INDEX.md更新 + git push
-- [x] GSD-PLAN / RESUME更新
+
+---
+
+## Phase 11: スキル・ドキュメント整備（2026-04-15）✅
+
+- [x] combination-architect スキルを3レイヤー体系に修正
+- [x] knowledge-navigator スキルを3レイヤー体系に修正
+- [x] KNOWLEDGE-INDEX.md を69件の現状に更新
+- [x] Claude.aiプロジェクトファイル整理（VPS正運用に移行）
+  - project-instructions-v2.md: 不変情報+セッション開始手順のみに簡素化
+  - knowledge-layer-rules.md: 削除（DATA-SCHEMA.mdに統合）
+  - migration-plan.md: 削除（移行完了、ログはKNOWLEDGE-INDEX.mdに記録）
+- [x] RESUME.md / GSD-PLAN.md 更新
 
 ---
 
 ## 現在の状態（2026-04-15）
 
-ナレッジベース: 65件
-- L3（実装）: 45件（69%）
-- L2（パターン）: 9件（14%）
-- L1（コンテキスト）: 7件（11%）
-- 旧形式: 6件（6%）
+ナレッジベース: 69件（全processed）
+- L3（実装）: 47件（68%）
+- L2（パターン）: 11件（16%）
+- L1（コンテキスト）: 7件（10%）
+- グラフ残骸: 4件（タグ空表示、ドキュメント本体は削除済み）
 
 ## 残タスク（優先順）
 
 1. [ ] OpenRouter APIキーローテーション（最優先・セキュリティ）
-2. [ ] 旧形式6件のL3化検討（browser-use等）
-3. [ ] L2パターン拡充（現9件→目標15-20件）
+2. [ ] 未分類4件のL3/L2化検討（codex-plugin-cc, agency-agents, obsidian-skills, cli GWS）
+3. [ ] L2パターン拡充（現11件→目標15-20件）
 4. [ ] 旧版グラフデータクリーンアップ（低優先）
