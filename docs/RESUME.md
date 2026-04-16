@@ -114,14 +114,36 @@ note.com収益化パイプライン, きよびん, note.com自動投稿技術要
 ## 残タスク（優先順）
 
 1. [ ] OpenRouter APIキーローテーション（最優先・セキュリティ）
-2. [ ] 未分類4件のL3/L2化検討（codex-plugin-cc, agency-agents, obsidian-skills, cli GWS）
-3. [ ] L2パターン拡充（現11件→目標15-20件）
-4. [ ] 旧版グラフデータクリーンアップ（低優先）
+2. [ ] GSD-PLAN.md更新
+3. [ ] 未分類4件のL3/L2化検討（codex-plugin-cc, agency-agents, obsidian-skills, cli GWS）
+4. [ ] L2パターン拡充（現11件→目標15-20件）
+5. [ ] 旧版グラフデータクリーンアップ（低優先）
 
 ---
 
 ## Claude.aiプロジェクト スキル
 
-- combination-architect: ナレッジ組み合わせ→企画提案・設計・L2/L3投入
-- knowledge-navigator: ナレッジ検索→実装提案・技術選定・問題解決
+- combination-architect: ナレッジ組み合わせ→企画提案・設計・L2/L3投入（3レイヤー対応済み）
+- knowledge-navigator: ナレッジ検索→実装提案・技術選定・問題解決（3レイヤー対応済み）
 - skill-verifier: Claudeception方式でナレッジ/スキル品質検証
+
+## Claude.aiプロジェクトファイル
+
+- project-instructions-v2.md: 不変の環境情報+セッション開始手順のみ。変動情報はVPS側を正とする
+
+---
+
+## 直近の作業ログ
+
+### セッション16.0（2026-04-15）
+- combination-architect / knowledge-navigator スキルを3レイヤー体系に修正
+- KNOWLEDGE-INDEX.md を69件の現状に更新
+- DATA-SCHEMA.md のレイヤー定義を新3レイヤー体系に更新
+- Claude.aiプロジェクトファイル整理（knowledge-layer-rules.md, migration-plan.md削除、project-instructions-v2.md最小化）
+- RESUME.md更新
+
+### セッション15.0（2026-04-15）
+- Phase 1: 8件削除（FFmpeg, OpenSpace, claude-peers-mcp, ruflo, n8n-mcp, ComfyUI重複3件）
+- Phase 2: 6件L1再分類
+- Phase 3: 4件L3昇格/L1再構成（MCP Servers, graphify, playwright-cli, OpenClaw）
+- 新規投入: superpowers(L2), RAG-Anything(L3), GSD(L2)
