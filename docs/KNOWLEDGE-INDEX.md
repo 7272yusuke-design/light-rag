@@ -1,7 +1,7 @@
 # KNOWLEDGE-INDEX.md — LightRAGナレッジベース インデックス
 
-> 最終更新: 2026-04-15（セッション16.0）
-> 総数: 69件（全processed）
+> 最終更新: 2026-04-17（セッション17.0）
+> 総数: 70件（全processed）
 > 最適レンジ: 80-120件
 
 ## レイヤー構成サマリー
@@ -15,7 +15,7 @@
 
 ---
 
-## L3: 実装ナレッジ（47件）
+## L3: 実装ナレッジ（48件）
 
 ### フレームワーク・ライブラリ（19件）
 | # | ドキュメント | カテゴリ | 主要用途 |
@@ -40,7 +40,7 @@
 | 18 | RAG-Anything — マルチモーダルRAG（LightRAG拡張） | framework | マルチモーダルRAG |
 | 19 | NeMo-Agent-Toolkit — NVIDIA エージェント | framework | エージェント |
 
-### ツール・CLI（12件）
+### ツール・CLI（13件）
 | # | ドキュメント | カテゴリ | 主要用途 |
 |---|------------|---------|---------|
 | 20 | MCP Servers — MCPサーバー開発リファレンス | framework | MCP開発 |
@@ -55,6 +55,7 @@
 | 29 | vercel — Vercel CLI | tool | デプロイ |
 | 30 | n8n-as-code — n8n GitOps | tool | ワークフロー |
 | 31 | supabase — BaaS/ドキュメントサイト | website | データベース |
+| + | openclaude — マルチプロバイダーCoding Agent CLI（新規投入 2026-04-17） | tool | エージェント開発 |
 
 ### Claude Code SKILL（9件）
 | # | ドキュメント | カテゴリ | 主要用途 |
@@ -142,6 +143,35 @@ doc_statusから旧版ドキュメントは削除済み。グラフテーブル�
 
 ---
 
+## L2抽出候補（未検証・実装時に投入）
+
+L2投入ルール「検証済み（実装・動作確認済み）のみ」に従い、OSS読解ベースのパターンはここに候補として蓄積する。自プロジェクトで実装・動作確認後にL2として正式投入する。
+
+### 1. Agent Routing パターン
+- **参考L3**: openclaude-l3
+- **概要**: タスク種別（Explore / Plan / frontend-dev / general-purpose 等）ごとに、使用モデル・プロバイダーを設定JSONで振り分ける設計。コスト最適化とタスク特性に応じたモデル選択が目的。
+- **鍵となる設計**: `agentModels`（プロバイダー定義）+ `agentRouting`（エージェント→モデル名マッピング）+ フォールバック
+- **投入条件**: n8nまたは自前エージェント案件でAgent Routingを実装し、コスト削減効果または品質差を測定後
+
+### 2. Tool-loop + MCP統合 パターン
+- **参考L3**: openclaude-l3, claude-peers-mcp
+- **概要**: モデル呼び出し → ツール実行 → 許可フロー（`action_required`イベント）→ フォローアップ応答 のループ構造。MCPサーバーとの統合を含む。
+- **鍵となる設計**: ストリーミング双方向通信（gRPC or 同等）、機微コマンドの許可取得フロー、MCPツール抽象化
+- **投入条件**: 自前エージェントでMCPツール統合＋ツール許可フローを実装後
+
+### 3. OpenAI互換API抽象化 パターン
+- **参考L3**: openclaude-l3
+- **概要**: `/v1`エンドポイント互換を共通インターフェースにして、OpenAI・OpenRouter・DeepSeek・Groq・Mistral・Ollama・LM Studio等を単一コードで切替可能にする設計。
+- **鍵となる設計**: `OPENAI_BASE_URL`の差し替えによるプロバイダー切替、provider profileの永続化（`.openclaude-profile.json`相当）、プロバイダーごとの出力上限への適応
+- **投入条件**: マルチプロバイダー対応（最低2プロバイダー以上）を自プロジェクトで実装後
+
+### 候補追加ルール
+- OSS読解で「使えそう」と判断したパターンはここに候補として記録
+- 自プロジェクトで実装・検証後、L2投入テンプレート（DATA-SCHEMA.md参照）に沿って正式投入
+- 投入後、この候補リストから該当項目を削除
+
+---
+
 ## 移行ログ
 
 ### 2026-04-15 セッション15.0
@@ -153,6 +183,10 @@ doc_statusから旧版ドキュメントは削除済み。グラフテーブル�
 ### 2026-04-15 セッション16.0
 - KNOWLEDGE-INDEX.md を69件の現状に更新
 - combination-architect / knowledge-navigator スキルを3レイヤー体系に修正
+
+### 2026-04-17 セッション17.0
+- L3新規投入: openclaude-l3（マルチプロバイダーCoding Agent CLI、21k stars、MIT）
+- L2抽出候補セクション新設: Agent Routing / Tool-loop+MCP / OpenAI互換API抽象化 の3パターン（openclaude由来、未検証のため候補留め）
 
 ---
 
