@@ -93,17 +93,33 @@ def do_search(args):
     result = api_request("/query/data", method="POST", body={"query": search_query, "mode": mode})
     if isinstance(result, dict) and result.get("status") == "success":
         data = result.get("data", {})
-        chunks = []
+        output = []
+        limits = {"entities": (5, 200), "relationships": (5, 200), "chunks": (3, 300)}
         for key, items in data.items():
-            if isinstance(items, list):
-                for item in items[:10]:
-                    if isinstance(item, dict):
-                        content = item.get("content", item.get("description", str(item)))
-                        chunks.append(f"[{key}] {str(content)[:500]}")
-                    elif isinstance(item, str):
-                        chunks.append(f"[{key}] {item[:500]}")
-        return "\n\n".join(chunks) if chunks else json.dumps(data, ensure_ascii=False)[:4000]
-    return json.dumps(result, ensure_ascii=False)[:4000]
+            if not isinstance(items, list):
+                continue
+            max_items, max_chars = limits.get(key, (3, 200))
+            seen = set()
+            for item in items:
+                if len(seen) >= max_items:
+                    break
+                if isinstance(item, dict):
+                    text = item.get("content", item.get("description", ""))
+                elif isinstance(item, str):
+                    text = item
+                else:
+                    continue
+                short = str(text)[:max_chars]
+                if short not in seen:
+                    seen.add(short)
+                    output.append(f"[{key}] {short}")
+        ref_items = data.get("references", [])
+        if isinstance(ref_items, list):
+            for ref in ref_items[:10]:
+                if isinstance(ref, dict):
+                    output.append(f"[references] {json.dumps(ref, ensure_ascii=False)}")
+        return "\n\n".join(output) if output else json.dumps(data, ensure_ascii=False)[:2000]
+    return json.dumps(result, ensure_ascii=False)[:2000]
 
 
 def do_list_knowledge(args):
