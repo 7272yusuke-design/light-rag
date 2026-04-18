@@ -150,3 +150,63 @@
 - **理由**: microVMをローカル実行する軽量ツール（<250msブート、libkrun+Hypervisor.framework/KVM）。領域は将来合う（Coding Agent安全実行、OpenClaw本番運用）が、現フェーズ（Claude Code導入初期・n8n→アプリ開発アップセル検討中）では早すぎる。HostingerのVPSで/dev/kvmが使えるかも未確認。22 stars、Alpha段階（v0.1.7）で破壊的変更リスク大
 - **再検討条件**: OpenClaw本番運用着手時、または顧客向けCoding Agentサービス提供を開始するとき（セキュリティ層強化が必要になる段階）
 
+
+---
+
+### 2026-04-18（L1 v3再設計）
+
+L1 v3ルール導入（DATA-SCHEMA.md）に伴い、プロジェクト固有情報をLightRAGから除外。汎用化可能なパターンはL2cへ昇格させた上で、元L1を削除。
+
+#### L2c昇格 3パターン
+
+##### TrinityCouncil 3エージェント議論型合意形成 パターン
+- 判断: L2c投入
+- ファイル名: trinity-council-deliberation-l2c_lightrag.txt
+- 抽出元: neo-openclaw-project-l1（削除）
+- 理由: Bull/Bear/Sage 3エージェントの対立構造による合意形成は、既存 multi-agent-design-patterns-l2（Supervisor型中心）とは独立した汎用パターン。トレーディング以外にも投資判断、コンテンツ戦略、プロダクトレビューに転用可能
+- 再検討条件（昇格条件）: OpenClaw本番運用開始時に paper-trading 1週間以上で効果測定、または顧客案件で戦略判断支援ツールに組み込み実測
+
+##### n8n Cron駆動 自己改善ワークフローエージェント パターン
+- 判断: L2c投入
+- ファイル名: n8n-self-improving-workflow-agent-l2c_lightrag.txt
+- 抽出元: sns-autopilot-project-l1（削除）
+- 理由: Workflow Evolver Agent構想は、顧客向けn8n案件のアップセル材料として差別化要素あり。納品後も自動改善されるn8nワークフローは既存 n8n-workflow-design-patterns-l2 の上位レイヤー
+- 再検討条件（昇格条件）: Yusukeさんの顧客案件でEvaluator Agent相当を導入し1ヶ月以上運用、またはSNS Autopilot復活時にWorkflow Evolverを本番実装
+
+##### CLAUDE.md駆動のコンテンツ自動生成 パターン
+- 判断: L2c投入
+- ファイル名: claude-md-driven-content-generation-l2c_lightrag.txt
+- 抽出元: git-art-workflow-l1 + github-actions-article-patterns-l1（両方削除、統合）
+- 理由: Markdownだけで指示するコンテンツパイプラインは、note記事以外にも顧客ドキュメント自動化・社内Wiki自動更新に転用可能。「顧客自身が改修できる自動化」として差別化
+- 再検討条件（昇格条件）: Yusukeさんがgit-art相当をセットアップし1ヶ月以上運用、または顧客案件でドキュメント自動生成を導入
+
+#### L1削除 10件
+
+L1 v3ルール適用により、プロジェクト固有情報・低優先プロジェクト・重複ドキュメントを削除。削除前にpg_dump取得（pg_backup_20260418_1226.sql）。psql経由で計6テーブル・計531レコードを削除。
+
+| 削除ファイル | 削除理由 |
+|---|---|
+| neo-openclaw-project-l1 | プロジェクト固有、TrinityCoundilをL2c抽出済み |
+| openclaw-project-l1 | 削除時点で既に不在（過去の重複残骸） |
+| jizokuka-ai-project-l1 | 既存 n8n-to-webapp-migration-pattern-l2 でカバー済み |
+| sns-autopilot-project-l1 | プロジェクト固有、Workflow EvolverをL2c抽出済み |
+| secretary-agent-platform-l1 | 既存L2群（durable-execution-hitl / multi-tenant-saas / ai-document-generation）でカバー済み |
+| note-claudecode-monetization-pipeline-l1 | note.com低優先、プロジェクト固有 |
+| kiyobin-persona-l1 | ペルソナ情報はClaude.aiプロジェクト側で管理 |
+| note-autopost-requirements-l1 | note.com低優先、重複の疑い |
+| masterclass-curriculum-l1 | note記事戦略用、低優先 |
+| git-art-workflow-l1 | CLAUDE.md駆動コンテンツ生成をL2c抽出済み |
+| github-actions-article-patterns-l1 | 同上、L2c統合先 |
+
+注記: 当初19件想定で計画したが、実在確認により10件のみ削除実行。残り9件は既に不在（entity残骸のみLightRAG側に残存、検索実害はないため別タスクで整理予定）。
+
+#### L1リネーム 3件（L1-Infra / L1-Ops化）
+
+DATA-SCHEMA.md v3のサブタイプ規約に沿ってfile_pathをUPDATE（計227レコード）。ドキュメント本体・ベクトル・エンティティは保持したまま、file_pathカラムのみ変更。
+
+| 旧ファイル名 | 新ファイル名 | サブタイプ |
+|---|---|---|
+| dev-environment-workflow-v2-l1 | dev-environment-workflow-v2-l1-infra | L1-Infra |
+| lightrag-infra-ops-log-l1 | lightrag-infra-ops-l1-ops | L1-Ops |
+| lightrag-knowledge-ops-l1 | lightrag-knowledge-ops-l1-ops | L1-Ops |
+
