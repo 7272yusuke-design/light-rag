@@ -114,7 +114,7 @@ codex-plugin-cc, agency-agents, obsidian-skills, cli(GWS) + グラフ残骸4件
 
 ## 残タスク（優先順）
 1. [ ] OpenRouter APIキーローテーション（最優先・セキュリティ）
-2. [ ] L2c本体投入（5パターン）: Agent Routing / Tool-loop+MCP / OpenAI互換抽象化 / Text-first+On-demand visuals / LLMトークン削減プロキシ
+2. [x] L2c本体投入（5パターン）完了（2026-04-18）
 3. [ ] DECISIONS.mdのURL補完: rtk, MiniCode, JeecgBoot, Agent Lightning
 4. [ ] 未分類4件のL3/L2化検討（codex-plugin-cc, agency-agents, obsidian-skills, cli GWS）
 5. [ ] 旧版グラフデータクリーンアップ（低優先）

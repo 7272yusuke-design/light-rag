@@ -93,3 +93,32 @@
 1. rtk・video-useのL2c本体投入（LightRAGへupload_document）
 2. 未確認のURL（rtk, MiniCode, JeecgBoot, Agent Lightning）を次セッションで補完
 3. 新規リソース評価時は本ドキュメント末尾に追記
+
+---
+
+### 2026-04-18
+
+#### L2c本体投入: 5パターン一括
+
+**投入ファイル**:
+- agent-routing-l2c_lightrag.txt
+- tool-loop-mcp-l2c_lightrag.txt
+- openai-compat-abstraction-l2c_lightrag.txt
+- text-first-on-demand-visuals-l2c_lightrag.txt
+- llm-token-reduction-proxy-l2c_lightrag.txt
+
+**判断**: L2c投入（DATA-SCHEMA.md v2ルール下で初のL2c本体投入）
+
+**経緯**:
+- 2026-04-17時点ではKNOWLEDGE-INDEX.mdの「L2抽出候補」セクションにのみ記載されていた
+- 2026-04-18のDATA-SCHEMA.md v2でL2cレイヤーが正式化され、LightRAG本体への投入が可能に
+- 各パターンはopenclaude/video-use/browser-use/rtkのL3読解ベース
+
+**昇格条件**（個別）:
+- Agent Routing: Yusukeさんがn8n案件またはOpenClawで実装しコスト削減効果測定完了時
+- Tool-loop+MCP: 自前Coding Agent実装時、またはOpenClawでMCP化した取引操作を1週間安定運用時
+- OpenAI互換抽象化: 実案件で2プロバイダー以上の切替を実装し同じアプリが両方で動作確認時
+- Text-first+On-demand visuals: 動画編集/Webスクレイピング/PDF処理のいずれかで素朴実装比70%以上のトークン削減を測定時
+- LLMトークン削減プロキシ: rtkをClaude Code/OpenClaw環境に1週間以上運用してトークン削減率を実測時
+
+**rtk URL判明**: https://github.com/rtk-ai/rtk（DECISIONS.md上の2026-04-17 rtkエントリのURL補完）
