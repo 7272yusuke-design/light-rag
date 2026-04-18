@@ -79,12 +79,12 @@
 
 ## 統計
 
-- L3投入: 2件（openclaude, rtk）
-- L2c候補（本体未投入）: 2件（video-use、rtkのL2c部分）
-- 保留: 2件（MiniCode, Agent Lightning）
+- L3投入: 3件（openclaude, rtk, mcp2cli）
+- L2c投入: 6件（5パターン本体投入済 + schema-driven-lazy-cli）
+- 保留: 3件（MiniCode, Agent Lightning, smolvm）
 - 見送り: 2件（Documenso, JeecgBoot）
 
-**合計**: 7件の評価実績
+**合計**: 9件の評価実績
 
 ---
 
@@ -122,3 +122,31 @@
 - LLMトークン削減プロキシ: rtkをClaude Code/OpenClaw環境に1週間以上運用してトークン削減率を実測時
 
 **rtk URL判明**: https://github.com/rtk-ai/rtk（DECISIONS.md上の2026-04-17 rtkエントリのURL補完）
+
+---
+
+### 2026-04-18（追加評価）
+
+#### mcp2cli
+- **判断**: L3投入
+- **出典URL**: https://github.com/knowsuchagency/mcp2cli
+- **理由**: MCPサーバー/OpenAPIを実行時にCLIに変換、コード生成なし。LightRAG MCP（https://mcp.7272yusuke.cloud/mcp）をClaude Codeからbash経由で呼べる最短経路。トークン削減96-99%実測値あり（入力側スキーマ注入の削減）。n8n案件・Yusukeさん事業に直撃。
+- **ファイル名**: mcp2cli-l3_lightrag.txt
+- **注意事項**: 4 stars、30 commits、開発初期。API破壊的変更リスクあり。評価フェーズから始めて本番依存は避ける
+- **再検討条件**: —
+- **関連L2c**: schema-driven-lazy-cli-l2c（同時投入）
+
+#### Schema-driven Lazy CLI パターン（L2c）
+- **判断**: L2c投入
+- **出典**: mcp2cli（L3投入）, CLIHub（Kagan Yilmaz記事）, Anthropic Tool Search
+- **理由**: mcp2cliから抽出した「入力側（スキーマ）トークン削減」パターン。rtkの「出力側削減」と対をなす。複数実装（mcp2cli/CLIHub/Anthropic Tool Search）が存在する成熟概念のため、パターン単独の価値も高い
+- **ファイル名**: schema-driven-lazy-cli-l2c_lightrag.txt
+- **抽出候補パターン名**: Schema-driven CLI + Lazy Tool Discovery
+- **再検討条件（昇格条件）**: Yusukeさんが自環境でmcp2cliを導入しLightRAG MCPをClaude Codeから1週間以上運用、もしくはn8n案件で顧客OpenAPIに対してmcp2cli相当を導入しトークン削減率を実測
+
+#### smolvm
+- **判断**: 保留
+- **出典URL**: https://github.com/smol-machines/smolvm
+- **理由**: microVMをローカル実行する軽量ツール（<250msブート、libkrun+Hypervisor.framework/KVM）。領域は将来合う（Coding Agent安全実行、OpenClaw本番運用）が、現フェーズ（Claude Code導入初期・n8n→アプリ開発アップセル検討中）では早すぎる。HostingerのVPSで/dev/kvmが使えるかも未確認。22 stars、Alpha段階（v0.1.7）で破壊的変更リスク大
+- **再検討条件**: OpenClaw本番運用着手時、または顧客向けCoding Agentサービス提供を開始するとき（セキュリティ層強化が必要になる段階）
+
