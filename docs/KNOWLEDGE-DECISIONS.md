@@ -210,3 +210,174 @@ DATA-SCHEMA.md v3のサブタイプ規約に沿ってfile_pathをUPDATE（計227
 | lightrag-infra-ops-log-l1 | lightrag-infra-ops-l1-ops | L1-Ops |
 | lightrag-knowledge-ops-l1 | lightrag-knowledge-ops-l1-ops | L1-Ops |
 
+
+---
+
+## 2026-04-19 — Phase 3（無サフィックス・重複ナレッジの再投入・削除）
+
+### 背景・目的
+用途①（設計書出力）②（開発支援）③（情報発信）の精度評価で、以下の問題が判明した:
+- 「crewai」検索でcrewai本体がヒットせず、crawl4aiが誤優先される
+- skill-creator が 3ファイル重複
+- 旧形式（サフィックスなし）ナレッジ群がエンティティ汚染（Tokyo / Gmail / Slack等の周辺語が混入）
+- エンティティ純度の低下が検索精度を下げていた
+
+### 真因（エンティティ構造調査で判明）
+- `lightrag_full_entities` は 1ドキュメント1レコード、`entity_names` は JSONB 配列
+- 旧形式ナレッジ（Repomix等で丸ごと投入したもの）は、サンプルコード内の周辺語までエンティティ化されていた
+- L3テンプレートに沿って再投入すると、**固有名詞に絞られたエンティティ**が生成され、検索精度が上がる
+
+### 実施サマリ
+- 削除: 39件
+- 再投入（L3品質）: 13件
+- 純減: **26件**（149→123）
+- vdb_entities: ~6000→5200（ノイズ除去約800件）
+
+### Phase 1a: 確実な重複24件削除
+skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧孤児系 × 4件。
+
+| 削除ファイル | 削除理由 |
+|---|---|
+| skill-skill-creator_lightrag.txt | skill-creator-l3の旧版 |
+| skill-skill-creator-v2_lightrag.txt | 同上 |
+| skill-docx_lightrag.txt / skill-docx-v2_lightrag.txt | skill-docx-l3の旧版 |
+| skill-file-reading_lightrag.txt / -v2 | skill-file-reading-l3の旧版 |
+| skill-frontend-design_lightrag.txt / -v2 | skill-frontend-design-l3の旧版 |
+| skill-pdf_lightrag.txt / -v2 | skill-pdf-l3の旧版 |
+| skill-pdf-reading_lightrag.txt / -v2 | skill-pdf-reading-l3の旧版 |
+| skill-pptx_lightrag.txt / -v2 | skill-pptx-l3の旧版 |
+| skill-product-self-knowledge_lightrag.txt / -v2 | skill-product-self-knowledge-l3の旧版 |
+| skill-xlsx_lightrag.txt / -v2 | skill-xlsx-l3の旧版 |
+| graphify_lightrag.txt | graphify-l3の旧版 |
+| playwright-cli_lightrag.txt | playwright-cli-l3の旧版 |
+| secretary-agent-p1-progress.txt | プロジェクト進捗、Claude.ai側で管理 |
+| secretary-agent-p1-spec.txt | プロジェクト仕様、Claude.ai側で管理 |
+| test-upload.txt | テストファイル |
+| openclaw_lightrag.txt | openclaw-project-l1の旧版残骸 |
+
+### crewai単独再投入（検証）
+| 処理 | ファイル |
+|---|---|
+| 削除 | crewai_lightrag.txt（103エンティティ、うち汚染多数） |
+| 再投入 | crewai-l3_lightrag.txt（L3テンプレート準拠） |
+
+検証結果: 「crewai エージェント オーケストレーション」検索で筆頭ヒット。用途①で設計書素材として使える品質に。
+
+### バッチ1: マルチエージェント3件（削除→再投入）
+| 旧 | 新 | 備考 |
+|---|---|---|
+| langgraph_lightrag.txt | langgraph-l3_lightrag.txt | StateGraph/Checkpointer/HITL詳細化 |
+| mastra_lightrag.txt | mastra-l3_lightrag.txt | v1.0リリース情報、Apache 2.0、22k+ Stars反映 |
+| n8n_lightrag.txt | n8n-l3_lightrag.txt | 70+AIノード、LangChain統合、500+統合詳細化 |
+
+検証結果: n8n筆頭、LangGraph/CrewAI/Mastraが関連検索で揃う（設計判断時の比較候補が揃う）。
+
+### バッチ2: Web/スクレイピング/SDK 4件削除→3件再投入
+| 旧 | 処理 | 判断理由 |
+|---|---|---|
+| firecrawl_lightrag.txt | → firecrawl-l3_lightrag.txt | 110k+ Stars、MCP Server・Claude Codeプラグイン反映 |
+| browser-use_lightrag.txt | → browser-use-l3_lightrag.txt | 28.8k+ Stars、10+LLMプロバイダー対応 |
+| ffmpeg_lightrag.txt | → ffmpeg-l3_lightrag.txt | Remotion/ComfyUI連携、n8n統合パターン詳細化 |
+| llmfit_lightrag.txt | **削除のみ** | 用途不明、検索ヒットなし、事業との関連度低 |
+
+### バッチ3: 最終7件削除→6件再投入
+| 旧 | 処理 | 判断理由 |
+|---|---|---|
+| anthropic-cookbook_lightrag.txt | → anthropic-cookbook-l3_lightrag.txt | Claude API公式レシピ、最重要参照ナレッジ |
+| ccxt_lightrag.txt | → ccxt-l3_lightrag.txt | OpenClaw取引エージェントの基盤 |
+| freqtrade_lightrag.txt | → freqtrade-l3_lightrag.txt | OpenClaw比較対象、バックテストエンジン |
+| n8n-as-code_lightrag.txt | → n8n-as-code-l3_lightrag.txt | GitOps統合、OpenClaw連携明示 |
+| supabase_lightrag.txt | → supabase-l3_lightrag.txt | マルチテナントSaaS・pgvector基盤 |
+| vercel_lightrag.txt | → vercel-l3_lightrag.txt | Vercel AI SDK（TypeScript抽象化） |
+| nemo-agent-toolkit_lightrag.txt | **削除のみ** | NVIDIA GPU前提、現スタック未適合、既存CrewAI/LangGraph/Mastraで代替可 |
+
+### 方法論：安全な削除手順
+1. バックアップ取得（pg_dump → `/docker/lightrag/backups/pre-cleanup-*.sql`）
+2. 削除対象IDを psql で確認
+3. `BEGIN; ... ROLLBACK;` でドライラン実行、件数確認
+4. ROLLBACK を COMMIT に置換して本番実行
+5. ベースラインエンティティ件数で影響範囲を測定（LangChain/Python/TypeScript/OpenAI/Claude）
+6. 再投入後は `status = processed` を確認
+
+### 影響範囲の測定結果（共有エンティティの保護）
+削除前後で主要エンティティ件数に有意な減少なし:
+- LangChain: 4 → 4（維持）
+- TypeScript: 8 → 8（維持）
+- OpenAI: 25 → 24（-1、軽微）
+- Python: 23 → 22（-1、軽微）
+- Claude: 94 → 92（-2、軽微）
+
+→ `file_path LIKE '%xxx_lightrag.txt%'` パターンは実害なし。
+
+### 検証結果（用途①②③への適合性）
+| 検証クエリ | 結果 |
+|---|---|
+| 「crewai エージェント オーケストレーション」 | crewai-l3筆頭、設計書素材OK |
+| 「マルチエージェント取引判断」 | TrinityCouncil + LangGraph + openclaude揃う |
+| 「仮想通貨 取引 バックテスト 戦略」 | CCXT + Freqtrade + TrinityCouncil揃う（OpenClaw開発即可能） |
+| 「next.js supabase saas マルチテナント」 | Supabase筆頭 + Next.js + RAG設計 + マルチテナント設計パターン揃う |
+| 「anthropic cookbook claude api パターン」 | 公式パターン + Yusuke事業との接続リレーション抽出 |
+
+### 学び・運用ルール追加
+1. **エンティティ純度がRAG検索精度を決める**。サンプルコード丸投げは避け、L3テンプレートで整理投入する
+2. **短い固有名詞（4-8文字）での検索は埋め込みベクトルの限界**に当たる（crewai vs crawl4aiの文字列類似問題）。**文脈語を加えた複合クエリが実用上必要**
+3. **用途別クエリ戦略**: 用途③（情報発信）では「題材検索」と「発信型検索」を2段階に分けるべき（次タスクでスキル化予定）
+
+### 残タスク（Phase 3後）
+1. [ ] 検索モード使い分け指針の明文化（Step 3、本ファイル/DATA-SCHEMA.mdに追記）
+2. [ ] 2段階クエリ戦略のスキル化（Step 4、article-architect 類似の発信用スキル設計）
+3. [ ] 残ファイル名不整合の点検（_lightrag.txt と -l3_lightrag.txt の混在が解消されたか）
+4. [ ] KNOWLEDGE-INDEX.md の詳細一覧を再棚卸し（v3 Phase 3 後反映）
+
+---
+
+# 2026-05-01 セッション: 整理・棚卸し
+
+## 1. 新規L3投入: Trellis (mindfold-ai)
+- **カテゴリ**: L3投入
+- **リポジトリ**: https://github.com/mindfold-ai/Trellis
+- **ファイル**: trellis-mindfold-l3_lightrag.txt
+- **判断理由**: マルチプラットフォーム（14ツール: Claude Code/Cursor/OpenCode/Codex/Gemini CLI/GitHub Copilot/Windsurf 等）AIコーディングフレームワーク。spec/tasks/workspaceの3層で規約・タスク・ジャーナルを管理。superpowers/gsd/agent-teams/gstack等の既存ナレッジと領域は重なるが、「ツール横断統合」という独自軸はカバーされていなかった。スター6.2k、AGPL-3.0、現役更新中（v0.4.0が最新）。
+- **L2昇格条件**: 
+  - 実プロジェクト導入で効果検証
+  - n8nコンサルクライアントへの提案実績
+  - multi-tool-skills-sharing-l2cとの統合体系化
+
+## 2. 新規L3投入: VoxCPM (OpenBMB)
+- **カテゴリ**: L3投入
+- **リポジトリ**: https://github.com/OpenBMB/VoxCPM
+- **ファイル**: voxcpm-openbmb-l3_lightrag.txt
+- **判断理由**: 30言語対応・48kHz・Apache-2.0商用OKのTokenizer-Free TTSモデル。Voice Design（記述だけで声を作る）/ Controllable Cloning / Ultimate Cloning の3モード対応。既存ナレッジ（pipecat/livekit-agents/ffmpeg/yt-pipeline/note-claudecode-monetization-pipeline）との連携シナリオが豊富。OpenClawの音声化、note.com→YouTube自動化、n8nコンサル提案材料として高い価値。スター13.5k、ModelBest/THUHCSI開発、MiniCPM-4ベース。
+- **L2昇格条件**:
+  - 実パイプライン組込（note→音声→YouTube）
+  - VoicePOC実装成立
+  - n8n商用提案成約
+  - LoRA企業ブランドボイス構築の体系化
+
+## 3. 見送り: docker-android (budtmo)
+- **カテゴリ**: 見送り
+- **リポジトリ**: https://github.com/budtmo/docker-android
+- **判断理由**: noVNC対応Androidエミュレータ in Docker。Yusukeのn8n/エージェント主軸の事業領域とモバイルアプリテストの直接的接点が薄い。Hostinger VPSのKVM対応も不明。具体的な案件発生時に再評価でナレッジ膨張を防ぐ。スター14.3k、Ubuntu OS必須・KVM仮想化必須。
+- **再評価条件**:
+  - クライアントからモバイルアプリのE2Eテスト/CI環境構築の相談が来た場合
+  - Yusuke自身がモバイルアプリ開発に着手した場合
+
+## 4. クリーンアップ: doc_fullゴースト21件削除
+- **カテゴリ**: クリーンアップ実施
+- **背景**: 2026-04-19 Phase 3 cleanup 後、doc_full(178) vs doc_status(157)で21件の乖離が残存。検索ノイズ源として認識されつつ次セッション送りになっていた積み残しタスク。
+- **削除対象（21件のゴーストドキュメント）**:
+  - 過去削除済みリポジトリ系（11件）: OpenSpace, ComfyUI-to-Python-Extension, comfyui-api-wrapper, comfy_api_simplified, n8n-mcp, ruflo, claude-peers-mcp, CLI-Anything, servers, autoresearch, notebooklm-py(古い版)
+  - L1削除残存系（10件）: git-art, note.com自動投稿, note.com Claude Code記事収益化, きよびん, OpenClaw, Masterclass, GitHub Actions記事生成, 開発環境ワークフロー, career-ops, notebooklm-py(旧版)
+- **削除内訳**:
+  - lightrag_vdb_chunks_nomic_embed_text_768d: 71件
+  - lightrag_doc_chunks: 71件
+  - lightrag_doc_full: 21件
+- **手順**: pg_dump → ドライラン(BEGIN+ROLLBACK)で件数確認 → 本番実行(BEGIN+COMMIT) → 整合性確認(doc_full=doc_status=157)
+- **バックアップ**: /docker/lightrag/backups/pre-reinventory-20260501-011545.sql (251MB)
+- **検索精度への期待効果**: ゴーストチャンクが検索ヒットしなくなり、無効リンクのノイズが除去される
+- **積み残し**: entity_chunks/relation_chunks のゴーストID配列要素クリーンアップは未実施（LightRAG公式手順の調査が必要なため、別セッションで実施）
+
+## 5. 整理セッションでの発見
+- 実際のナレッジ数 = **157件**（メモリ記録/INDEX.md記録の104〜123件から大幅増加）
+- L3が48→103件に倍増、L2cが9→19件に倍増
+- INDEX.md / RESUME.md / GSD-PLAN.md の3ファイルが**全て古い**状態だったため、これを機に同期更新する

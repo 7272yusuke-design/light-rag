@@ -4,11 +4,12 @@
 LightRAGナレッジパイプラインの作業を再開する際の手順。セッション開始時にこのファイルを確認する。
 
 ## 即座に伝えること
+
 LightRAGナレッジパイプラインの続きをやります。
 
-VPS: 76.13.187.66
-作業ディレクトリ: /docker/lightrag/
-Git: https://github.com/7272yusuke-design/light-rag
+- VPS: 76.13.187.66
+- 作業ディレクトリ: /docker/lightrag/
+- Git: https://github.com/7272yusuke-design/light-rag
 
 計画書（全てVPS上 /docker/lightrag/docs/）:
 - RESUME.md（本ファイル）
@@ -19,8 +20,23 @@ Git: https://github.com/7272yusuke-design/light-rag
 - KNOWLEDGE-DECISIONS.md（投入判断ログ）
 - SYSTEM-SPEC.md（システム仕様）
 
-現在のフェーズ: Phase 1-11完了 + L1 v3再設計完了（2026-04-18）
-ナレッジベース: 104件（L3:48, L2:16, L2c:9, L1:3, その他/旧形式:28）
+## 現在のフェーズ
+**Phase 12 完了（2026-05-01）**: 整理・再棚卸しセッション
+
+## ナレッジベース現状（2026-05-01）
+- **総数: 157件**（全processed、エラー0件）
+- **doc_full = doc_status = 157**（整合性確保、ゴースト21件除去済み）
+
+### レイヤー内訳
+| レイヤー | 件数 | 割合 |
+|---------|------|------|
+| L3（実装） | 103 | 65.6% |
+| L2（検証済みパターン） | 18 | 11.5% |
+| L2c（候補パターン） | 19 | 12.1% |
+| L1-Infra | 1 | 0.6% |
+| L1-Ops | 2 | 1.3% |
+| L1-old | 1 | 0.6% |
+| other（旧形式） | 13 | 8.3% |
 
 ## 環境確認コマンド
     cd /docker/lightrag && docker compose ps
@@ -56,38 +72,32 @@ Git: https://github.com/7272yusuke-design/light-rag
 ## 認証情報
 - WebUI: http://76.13.187.66:9621 -> admin / LightRag@2026!
 - .envはgit外。VPS上の /docker/lightrag/.env を参照
-- OpenRouter APIキーは要ローテーション（チャットで公開済み）
+- **OpenRouter APIキーは要ローテーション**（チャットで公開済み・最優先タスク）
 
-## ナレッジ4レイヤー構成（2026-04-18 v3）
+## ナレッジ4レイヤー構成（2026-04-18 v3 / 2026-05-01時点件数）
 
-### L3（実装）: 48件
-気になる技術スタックの部品在庫。2026-04-18にmcp2cliを追加（48件）。
+### L3（実装）: 103件
+気になる技術スタックの部品在庫。リポジトリ/ツール/SKILLは最初からL3で投入。
+詳細はKNOWLEDGE-INDEX.md参照。
 
-### L2（検証済みパターン）: 16件
-スキル設計パターン集, SNSライティングルール, ai-seo, スキル最適化手法,
-mcollina/skills, Building LLM, anthropic-cookbook, superpowers, GSD,
-マルチエージェント設計パターン, RAGパイプライン構築, RAGアプリケーション設計,
-AI文書生成パイプライン, Agent Teams並列開発, マルチテナントSaaS設計,
-Durable Execution+HITL承認フロー, n8n→Webアプリ移行判断
+### L2（検証済みパターン）: 18件
+組み合わせ方を知る。検証済みのみ。category: pattern/combination のみ許可。
+詳細はKNOWLEDGE-INDEX.md参照。
 
-### L2c（候補パターン）: 9件
-1. Agent Routing（openclaude由来）
-2. Tool-loop+MCP統合（openclaude由来）
-3. OpenAI互換API抽象化（openclaude由来）
-4. Text-first+On-demand visuals（video-use/browser-use由来）
-5. LLMトークン削減プロキシ（rtk由来）
-6. Schema-driven Lazy CLI（mcp2cli由来）
-7. TrinityCouncil 3エージェント議論型合意形成（Neo/OpenClaw由来、L1から昇格）
-8. n8n Cron駆動 自己改善ワークフローエージェント（SNS Autopilot由来、L1から昇格）
-9. CLAUDE.md駆動のコンテンツ自動生成（git-art/GitHub Actions由来、L1から昇格）
+### L2c（候補パターン）: 19件
+ブレスト/OSS読解ベースで投入可（status: unverified）。
+ファイル名: *-l2c_lightrag.txt。検証後にL2へ昇格。
 
-### L1（L1-Infra / L1-Ops）: 3件
-L1 v3再設計によりプロジェクト固有情報は全除外。横断運用のメタ知識のみ維持。
+### L1（横断運用メタ知識のみ）: L1-Infra 1件 + L1-Ops 2件 = 計3件
+v3再設計によりプロジェクト固有情報は全除外。
 - dev-environment-workflow-v2-l1-infra（L1-Infra）
 - lightrag-infra-ops-l1-ops（L1-Ops）
 - lightrag-knowledge-ops-l1-ops（L1-Ops）
 
-### その他/旧形式: 28件（次セッションで再棚卸し）
+### その他（旧形式・リネーム対象）: 14件
+- L1-old: 1件（awesome-agent-skills-l1）
+- other（サフィックスなし）: 13件
+詳細・リネーム計画はKNOWLEDGE-INDEX.md参照。
 
 ## ナレッジ投入ルール（2026-04-18 v3）
 
@@ -99,7 +109,7 @@ L1 v3再設計によりプロジェクト固有情報は全除外。横断運用
 - 削除はDELETE API禁止。psql直接操作 + pg_dump必須
 - 案件完了後、汎用化できるパターンをL2として投入
 
-### L1 v3ルール（2026-04-18 再定義）
+### L1 v3ルール
 - L1はL2/L3を使うための「横断運用のメタ知識」と「環境前提」のみ
 - プロジェクト固有情報はLightRAGに入れない（Claude.aiプロジェクト/Notion側で管理）
 - サブタイプ: L1-Infra（開発環境前提）、L1-Ops（LightRAG運用メタ知識）
@@ -109,9 +119,8 @@ L1 v3再設計によりプロジェクト固有情報は全除外。横断運用
 - ブレスト/OSS読解ベースでも投入可（status: unverified）
 - ファイル名: *-l2c_lightrag.txt
 - 自環境で実装・動作確認後、L2に昇格（ファイル名リネーム）
-- L1削除前の汎用化抽出先としても使う
 
-### L2品質ゲート強化（v3追加）
+### L2品質ゲート
 - L2のカテゴリは pattern / combination のみ（context/persona/research禁止）
 - L1→L2直接昇格禁止。必ず L1→L2c→検証→L2 の段階を経ること
 
@@ -121,30 +130,48 @@ L1 v3再設計によりプロジェクト固有情報は全除外。横断運用
 - 再検討条件は具体ビジネスイベント形式で書く
 - 再評価時は必ずDECISIONSを参照して重複判断を避ける
 
-## 活用目的（2026-04-18 明文化）
-①開発設計: Claude.aiからMCP経由で参照、具体的な設計書を出力
-②開発支援: Hostingerターミナル開発時にナレッジ参照
-③情報発信: 主にL2ユースケースの記事を自動生成して発信
+## 活用目的
+1. **開発設計**: Claude.aiからMCP経由で参照、具体的な設計書を出力
+2. **開発支援**: Hostingerターミナル開発時にナレッジ参照
+3. **情報発信**: 主にL2ユースケースの記事を自動生成して発信
 
-## 残タスク（優先順）
-1. [ ] OpenRouter APIキーローテーション（最優先・セキュリティ）
-2. [ ] KNOWLEDGE-INDEX.md の詳細一覧を再棚卸し（v3反映）
-3. [ ] DECISIONS.mdのURL補完: rtk=https://github.com/rtk-ai/rtk（判明済）、MiniCode/JeecgBoot/Agent LightningのURL
-4. [ ] 未分類4件のL3/L2化検討（codex-plugin-cc, agency-agents, obsidian-skills, cli GWS）
-5. [ ] entity/relation残骸のクリーンアップ（L1削除で残った幽霊エンティティ）
-6. [ ] L2c昇格条件を満たしたものからL2へ昇格（各パターンの検証実施）
-7. [ ] L2さらなる拡充（現16件、目標20件）
+## 残タスク（優先順、2026-05-01更新）
 
-## 完了タスク（2026-04-18）
-- [x] DATA-SCHEMA.md v2更新（L2cレイヤー、4判断カテゴリ、投入フロー明文化）
-- [x] KNOWLEDGE-DECISIONS.md新設（初期7件の判断を永続化）
-- [x] L2c本体投入 5パターン（Agent Routing/Tool-loop+MCP/OpenAI互換抽象化/Text-first+On-demand visuals/LLMトークン削減プロキシ）
+1. [ ] **OpenRouter APIキーローテーション**（最優先・セキュリティ）
+2. [ ] **旧形式13件のリネーム再投入**（other枠、INDEX.md記載の計画通り）
+3. [ ] **L1-old 1件のリネーム**（awesome-agent-skills-l1 → l3化検討）
+4. [ ] **entity_chunks/relation_chunks のゴースト要素クリーンアップ**（LightRAG公式手順調査が必要）
+5. [ ] **L2c → L2 昇格候補の検証**（実装による検証実施）
+6. [ ] **L2拡充**（現18件 → 目標25件）
+7. [ ] **2段階クエリ戦略のスキル化**（理論はDATA-SCHEMA.md記載済、スキル化のみ未着手）
+
+## 完了タスク履歴
+
+### 2026-05-01: 整理・再棚卸し（Phase 12）
+- [x] doc_fullゴースト21件削除（chunks 71件 + vdb_chunks 71件巻き込み）
+- [x] doc_full = doc_status = 157 の整合性達成
+- [x] 全157件のレイヤー別棚卸し（INDEX.md全面書き換え）
+- [x] 新規L3投入2件（trellis-mindfold-l3 / voxcpm-openbmb-l3）
+- [x] 見送り判断1件（docker-android budtmo）
+- [x] DECISIONS.md / INDEX.md / RESUME.md 同期更新
+- [x] 旧形式13件のリネーム計画明文化
+
+### 2026-04-19: Phase 3 無サフィックス再投入
+- [x] 用途別検索精度の実地検証（6テストクエリ）
+- [x] エンティティ構造の解明（lightrag_full_entities と vdb_entity の役割分担）
+- [x] Phase 1a 重複24件削除（skill系旧版18+プロジェクト進捗2+孤児4）
+- [x] crewai 削除→L3再投入（エンティティ純度問題の検証）
+- [x] バッチ1 マルチエージェント3件再投入（langgraph/mastra/n8n）
+- [x] バッチ2 Web系3件再投入+llmfit削除（firecrawl/browser-use/ffmpeg）
+- [x] バッチ3 SaaS/取引6件再投入+nemo-agent-toolkit削除（anthropic-cookbook/ccxt/freqtrade/n8n-as-code/supabase/vercel）
+
+### 2026-04-18: L1 v3再設計 + L2c拡充
+- [x] DATA-SCHEMA.md v2/v3更新（L2cレイヤー、4判断カテゴリ、L1再定義）
+- [x] KNOWLEDGE-DECISIONS.md新設
+- [x] L2c本体投入5パターン
 - [x] mcp2cli L3投入 + Schema-driven Lazy CLI L2c投入
-- [x] smolvm 保留判断 + DECISIONS記録
-- [x] DATA-SCHEMA.md v3追記（L1再定義・L1-Infra/L1-Ops・L2品質ゲート強化）
-- [x] L1から汎用パターン3件をL2cへ昇格（TrinityCouncil/n8n自己改善/CLAUDE.md駆動コンテンツ）
-- [x] L1削除 10件（psql・pg_dump保護・計531レコード削除）
-- [x] L1維持3件をL1-Infra/L1-Opsにリネーム（計227レコードUPDATE）
+- [x] L1から汎用パターン3件をL2cへ昇格
+- [x] L1削除10件 + L1維持3件をL1-Infra/L1-Opsにリネーム
 
 ## Claude.aiプロジェクト スキル
 - combination-architect: ナレッジ組み合わせ→企画提案・設計・L2/L3投入
