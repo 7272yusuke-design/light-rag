@@ -1,0 +1,3 @@
+file,bytes,tokens_full_json,tokens_content_only
+/docker/lightrag/measurement/baseline/baseline_tools_list.json,1223,272,321
+/docker/lightrag/measurement/s2_tools_list.json,875,201,250

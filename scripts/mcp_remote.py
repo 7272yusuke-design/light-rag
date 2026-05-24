@@ -19,7 +19,7 @@ PROFILE_PATH = os.environ.get("PROFILE_PATH", "/docker/lightrag/config/project_p
 TOOLS = [
     {
         "name": "search_knowledge",
-        "description": "Search the LightRAG knowledge base. Args: query (required), mode (hybrid/local/global/naive), project (openclaw/virtual-protocol/website/webapp/workflow)",
+        "description": "Search LightRAG knowledge.",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -32,23 +32,23 @@ TOOLS = [
     },
     {
         "name": "list_knowledge",
-        "description": "List all documents in the LightRAG knowledge base.",
+        "description": "List all docs.",
         "inputSchema": {"type": "object", "properties": {}}
     },
     {
         "name": "list_projects",
-        "description": "List available project filters for knowledge search.",
+        "description": "List project filters.",
         "inputSchema": {"type": "object", "properties": {}}
     },
     {
         "name": "upload_document",
-        "description": "Upload a document to the LightRAG knowledge base. Accepts file_name and text content. Use to add knowledge directly without file transfer.",
+        "description": "Upload doc to LightRAG.",
         "inputSchema": {
             "type": "object",
             "properties": {
                 "file_name": {"type": "string", "description": "File name e.g. skill-docx-l3.txt"},
-                "content": {"type": "string", "description": "Full document text"},
-                "overwrite": {"type": "boolean", "default": False, "description": "Delete existing doc with same name before upload"}
+                "content": {"type": "string", "description": "Doc text"},
+                "overwrite": {"type": "boolean", "default": False, "description": "Overwrite if exists"}
             },
             "required": ["file_name", "content"]
         }
