@@ -1,0 +1,5 @@
+file,bytes,tokens_full_json,tokens_content_only
+baseline/baseline_tools_list.json,1223,272,321
+baseline/query1_openspec_naive.json,2270,817,729
+baseline/query2_mcp_hybrid.json,4415,1338,1234
+baseline/query3_agent_hybrid.json,4478,1289,1171
