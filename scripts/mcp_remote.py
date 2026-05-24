@@ -4,6 +4,7 @@ import json
 import urllib.request
 import urllib.parse
 import os
+import subprocess
 
 from starlette.applications import Starlette
 from starlette.routing import Route
@@ -123,19 +124,31 @@ def do_search(args):
 
 
 def do_list_knowledge(args):
-    result = api_request("/documents")
-    items = result.get("statuses", {}).get("processed", [])
+    # SQL側で必要項目のみ抽出(本文内改行による行分裂を回避)
+    sql = """
+SELECT
+  ds.file_path,
+  COALESCE((regexp_match(df.content, E'^# (.+)$', 'n'))[1], '') AS name,
+  COALESCE((regexp_match(df.content, E'^- カテゴリ: ?(.+)$', 'n'))[1], '') AS category,
+  COALESCE((regexp_match(df.content, E'^- タグ: ?(.+)$', 'n'))[1], '') AS tags
+FROM lightrag_doc_status ds JOIN lightrag_doc_full df ON ds.id = df.id
+ORDER BY ds.file_path;
+""".strip()
+    cmd = ["docker", "compose", "exec", "-T", "postgres",
+           "psql", "-U", "lightrag", "-d", "lightrag", "-tAF", "\x1f", "-c", sql]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30, cwd="/docker/lightrag")
+        rows = [r for r in result.stdout.split("\n") if r.strip()]
+    except Exception as e:
+        return f"DB query failed: {e}"
     lines = []
-    for doc in items:
-        s = doc.get("content_summary", "")
-        name = category = tags = ""
-        for l in s.split("\n"):
-            l = l.strip()
-            if l.startswith("# "): name = l[2:].replace("SKILL: ", "")
-            elif l.startswith("- カテゴリ:"): category = l.split(":", 1)[1].strip()
-            elif l.startswith("- タグ:"): tags = l.split(":", 1)[1].strip()
+    for row in rows:
+        parts = row.split("\x1f")
+        if len(parts) < 4:
+            continue
+        file_path, name, category, tags = parts[0], parts[1].replace("SKILL: ", ""), parts[2], parts[3]
         lines.append(f"- {name} [{category}] tags: {tags}")
-    return f"Total: {len(items)} documents\n" + "\n".join(lines)
+    return f"Total: {len(rows)} documents\n" + "\n".join(lines)
 
 
 def do_list_projects(args):
