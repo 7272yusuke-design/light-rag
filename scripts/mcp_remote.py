@@ -11,6 +11,8 @@ from starlette.routing import Route
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
+from middleware.compression import compress_response
+
 LIGHTRAG_URL = os.environ.get("LIGHTRAG_URL", "http://localhost:9621")
 LIGHTRAG_USER = os.environ.get("LIGHTRAG_USER", "admin")
 LIGHTRAG_PASS = os.environ.get("LIGHTRAG_PASS", "LightRag@2026!")
@@ -119,8 +121,9 @@ def do_search(args):
             for ref in ref_items[:10]:
                 if isinstance(ref, dict):
                     output.append(f"[references] {json.dumps(ref, ensure_ascii=False)}")
-        return "\n\n".join(output) if output else json.dumps(data, ensure_ascii=False)[:2000]
-    return json.dumps(result, ensure_ascii=False)[:2000]
+        text = "\n\n".join(output) if output else json.dumps(data, ensure_ascii=False)[:2000]
+        return compress_response(text, level="off")
+    return compress_response(json.dumps(result, ensure_ascii=False)[:2000], level="off")
 
 
 def do_list_knowledge(args):
