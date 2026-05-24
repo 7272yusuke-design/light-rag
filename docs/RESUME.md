@@ -177,3 +177,30 @@ v3再設計によりプロジェクト固有情報は全除外。
 - combination-architect: ナレッジ組み合わせ→企画提案・設計・L2/L3投入
 - knowledge-navigator: ナレッジ検索→実装提案・技術選定・問題解決
 - skill-verifier: Claudeception方式でナレッジ/スキル品質検証
+
+---
+
+## 2026-05-24 フェーズ1A セッション1+2（圧縮ミドルウェア実装）
+
+### セッション1（記録漏れ補修）
+- 実施日: 2026-05-23(推定、コミットb54d116時点)
+- 完了: ベースライン計測完了
+  - tools/list: 272 tokens
+  - query1(openspec/naive): 729 tokens
+  - query2(mcp/hybrid): 1234 tokens
+  - query3(agent/hybrid): 1171 tokens
+- 成果物: /docker/lightrag/measurement/baseline/ 配下4ファイル + count_tokens.py
+- ブランチ: feature/compression-middleware
+- コミット: b54d116
+
+### セッション2
+- 実施日: 2026-05-24
+- 完了: tool description簡潔化
+  - 6箇所のdescription削減(search_knowledge / list_knowledge / list_projects / upload_document + 内部フィールド3)
+  - file_nameの例示「skill-docx-l3.txt」のみ保持
+- 効果: tools/list 272 -> 201 tokens (-26%)
+- バックアップ: scripts/mcp_remote.py.bak-session2
+- 重要発見: search_knowledgeの結果はLLM合成のため毎回変動(±20%)
+  -> セッション3着手前に複数回実行→中央値方式の測定スクリプトを設計する必要あり
+- 次回開始時: セッション3(圧縮ミドルウェア基盤=パススルー実装)の前に測定方法再設計
+
