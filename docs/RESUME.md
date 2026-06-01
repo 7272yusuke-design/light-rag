@@ -204,3 +204,50 @@ v3再設計によりプロジェクト固有情報は全除外。
   -> セッション3着手前に複数回実行→中央値方式の測定スクリプトを設計する必要あり
 - 次回開始時: セッション3(圧縮ミドルウェア基盤=パススルー実装)の前に測定方法再設計
 
+
+## 2026-05-24 フェーズ1A セッション3(圧縮ミドルウェア基盤=パススルー)
+
+### 完了
+- scripts/middleware/compression.py を新設(58行、パススルー実装)
+- scripts/mcp_remote.py の do_search() 出口にミドルウェア組み込み
+  - import: from middleware.compression import compress_response
+  - 正常系 + エラー系 両方の return をミドルウェア経由に
+- [compression] ログを stderr→journalctl に出力する設計
+- 安全装置: 例外時は元テキストをそのまま返す try/except 構造
+
+### 動作確認
+3クエリすべてで input == output、delta=+0.0% を確認:
+- openspec/naive: 2461 bytes
+- mcp/hybrid:     3574 bytes
+- agent/hybrid:   3147 bytes
+
+セッション2時点のレスポンスバイト数と完全一致(2670/3806/3338)。
+
+### 重要な発見・申し送り
+1. do_search() に既に簡易圧縮(件数制限・文字数制限・重複除去)が
+   組み込み済み。フェーズ1Aで追加するミドルウェアは
+   「既存圧縮 + 追加圧縮」の二段構造になる。
+2. ベースライン取得時の「±20%変動」記録は誤認だった可能性大。
+   3クエリ全てで決定論的(5回連続同一バイト数)であることを実証。
+   → 中央値方式は不要、1回計測で十分。
+3. ナレッジ件数が動くと比較が崩れるため、セッション4以降は
+   「同セッション内のbefore/after差分」で評価する方針に修正済み。
+4. ベースラインとセッション2の比較で query1 が +17% 増加していた
+   理由は不明(ナレッジ件数変動の可能性)。セッション4以降は気にしない。
+
+### 成果物
+- 新規ファイル: scripts/middleware/__init__.py
+- 新規ファイル: scripts/middleware/compression.py (58行)
+- 修正ファイル: scripts/mcp_remote.py (+5 / -2)
+- 比較基準CSV: measurement/baseline_vs_s2.csv (未コミット保留)
+
+### コミット
+- da30dc5 feat(mcp): add compression middleware skeleton (pass-through)
+- ブランチ: feature/compression-middleware (push済み)
+
+### 棚上げ中(stash)
+- stash@{0}: 20260510-cleanup-pending
+  (config/project_profiles.json, docs/KNOWLEDGE-DECISIONS.md, docs/KNOWLEDGE-INDEX.md)
+  → フェーズ1A完了後にmainブランチで処理
+
+### 次回開始時: セッション4(Deduplication実装)
