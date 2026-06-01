@@ -31,3 +31,7 @@ Thumbs.db
 
 # LightRAG data storage
 data/
+
+# Backup variants (timestamp/session suffixed)
+*.bak-*
+*.save
