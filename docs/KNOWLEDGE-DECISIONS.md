@@ -38,7 +38,7 @@
 
 #### rtk
 - **判断**: L3投入 + L2c候補（本体未投入）
-- **出典URL**: （前回セッションで記載済み、別途確認）
+- **出典URL**: https://github.com/rtk-ai/rtk
 - **理由**: LLMトークン削減プロキシ、OpenClaw公式プラグインあり、Yusukeさん事業に直結
 - **ファイル名**: rtk-l3_lightrag.txt
 - **再検討条件**: 自環境にrtkを導入・動作確認後、L2c→L2昇格
@@ -52,7 +52,7 @@
 
 #### MiniCode
 - **判断**: 保留
-- **出典URL**: （前回セッションで記載済み）
+- **出典URL**: https://github.com/LiuMengxuan04/MiniCode
 - **理由**: Coding Agent学習用。openclaudeと機能が重複するため、openclaudeを優先
 - **再検討条件**: 自前Coding Agentを実装する段階に進んだとき（openclaudeで物足りなさを感じた時点）
 
@@ -65,13 +65,13 @@
 
 #### JeecgBoot
 - **判断**: 見送り
-- **出典URL**: （前回セッションで記載済み）
+- **出典URL**: https://github.com/jeecgboot/JeecgBoot
 - **理由**: 45.4k stars巨大Java/SpringBoot低代码プラットフォーム。Yusukeさんの技術スタック（TypeScript/Python中心）と言語が合わず、ドメインも企業向け低代码と距離がある
 - **再検討条件**: Javaエンタープライズ案件を受注したとき、または業界別Skill戦略の検討に着手したとき
 
 #### Agent Lightning
 - **判断**: 保留
-- **出典URL**: （前回セッションで記載済み、Microsoft公式）
+- **出典URL**: https://github.com/microsoft/agent-lightning
 - **理由**: Microsoft公式、14.1k stars、任意エージェントのRL/APO訓練フレームワーク。現フェーズは「まだ作る段階」で訓練・最適化は次段階
 - **再検討条件**: OpenClaw運用開始時、またはエージェント訓練フェーズに着手するとき
 
@@ -381,3 +381,185 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - 実際のナレッジ数 = **157件**（メモリ記録/INDEX.md記録の104〜123件から大幅増加）
 - L3が48→103件に倍増、L2cが9→19件に倍増
 - INDEX.md / RESUME.md / GSD-PLAN.md の3ファイルが**全て古い**状態だったため、これを機に同期更新する
+
+---
+
+## 2026-05-22 評価分
+
+### dzlau/stripe-supabase-saas-template = 保留
+
+- リポジトリ: https://github.com/dzlau/stripe-supabase-saas-template
+- 評価日: 2026-05-22
+- 判定: 保留(L2c/L3いずれにも未投入)
+
+#### 保留理由
+1. 課金SaaSは別プロジェクトとして起動予定(Vercel + Supabase + Stripe、VPS不要)
+2. 現時点で本実装に着手していないため、ナレッジ化が早すぎる
+3. テンプレート全体ではなく、本実装で実際に採用したパターンだけをL2c/L3化する方が品質が上がる
+
+#### 再評価条件
+- 課金SaaS本実装着手後にL2c/L3再評価
+- 採用しなかった場合は見送りに変更
+
+### refactoringhq/tolaria = 見送り
+
+- リポジトリ: https://github.com/refactoringhq/tolaria
+- 評価日: 2026-05-22
+- 判定: 見送り
+
+#### 見送り理由
+1. Mac専用(macOSプラットフォーム依存)で運用環境と不一致
+2. スター数3、フォーク少、1人開発で永続性に疑義
+3. 既存ナレッジ(汎用リファクタリング系)で代替可能
+4. 学べる独自パターンが少ない
+
+#### 再評価条件
+- macOSベースの開発環境に移行した場合
+- 同等の機能を持つクロスプラットフォームOSSが見つからない場合のみ
+
+### Obsidian = 投入推奨(条件付き)
+
+- 参照: Obsidianアプリ全般、関連OSSエコシステム
+- 評価日: 2026-05-22
+- 判定: 投入推奨(実使用1-2週間後にL3投入)
+
+#### 投入根拠
+1. Yusukeの開発スタイル(マークダウン中心)と整合性が高い
+2. ナレッジ管理・ノートテイキングのデファクト
+3. AIエージェント(rowboat等)とのObsidian互換vault連携が成立する
+4. SKILL/プラグインのエコシステムが豊富
+
+#### 投入条件
+- Yusuke自身が1-2週間Obsidianを実使用し、運用イメージが固まってから
+- 投入時は使用実感に基づくL3記述(教科書的でなく実用本位)
+
+### kestra-l3 = L3投入済み
+
+- リポジトリ: https://github.com/kestra-io/kestra
+- 投入ファイル: kestra-l3_lightrag.txt
+- 評価日: 2026-05-22
+- 判定: L3投入済み
+
+#### 投入根拠
+1. n8nの主要競合(イベント駆動ワークフロー、YAML定義)
+2. Yusukeのn8n事業の競合分析用部品在庫として有用
+3. エンタープライズ志向の機能差分を把握
+
+#### 再評価条件
+- 顧客がKestra採用を検討した場合に詳細精査
+- n8n vs Kestra比較資料が必要になった場合
+
+### polar-l3 = L3投入済み
+
+- リポジトリ: https://github.com/polarsource/polar
+- 投入ファイル: polar-l3_lightrag.txt
+- 評価日: 2026-05-22
+- 判定: L3投入済み
+
+#### 投入根拠
+1. Merchant of Record型決済プラットフォーム(Stripe代替候補)
+2. 海外売上における税務処理を肩代わりするモデル
+3. 課金SaaSプロジェクトでの将来的選択肢
+
+#### 再評価条件
+- 海外売上の現実化(税務負担が問題化する段階)で乗換検討
+- 国内売上のみの段階ではStripeを継続採用
+
+---
+
+## 2026-05-25 評価分
+
+### rowboatlabs/rowboat = L3投入済み
+
+- リポジトリ: https://github.com/rowboatlabs/rowboat
+- 公式: https://www.rowboatlabs.com/
+- スター数: 9.3k、フォーク: 792、コミット: 1,380
+- ライセンス: Apache-2.0
+- 投入ファイル: rowboat-l3_lightrag.txt (3424 bytes)
+- 評価日: 2026-05-25
+- 投入方法: Claude.aiから LightRAG MCP upload_document 経由
+- 判定: L3投入済み
+
+#### 投入根拠
+1. 戦略の中核と直結: 「ナレッジ活用エージェント構築」というLightRAG運用の根本動機の参考実装
+2. Obsidian導入計画との接続: Obsidian互換のMarkdown vaultを採用、Obsidian L3予定との横断知識
+3. LightRAGとの対比知識: retrieval cold start vs persistent memory の設計思想対比
+4. MCP対応: ナレッジMCPサービス構想の競合・参照例
+5. OSS品質: 9.3k stars、YC出身、Apache-2.0、活発開発
+
+#### 再評価条件
+- Obsidian L3投入時(隣接知識として連携検討)
+- AIエージェント設計時(persistent memory パターンの参照)
+
+### krusemediallc/arcads-claude-code = 見送り
+
+- リポジトリ: https://github.com/krusemediallc/arcads-claude-code
+- スター数: 563、フォーク: 153
+- 内容: Arcads.ai(商用AI動画広告サービス)のClaude Code用スキルパック
+- 評価日: 2026-05-25
+- 判定: 見送り
+
+#### 見送り理由
+1. Arcads.ai(有料商用サービス)依存で汎用性なし
+2. Yusukeの開発領域(Website/Webapp/AIエージェント/n8n)と無関係
+3. note.com発信活動は低優先のため広告クリエイティブ領域は射程外
+4. 学べるパターン(MASTER_CONTEXT、スキルパック構造)は既存ナレッジで充足
+
+#### 再評価条件
+- Yusukeが広告クリエイティブ事業に参入する場合
+- 顧客がArcads採用検討した場合
+
+---
+
+## 2026-05-28 評価分
+
+### zubair-trabzada/geo-seo-claude = L3投入済み
+
+- リポジトリ: https://github.com/zubair-trabzada/geo-seo-claude
+- スター数: 7.6k、フォーク: 1.2k
+- ライセンス: MIT
+- 投入ファイル: geo-seo-claude-l3_lightrag.txt (3699 bytes)
+- 評価日: 2026-05-28
+- 投入方法: Claude.aiから LightRAG MCP upload_document 経由
+- 判定: L3投入済み
+
+#### 投入根拠
+1. GEO(Generative Engine Optimization)の完結パイプライン: 13サブスキル+5並列エージェントで /geo audit 一発で監査→0-100スコア→クライアント納品PDFまで自動化
+2. Webサイト/LP制作サービスへの上乗せ価値: 既存制作に「GEO監査・最適化」を付加可能
+3. アップセル階段の新商材候補: n8n→Claude Code→アプリ→エージェントの間に「GEO監査サービス」を挟める。海外では月$2K〜12Kのエージェンシー価格帯
+4. マルチエージェント+SKILLオーケストレーション設計の生きた教材
+
+#### 既存ナレッジとの関係(明記)
+- skill-ai-seo-l3(coreyhaines31/marketingskills、AEO/GEO/LLMO単一スキル) = コンテンツ最適化の考え方
+- 本エントリ(geo-seo-claude) = 監査・納品パイプラインの実装
+- skill-page-cro-l3(CRO) = 補完関係
+- 3者でスコープが異なるため別エントリで併存
+
+#### 再評価条件
+- 顧客向けGEO監査サービスを商材化する段階で、本スキルをベースにL2パターン(分散分析→統合オーケストレーション)を抽出するか判断
+
+### tinyhumansai/openhuman = L3投入済み
+
+- リポジトリ: https://github.com/tinyhumansai/openhuman
+- スター数: 28.2k、フォーク: 2.6k
+- ライセンス: GPL-3.0(商用利用時は要注意。組み込みではなく設計参照用途を推奨)
+- ステータス: Early Beta(v0.54.0、2026-05-19リリース)
+- 投入ファイル: openhuman-l3_lightrag.txt (4331 bytes)
+- 評価日: 2026-05-28
+- 投入方法: Claude.aiから LightRAG MCP upload_document 経由
+- 判定: L3投入済み
+
+#### 投入根拠
+1. Phase 1A compression middleware開発の直接参照素材: 内蔵TokenJuiceの圧縮設計(HTML→MD、URL短縮、dedup、サマリー化、grapheme-by-grapheme保持)が現行のscripts/middleware/compression.pyの次セッション以降の拡張方針として参照価値高い。「コスト・レイテンシ最大80%削減」主張あり
+2. LightRAGナレッジ管理の比較研究: Memory Tree(≤3kトークンチャンク+スコアリング+階層サマリー+SQLite+Obsidian.md出力)はLightRAGの3層構造(L0/L1/L2/L3)と異なるアプローチ。同テーマ多重投入の整理やKNOWLEDGE-INDEX再設計の参照素材
+3. エージェント市場の競合分析素材: 比較表(Claude Cowork/OpenClaw/Hermes Agent/OpenHuman)はアップセル階段の提案書作成時に流用可能
+4. マネージド/ローカル併用モデル: ナレッジ商品化(LightRAGをマネージド化する場合)のアーキ参照
+
+#### 注意点
+- GPL-3.0: 商用利用時にコピーレフトの制約。自社プロダクトには設計を学んで自分で書く形を推奨
+- Early Beta: 本番依存は時期尚早
+- マネージド前提機能の残存: 完全オンプレ運用は現状不可
+
+#### 再評価条件
+- Phase 1A compression middleware Session 4以降の実装着手時にTokenJuice実装詳細を深掘り
+- ナレッジMCPサービス商品化時にMemory Tree設計を比較研究素材として参照
