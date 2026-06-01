@@ -97,7 +97,7 @@ def do_search(args):
     if isinstance(result, dict) and result.get("status") == "success":
         data = result.get("data", {})
         output = []
-        limits = {"entities": (5, 200), "relationships": (5, 200), "chunks": (3, 300)}
+        limits = {"entities": (5, 200), "relationships": (15, 200), "chunks": (3, 300)}
         for key, items in data.items():
             if not isinstance(items, list):
                 continue
