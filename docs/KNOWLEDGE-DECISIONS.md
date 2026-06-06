@@ -381,3 +381,97 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - 実際のナレッジ数 = **157件**（メモリ記録/INDEX.md記録の104〜123件から大幅増加）
 - L3が48→103件に倍増、L2cが9→19件に倍増
 - INDEX.md / RESUME.md / GSD-PLAN.md の3ファイルが**全て古い**状態だったため、これを機に同期更新する
+
+---
+
+## 2026-06-01: Qdrant — L3投入
+
+- **対象:** qdrant/qdrant（https://github.com/qdrant/qdrant、Apache-2.0、31.4k★、v1.18.0）
+- **判断:** L3投入（qdrant-l3_lightrag.txt、2451 bytes）
+- **種別:** vector-database / vector-search-engine
+- **重複チェック:** Qdrant専用エントリなし・競合（Weaviate/Milvus/Chroma）も未投入。本文言及7件（crewai/flowise/mastra/n8n/openllmetry/rowboat/lightrag-framework）はいずれも「対応ベクトルストアの一つ」としての列挙でQdrant主題ではない → 機能的重複なしと判定。
+- **投入根拠:** ベクトルDBという技術カテゴリが独立エントリとして存在しなかった。Rust製・高性能・Apache-2.0でL3「部品在庫」定義に合致。加えて公式Agent Skills（qdrant/skills）が量子化/シャーディング/テナント分離/ハイブリッド検索の設計判断をスキル化しており、オリジナルSKILL開発の参考事例としても価値。
+- **現時点の位置付け:** LightRAG置き換え対象ではない。検索品質課題はアプリ層（後段キャップ・グラフエッジ）が主因（2026-06-01検証）で、ベクトルエンジン性能の問題ではないため。将来の部品在庫として記録。
+- **再検討条件:**
+  1. ベクトル検索がLightRAG+pgvectorで性能/スケール頭打ちになった時（数千→数万規模、レイテンシ悪化）
+  2. 商品化のマルチテナント設計（Unkey+Supabase RLS）着手時 → 公式Agent Skillsの tenant isolation/sharding 設計を参照
+  3. 自前検索にハイブリッド検索の融合戦略（RRF/DBSF）を取り込む検討時 → relationships 5→15 の発展形
+
+---
+
+## 2026-06-01: Qdrant — L3投入
+
+- **対象:** qdrant/qdrant（https://github.com/qdrant/qdrant、Apache-2.0、31.4k★、v1.18.0）
+- **判断:** L3投入（qdrant-l3_lightrag.txt、2451 bytes）
+- **種別:** vector-database / vector-search-engine
+- **重複チェック:** Qdrant専用エントリなし・競合（Weaviate/Milvus/Chroma）も未投入。本文言及7件（crewai/flowise/mastra/n8n/openllmetry/rowboat/lightrag-framework）はいずれも「対応ベクトルストアの一つ」としての列挙でQdrant主題ではない → 機能的重複なしと判定。
+- **投入根拠:** ベクトルDBという技術カテゴリが独立エントリとして存在しなかった。Rust製・高性能・Apache-2.0でL3「部品在庫」定義に合致。加えて公式Agent Skills（qdrant/skills）が量子化/シャーディング/テナント分離/ハイブリッド検索の設計判断をスキル化しており、オリジナルSKILL開発の参考事例としても価値。
+- **現時点の位置付け:** LightRAG置き換え対象ではない。検索品質課題はアプリ層（後段キャップ・グラフエッジ）が主因（2026-06-01検証）で、ベクトルエンジン性能の問題ではないため。将来の部品在庫として記録。
+- **再検討条件:**
+  1. ベクトル検索がLightRAG+pgvectorで性能/スケール頭打ちになった時（数千→数万規模、レイテンシ悪化）
+  2. 商品化のマルチテナント設計（Unkey+Supabase RLS）着手時 → 公式Agent Skillsの tenant isolation/sharding 設計を参照
+  3. 自前検索にハイブリッド検索の融合戦略（RRF/DBSF）を取り込む検討時 → relationships 5→15 の発展形
+
+---
+
+## 2026-06-01: CodeGraph — L3投入（graphify と別エントリ）
+
+- **対象:** colbymchenry/codegraph（https://github.com/colbymchenry/codegraph、MIT、552★、npm @colbymchenry/codegraph）
+- **判断:** L3投入（codegraph-l3_lightrag.txt、3200 bytes）
+- **種別:** tool / code-intelligence（Claude Code向け事前インデックス型コードナレッジグラフ）
+- **重複チェック:** CodeGraph専用エントリなし。同テーマ既存3件: graphify-l3（最近接）/ graphify-mcp2cli-token-reduction-l2c / microsoft-graphrag-l3。
+- **判定:** graphify とは「同テーマだが実装スコープが明確に異なる」→ 別エントリ投入 + cross-reference 付与（ルール準拠）。
+  - 違い: graphify=Python/PyPI/networkx+Leiden/CLI、CodeGraph=TypeScript/npm/SQLite-FTS5/MCPサーバー統合/impact analysis/19言語/実測92%削減。
+- **投入根拠:** Yusukeのフェーズ（Claude Code導入初期、VPS/SSH開発検討中）に直接効く部品。npm/MCP統合でClaude Code環境に組み込みやすい。設計思想（事前グラフ化→走査せず参照）が2026-06-01の relationships 5→15 と同型。
+- **再検討条件:**
+  1. VPS上でClaude Code本格運用開始時 → 探索トークン削減策として導入検討
+  2. 顧客案件で大規模コードベース解析/リファクタリング支援時 → impact analysis が事前リスク評価に有効
+  3. 議題2（L2充実）着手時 → graphify+CodeGraph の共通パターンを「事前グラフ化トークン削減」L2c候補として切り出し検討
+- **将来検討候補メモ:** 「事前グラフ化によるエージェント探索コスト削減」L2c候補（2実装から帰納、議題2着手時）。
+
+---
+
+## 2026-06-01: AirLLM — 見送り
+
+- **対象:** lyogavin/airllm（https://github.com/lyogavin/airllm、Apache-2.0、18.1k★）
+- **判断:** 見送り（投入しない）
+- **正体:** GPUのVRAM不足を補う推論技術。モデルをレイヤー単位に分割しディスク保存→推論時に1レイヤーずつGPUにロードして70Bを4GB GPUで動かす。本来GPU(CUDA)前提。
+- **見送り理由:**
+  1. 環境不一致: Yusuke環境はHostinger KVM2（2vCPU/8GB RAM、GPUなし）。AirLLMが解決する問題（VRAM不足）がGPUなし環境には存在しない。CPUでは構造上むしろ激遅（レイヤーのディスクI/Oが律速）で実用にならない。
+  2. 事業接続なし: n8n自動化・エージェント開発の現方針と接続する再検討条件が立てにくい。現状はOpenRouter経由のクラウドClaudeが最適。
+  3. 商品化方針（既存ナレッジ磨き込み優先・新規収集最小化）に逆行。
+- **再検討条件:** GPU搭載環境を本格的に持つ計画が具体化した時のみ再評価。
+- **学習上の代替メモ:** CPUローカルLLMの検証/学習が目的なら、AirLLMではなく llama.cpp + GGUF量子化モデル、または既存Ollamaへの小型モデル追加（ollama pull llama3.2:3b 等）が適切。これらは「CPUローカルLLM運用」テーマとしてL3評価の余地あり（プライバシー重視顧客向け提案材料になりうる）。
+
+---
+
+## 2026-06-01: goose — L3投入
+
+- **対象:** aaif-goose/goose（https://github.com/aaif-goose/goose、Apache-2.0、45.2k★、v1.34.0、旧block/goose→Linux Foundation AAIF移管）
+- **判断:** L3投入（goose-l3_lightrag.txt、2688 bytes）
+- **種別:** agent / framework（汎用AIエージェント、デスクトップ+CLI+API、Rust製）
+- **重複チェック:** goose専用エントリなし。同カテゴリ（エージェントCLI/フレームワーク）に letta-code/claude-agent-sdk/opencode-anomalyco/everything-claude-code/anthropic-claude-code 等があるが全て別実装 → 「テーマ重複だが実装スコープが異なる」→ 別エントリ+cross-reference（CodeGraphと同じ扱い）。
+- **投入根拠:** Yusukeの3関心に同時に刺さる稀なリポジトリ。(1)OpenRouter/Ollama公式対応で現環境(KVM2)に乗るClaude Code代替候補、(2)evals/open-model-gym + goose-self-test.yaml がエージェント評価の実装事例＝評価プラットフォーム企画の参考、(3)recipe + Custom Distros がスキル/MCP提供プラットフォームの先行事例。45.2k★・財団管理で信頼性十分。
+- **再検討条件:**
+  1. VPSでClaude Code以外のエージェント選択肢を本格評価する時 → 比較候補として検証
+  2. スキル/MCP提供プラットフォーム企画を具体設計する時 → recipe共有・Custom Distros を競合/先行事例として分析
+  3. エージェント評価軸（客観スコア）を設計する時 → open-model-gym / self-test の評価方式を参照
+  4. 顧客にブランド付きエージェント配布を提案する時 → Custom Distributions が直接の実装手段
+- **関連:** NVIDIA発「評価サービス」想像（2026-06-01ブレスト）、評価軸を差別化に使う企画レンズと地続き。
+
+---
+
+## 2026-06-06 リポジトリ評価バッチ（6件）
+
+### L3投入（5件）
+
+- **ecc-l3** (affaan-m/ECC) — クロスハーネス型エージェント性能最適化システム。63 agents/249 skills/instinct学習/AgentShield。【投入根拠】skills/MCP提供プラットフォーム構想の「客観評価スコア付与」差別化角度の最重要先行事例（AgentShieldのA-F評価・CIゲート、Goose open-model-gymと並ぶ評価系参照）。continuous-learning-v2のinstinct学習はL2/L0抽出に波及。【注記】README上のStar数主張（182K/205k）は誇張の可能性、機能事実ベースで扱う。【再評価トリガー】skills/MCP評価系設計に着手する時。
+- **quant-mind-l3** (LLMQuant/quant-mind) — 定量金融向けナレッジ抽出・検索フレームワーク（NeurIPS 2025採択）。arXiv→構造化KB→RAG/DeepResearch/Data MCPの2段階疎結合アーキ。【投入根拠】自社LightRAG「外部脳」パイプラインと構造酷似。EDINET DB（日本株財務）との組み合わせで日本市場向け定量金融ナレッジ抽出の独自展開余地。【再評価トリガー】定量金融/日本株向けナレッジMCP設計着手時。
+- **vimax-l3** (HKUDS/ViMax) — マルチエージェント動画生成（Director/Screenwriter/Producer/Generator統合）。OpenRouter/MiniMax対応、RAGベース長尺脚本、生成→並列→VLM検証→ベスト選択。【投入根拠】OpenRouter標準構成で自社環境親和性高。asset-sheet-extractor/property-completion-prompt-builderとのL2組み合わせ余地。【再評価トリガー】動画/素材生成パイプライン企画着手時。
+- **viga-l3** (Fugtemypt123/VIGA) — Vision-as-Inverse-Graphicsエージェント（arXiv:2601.11109）。analysis-by-synthesis、Generator/Verifier自己反省ループ、finetuning不要。【投入根拠】「生成→検証→修正」自己反省ループ原理（ECC verification-loop/ViMaxと共通）、進化するコンテキストメモリ（L0-006具体例）の学習価値。【注記】GPU必須でKVM2実行不可、設計思想参照用L3。【再評価トリガー】自己反省/検証ループ系L2抽出時、GPU環境確保時。
+- **odysseus-l3** (pewdiepie-archdaemon/odysseus) — セルフホスト型AIワークスペース。opencodeベース、FastAPI+ChromaDB memory、Cookbook(llmfit)、DeepResearch、AIトリアージEmail。【投入根拠】opencode系フルスタック実装＋self-hosted運用設計＋VRAM-awareモデル選定の参照。n8n→エージェント駆動オフィス自動化アップセルのUX参照。【注記】ローカルモデルサーブはGPU前提でKVM2では限定的（API接続前提なら可）。【再評価トリガー】self-hostedエージェントワークスペース実装着手時。
+
+### 見送り（1件）
+
+- **PDFCraftTool/pdfcraft** — ブラウザ完結型PDFツールキット（90+ツール、WASM、Next.js15、AGPL-3.0）。【見送り理由】完成度は高いがブラウザ完結のエンドユーザー向けツールで、エージェント開発・組み合わせ思考への波及が薄い。「WASMクライアントサイドPDF処理」の実装パターン1点のみ価値があるが、L3全体投入の優先度は低い。【再評価トリガー】クライアントサイドPDF処理を要する具体案件が発生した場合。
+
