@@ -475,3 +475,33 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 
 - **PDFCraftTool/pdfcraft** — ブラウザ完結型PDFツールキット（90+ツール、WASM、Next.js15、AGPL-3.0）。【見送り理由】完成度は高いがブラウザ完結のエンドユーザー向けツールで、エージェント開発・組み合わせ思考への波及が薄い。「WASMクライアントサイドPDF処理」の実装パターン1点のみ価値があるが、L3全体投入の優先度は低い。【再評価トリガー】クライアントサイドPDF処理を要する具体案件が発生した場合。
 
+
+---
+
+## 2026-06-06 リポジトリ評価バッチ2（統合記録）
+
+### L3投入（7件）
+
+- **syncthing-l3** (syncthing/syncthing) — P2P継続ファイル同期（Go、MPL-2.0）。self-hosted同期基盤。ローカルPC⇔VPSのObsidian Vaultミラー（Receive Only+Staggered Versioning）。【注記】同期≠バックアップ（削除伝播）、世代復元はrestic/borg併用、クラウドはrclone。
+- **understand-anything-l3** (Lum1104/Understand-Anything) — コード/wiki→インタラクティブナレッジグラフ化の学習特化Claude Codeプラグイン（TS、MIT、14.7k star）。LightRAGのUX/可視化面を補完。graphify/codegraph/microsoft-graphragと差別化（学習・オンボーディング特化）cross-ref済み。
+- **listmonk-l3** (knadh/listmonk) — self-hostedニュースレター/メール管理（Go、AGPL-3.0、21.3k star）。n8n連携・transactional email基盤。【注記】AGPL、顧客提供時はライセンス検討。
+- **postiz-l3** (gitroomhq/postiz-app) — self-hosted agentic SNS投稿スケジューリング（NextJS/NestJS、28+チャンネル）。n8n公式custom node、postiz-agentでClaude/OpenClaw連携。listmonkと対の配信基盤。【注記】ライセンス要確認。
+- **ppt-master-l3** (hugohe3/ppt-master) — 文書→編集可能PPTX生成スキルパック（Python、MIT、2.1k star）。SVG→PPTX、7ロール設計（Strategist=L0-002具体例）、CRAP自動適用。skill-pptx等と差別化cross-ref済み。
+- **composio-l3** (ComposioHQ/composio) — エージェントツール統合基盤（1000+ toolkits、MIT、28.6k star）。Rube(MCP)はskills/MCP事業の比較対象。全エージェントFW対応。【注記】コア機能はホステッドバックエンド依存、完全self-hostではない。
+- **mattpocock-skills-l3** (mattpocock/skills) — 実エンジニア向け日常運用スキル集（MIT、117k star）。grilling(=L0-002実装)/CONTEXT.md(L1運用)/caveman(コスト最適化)。software fundamentals裏付けの設計哲学。skill-creator等と差別化cross-ref済み。
+
+### L2c投入（1件）
+
+- **domain-skillpack-productized-service-l2c** — ドメイン特化スキルパックのproductized service化パターン。一次事例zubair-trabzada/ai-recruiter-claude＋11業種横展開。「業務分解×評価スコア×PDF成果物×段階価格×横展開」5要素。status:unverified。技術ではなく事業設計の参照。【昇格条件】1業種で実装・成果物化、またはn8nアップセルで1件設計。
+
+### 見送り（4件）
+
+- **anus-dev/ANUS** — Grok製ターミナルAIエージェント（6.4k star）。成熟度低（commit 15）、既存CLIエージェントL3群と重複、L3支配悪化。参考: AI-First Contribution ProtocolはL0-009対極事例。
+- **cporter202/API-mega-list** — APIディレクトリ（awesome-list、ライセンス不明）。グラフ構造化不適、Apifyアフィリエイト性格、鮮度命で静的投入陳腐化。
+- **codecrafters-io/build-your-own-x** — 技術自作チュートリアルリンク集（CC0、497k star）。awesome-list型で学習リソース、事業ドメイン外、web検索代替可。
+- **zubair-trabzada/ai-recruiter-claude（リポ単体L3）** — 成熟度低・既存skillパターン重複で技術L3価値弱。価値はビジネス設計のため上記L2cパターンとして抽出。
+
+### 調査のみ（投入なし）
+
+- **エージェント×企業プロフィール・マッチングエンジン** — ピンポイントの成熟OSSは稀少（商用SaaS支配）。候補: b2pair / b2b-sdr-agent-template(5軸スコアリング) / openfang(ICP探索) / recsys-agent(LangGraph)。EDINET DB（日本上場約3,800社プロフィール保有）×エージェントで自作が現実解。L2c企画候補として保留。
+
