@@ -319,3 +319,32 @@ ANUS / API-mega-list / build-your-own-x / ai-recruiter-claude(リポ単体L3)
 3. inventory.sh で正確な件数確定＋KNOWLEDGE-INDEX.md更新
 4. 既存の優先タスク（OpenRouter APIキーローテーション等）は継続
 
+
+---
+
+## 2026-06-13 record_decision実装セッション(C-2完了)
+
+### 完了
+- [x] record_decision ツール実装(scripts/record_decision.py、独立モジュール=C-1流用可能)
+- [x] mcp_remote.py 3行パッチ(import / TOOLS / HANDLERS)+ サービス再起動
+- [x] 試運転成功: paperclip-l3 投入 + record_decision実弾実行(commit 151a698)
+- [x] git identity固定(7272yusuke-design / noreply)
+- [x] セキュリティ修復: remote URL埋め込みPAT(ghp_)除去 → gh credential helper化
+- [x] systemd drop-in: mcp-lightrag に HOME=/root 付与(gh認証がサービスから動かない問題の修正)
+
+### ルール改訂(投入ルール v3への追記)
+- 「管理ドキュメントはVPS上で直接編集」の例外: **KNOWLEDGE-DECISIONS.mdへの判断ログ追記は
+  MCP record_decision ツール経由を標準とする**(追記専用・バックアップ付き・自動commit/push)。
+  INDEX/RESUME/SCHEMAは引き続きVPS直接編集。
+- 投入フロー更新: upload_document → record_decision の2連で1評価が完結(手動貼り付け廃止)
+
+### 安全装置(record_decision)
+- 追記前バックアップ(.bak-rd)/ appendモードのみ / 例外時復元 / git失敗でも追記保持
+- commit対象は docs/KNOWLEDGE-DECISIONS.md のみ(他の未コミット変更を巻き込まない)
+- push先は origin HEAD(ブランチ追従)
+
+### 残タスク・申し送り
+- [ ] **露出PAT(ghp_ItVf...)のRevoke確認**(GitHub Settings、未確認なら最優先)
+- [ ] DATA-SCHEMA.md の投入フロー記述に record_decision を反映(次回編集時で可)
+- [ ] Claude.ai側は次セッションから record_decision を直接呼べる(今セッションはツール一覧キャッシュのため不可だった)
+- [ ] 将来: C-1(Claude Codeスキル化)時に record_decision.py を流用 / RESUME.md自動更新は別途検討
