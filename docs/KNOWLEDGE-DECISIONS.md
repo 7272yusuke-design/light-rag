@@ -530,3 +530,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. OpenClawプロジェクトで複数エージェント運用を開始する時
   2. エージェント開発アップセルで運用基盤の商材設計に着手する時
   3. Hermes Agent等の常駐型エージェントとの連携検証時(スケジューラ一元化・責任境界の設計が前提)
+
+---
+
+## 2026-06-13: hermes-agent-l3 — L3投入
+
+- **対象:** https://github.com/NousResearch/hermes-agent
+- **判断:** L3投入(hermes-agent-l3)
+- **根拠:** Nous Researchの常駐型自己改善エージェント(v0.14.0、MIT)。OpenClaw直接競合かつ公式移行パス(hermes claw migrate)を持ち、OpenClawプロジェクトの技術選定判断材料として参照価値が高い。トランスポート抽象化(ProviderTransport ABC)・マルチプラットフォームゲートウェイ・永続キュレーション型メモリ・スキル自動生成/自己改善ループはL3「作り方を知る」の典型。agentskills.io標準互換はスキル/MCPプラットフォーム事業の標準動向把握に直結。重複チェック(naive 2クエリ)済み: 単独エントリなし、paperclip-l3内の言及はcross-refとして処理。
+- **注記:** 姉妹リポジトリ hermes-agent-self-evolution(DSPy+GEPA、ICLR 2026 Oral)は次の評価候補キューに積む(Yusuke委任によるアシスタント判断、今回未投入)。本件はrecord_decision新フロー(C-2)のコネクタ再接続後初の通し検証を兼ねる。
+- **関連:** paperclip-l3(多層委譲構成でHermes言及、cross-ref)、skill-design-patterns-l2、agentic-os-design-pattern-l2c、open-interpreter-l3
+- **再検討条件:**
+  1. OpenClawからの移行を実際に検討するプロジェクトが発生した時(hermes claw migrateの実地検証)
+  2. skill-verifier/客観スコアリング構想の実装に着手し自己改善ループの先行事例調査が必要になった時(self-evolution別件評価とセット)
+  3. クライアント案件でメッセージング統合常駐エージェントの構築依頼が来た時
