@@ -288,3 +288,34 @@ v3再設計によりプロジェクト固有情報は全除外。
 
 ### 注: ナレッジ実数は184件（L3=139/L2c=21/L2=19/L1=3/other=2）
 旧ヘッダの「157件」「166件」はいずれも古い/誤り。inventory.sh の 184/184/184 が正。
+
+---
+
+## 2026-06-06 リポジトリ評価＆L2c企画セッション
+
+### ナレッジ実数更新
+- 本日投入: L3=12件 + L2c=4件 = 計16件
+- 投入前184件 → **投入後 約200件**（次回 inventory.sh で正確値を確定すること）
+- ※RESUME冒頭ヘッダの「157件」は古い。正は inventory.sh（前回184、本日+16）。
+
+### L3投入（12件）
+ecc / quant-mind / vimax / viga / odysseus / syncthing / understand-anything / listmonk / postiz / ppt-master / composio / mattpocock-skills
+
+### L2c投入（4件）
+- domain-skillpack-productized-service（ai-recruiter発、ドメイン特化スキルパックのサービス化）
+- self-hosted-multichannel-distribution（listmonk+Postiz+n8n配信基盤）
+- company-profile-matching-engine（EDINET DB×エージェントのマッチング）
+- document-to-sns-image-pipeline（ppt-master+Postiz文書→SNS画像）
+
+### 見送り（4件）
+ANUS / API-mega-list / build-your-own-x / ai-recruiter-claude(リポ単体L3)
+
+### 調査のみ
+エージェント×企業プロフィール・マッチングエンジン → company-profile-matching-engine-l2c として企画化
+
+### 次セッション候補（本日分の発展）
+1. L2c企画3件のうち1つを実装着手（推奨: self-hosted-multichannel = 既存n8n資産が活きる）
+2. 参考OSS（b2b-sdr-agent-template/openfang/recsys-agent）のL3投入要否判断
+3. inventory.sh で正確な件数確定＋KNOWLEDGE-INDEX.md更新
+4. 既存の優先タスク（OpenRouter APIキーローテーション等）は継続
+

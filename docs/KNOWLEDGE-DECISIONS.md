@@ -505,3 +505,14 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 
 - **エージェント×企業プロフィール・マッチングエンジン** — ピンポイントの成熟OSSは稀少（商用SaaS支配）。候補: b2pair / b2b-sdr-agent-template(5軸スコアリング) / openfang(ICP探索) / recsys-agent(LangGraph)。EDINET DB（日本上場約3,800社プロフィール保有）×エージェントで自作が現実解。L2c企画候補として保留。
 
+
+---
+
+## 2026-06-06 L2c企画投入（combination-architect、3件）
+
+> 本日のL3投入から組み合わせた企画。いずれもstatus:unverified（未実装）。
+
+- **self-hosted-multichannel-distribution-l2c** — 自社ホスト型マルチチャネル配信基盤（listmonk+Postiz+n8n）。メール＋SNSをn8nでオーケストレーションし外部SaaS（Mailchimp+Buffer）を自社VPSで代替。n8nアップセルの配信代行商材。【昇格条件】自社VPSにデプロイしn8nで生成→両チャネル配信→イベント回収を1本動作、または顧客案件1件。【注記】listmonk(AGPL)/Postiz(要確認)のライセンスを商品化前に解消必須。
+- **company-profile-matching-engine-l2c** — 企業プロフィール・マッチングエンジン（EDINET DB×エージェント）。日本上場約3,800社プロフィールをembedding化＋LLM再ランク＋5軸スコアリング。成熟OSS稀少な領域をEDINET DB（独自データ資産）で自作・差別化。【昇格条件】EDINET DBプロフィールをembedding化し類似企業マッチング＋理由生成を1クエリ動作、またはマッチングPDFレポート1件。【参考OSS未投入】b2b-sdr-agent-template/openfang/recsys-agent。
+- **document-to-sns-image-pipeline-l2c** — 文書→SNS画像→配信パイプライン（ppt-master+asset-sheet-extractor+Postiz）。文書1本からデザイン済みSNS画像を生成し28媒体配信。note発信のSNS展開・顧客コンテンツマーケ自動化。【昇格条件】文書からppt-masterでSNS画像生成しPostizで1媒体配信、またはnote記事1本でパイプライン通し。
+
