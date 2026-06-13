@@ -12,6 +12,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
 from middleware.compression import compress_response
+from record_decision import TOOL_DEF as RECORD_DECISION_TOOL, do_record_decision
 
 LIGHTRAG_URL = os.environ.get("LIGHTRAG_URL", "http://localhost:9621")
 LIGHTRAG_USER = os.environ.get("LIGHTRAG_USER", "admin")
@@ -203,7 +204,9 @@ def do_upload_document(args):
     msg = result.get("message", "")
     return f"Status: {status} | {msg} | Size: {len(content)} bytes"
 
-HANDLERS = {"search_knowledge": do_search, "list_knowledge": do_list_knowledge, "list_projects": do_list_projects, "upload_document": do_upload_document}
+TOOLS.append(RECORD_DECISION_TOOL)
+
+HANDLERS = {"search_knowledge": do_search, "list_knowledge": do_list_knowledge, "list_projects": do_list_projects, "upload_document": do_upload_document, "record_decision": do_record_decision}
 
 
 def rpc_response(id, result):
