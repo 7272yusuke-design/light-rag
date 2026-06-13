@@ -516,3 +516,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - **company-profile-matching-engine-l2c** — 企業プロフィール・マッチングエンジン（EDINET DB×エージェント）。日本上場約3,800社プロフィールをembedding化＋LLM再ランク＋5軸スコアリング。成熟OSS稀少な領域をEDINET DB（独自データ資産）で自作・差別化。【昇格条件】EDINET DBプロフィールをembedding化し類似企業マッチング＋理由生成を1クエリ動作、またはマッチングPDFレポート1件。【参考OSS未投入】b2b-sdr-agent-template/openfang/recsys-agent。
 - **document-to-sns-image-pipeline-l2c** — 文書→SNS画像→配信パイプライン（ppt-master+asset-sheet-extractor+Postiz）。文書1本からデザイン済みSNS画像を生成し28媒体配信。note発信のSNS展開・顧客コンテンツマーケ自動化。【昇格条件】文書からppt-masterでSNS画像生成しPostizで1媒体配信、またはnote記事1本でパイプライン通し。
 
+
+---
+
+## 2026-06-13: paperclip-l3 — L3投入
+
+- **対象:** https://github.com/paperclipai/paperclip
+- **判断:** L3投入(paperclip-l3)
+- **根拠:** エージェント組織管理の制御プレーン(67.4k★、MIT、TS)。フレームワーク層(CrewAI/openswarm等)と異なるオーケストレーション層で既存ナレッジと差別化明確。OpenClawをファーストクラス統合対象とし、承認ゲート+予算ハードストップ+heartbeat委譲はL0-009/L0-002/L0-005の実装例。エージェント開発アップセル最終段の運用基盤商材候補
+- **注記:** record_decision初回実行(C-2試運転)。Hermes連携論点はpaperclip-l3本文に記載済み
+- **関連:** agentic-os-design-pattern-l2c / openswarm-vrsen-l3 / rowboat-l3 / goose-l3 / durable-execution-hitl-approval-l2 / L0-009 / L0-002
+- **再検討条件:**
+  1. OpenClawプロジェクトで複数エージェント運用を開始する時
+  2. エージェント開発アップセルで運用基盤の商材設計に着手する時
+  3. Hermes Agent等の常駐型エージェントとの連携検証時(スケジューラ一元化・責任境界の設計が前提)
