@@ -198,6 +198,17 @@ LightRAGのエンティティ抽出精度を保つため：
 - **L1**: プロジェクト固有の文脈情報。鮮度が最重要（6ヶ月で要レビュー）
 - **削除**: DELETE API禁止（全消しバグ）。PostgreSQL直接操作（psql）で行う。操作前にpg_dump必須
 
+### 投入フロー（標準手順 / 2026-06-13 record_decision反映）
+リポジトリ・ツールをL3投入する際の標準フロー（C-2自動化後）:
+1. リポジトリURL受領 → web_fetch で内容確認
+2. 重複チェック: search_knowledge（naiveモード）を「本体名」＋「機能的近傍」の2クエリ
+3. 評価サマリ＋選択肢提示 → Yusuke判断
+4. upload_document（overwrite: false）
+5. record_decision（decision_type/name/repo/reason/reeval_triggers/related/notes）
+   → KNOWLEDGE-DECISIONS.md追記＋commit＋pushまで自動。手動コマンド貼り付けは廃止
+- 旧フロー（KNOWLEDGE-DECISIONS.mdへ手動でコマンド貼り付け）は廃止。record_decisionツールに一本化
+- record_decisionのdecision_type enum: L3投入 / L2c投入 / 保留 / 見送り
+
 ### L3必須要素
 - 概要（1-2文）
 - インストール・セットアップ
@@ -379,7 +390,7 @@ L2（検証済みパターン）とは別の、**ブレスト・OSS読解ベー�
 
 | 対象 | 経路 |
 |---|---|
-| ナレッジ本体（L3/L2/L2c/L1） | Claude.ai LightRAGプロジェクトから upload_document |
+| ナレッジ本体（L3/L2/L2c/L1） | Claude.ai LightRAGプロジェクトから upload_document → record_decision（KNOWLEDGE-DECISIONS.md追記+commit+push自動） |
 | 管理ドキュメント（INDEX/DECISIONS/RESUME/SCHEMA等） | VPS上 /docker/lightrag/docs/ で直接編集 |
 
 ### ドメイン境界

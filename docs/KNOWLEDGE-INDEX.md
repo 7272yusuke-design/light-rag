@@ -1,356 +1,240 @@
-# KNOWLEDGE-INDEX.md — LightRAGナレッジベース インデックス
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全207件)
 
-> 最終更新: 2026-05-01（整理・再棚卸しセッション）  
-> 総数: **157件**（全processed、エラー0件）  
-> 最適レンジ: 80-120件 → **超過状態**（160件水準で運用中、レンジ再定義検討余地あり）
+> 自動生成ファイル。`bash /docker/lightrag/scripts/inventory.sh` で更新。
+> 最終更新: 2026-06-13
+> 整合性 (docs/entities/relations): 207/207/207
 
-## レイヤー構成サマリー（2026-05-01 v3最新）
+## レイヤー別件数
 
-| レイヤー | 件数 | 割合 | 目標 | 前回(04-18) | 増減 |
-|---------|------|------|------|------|------|
-| L3（実装） | 103 | 65.6% | 50-60% | 48 | **+55** |
-| L2（検証済みパターン） | 18 | 11.5% | 20-25% | 16 | +2 |
-| L2c（候補パターン） | 19 | 12.1% | 新設レイヤー | 9 | +10 |
-| L1-Infra | 1 | 0.6% | 最小限 | 1 | ±0 |
-| L1-Ops | 2 | 1.3% | 最小限 | 2 | ±0 |
-| L1-old（旧形式） | 1 | 0.6% | リネーム対象 | - | +1 |
-| other（旧形式） | 13 | 8.3% | リネーム対象 | 28 | -15 |
-| **合計** | **157** | 100% | - | 104 | **+53** |
-
-## 整合性指標（2026-05-01）
-- doc_full = doc_status = **157**（一致、ゴースト除去済み）
-- バックアップ: `/docker/lightrag/backups/pre-reinventory-20260501-011545.sql` (251MB)
+| レイヤー | 件数 |
+|---------|------|
+| L1 | 3 |
+| L2 | 19 |
+| L2c | 26 |
+| L3 | 157 |
+| UNKNOWN | 2 |
 
 ---
 
-## L3: 実装ナレッジ（103件）
 
-### 開発フレームワーク・ライブラリ
-- nextjs-l3
-- hono-l3
-- drizzle-orm-l3
-- better-auth-l3
-- supabase-l3
-- vercel-l3
-- turborepo-l3
-- fumadocs-l3
-- reflex-l3
-- remotion-l3
-- motion (旧形式 → other枠、リネーム対象)
+## L1
 
-### 決済・メール・SaaSコンポーネント
-- stripe-sdk-l3
-- resend-react-email-l3
-- cal-diy-l3
+- `dev-environment-workflow-v2-l1-infra_lightrag.txt`
+- `lightrag-infra-ops-l1-ops_lightrag.txt`
+- `lightrag-knowledge-ops-l1-ops_lightrag.txt`
 
-### LLM・AIフレームワーク
-- claude-agent-sdk-python-l3
-- claude-code-action-l3
-- ai (Vercel AI SDK、旧形式 → other枠)
-- dspy-l3
-- inspect-ai-l3
-- openllmetry-l3
-- langfuse-l3
-- posthog-l3
+## L2
 
-### マルチエージェントフレームワーク
-- langgraph-l3
-- crewai-l3
-- mastra-l3
-- autogen-l3
-- smolagents-l3
-- letta-code-l3
-- agent-zero-l3
-- open-interpreter-l3
-- copilotkit-l3
-- claude-octopus-l3
-- openclaude-l3
-- wshobson-agents-l3
-- everything-claude-code-l3
-- gbrain-l3
-- paseo-l3
+- `adr-templates-l2_lightrag.txt`
+- `ai-document-generation-pipeline-l2_lightrag.txt`
+- `auto-design-scout-l2_lightrag.txt`
+- `building-llm-claude-l2_lightrag.txt`
+- `claude-code-agent-teams-parallel-dev-l2_lightrag.txt`
+- `competitive-intelligence-pipeline-l2_lightrag.txt`
+- `creative-ideation-lens-l2_lightrag.txt`
+- `durable-execution-hitl-approval-l2_lightrag.txt`
+- `gsd-spec-driven-dev-l2_lightrag.txt`
+- `multi-agent-design-patterns-l2_lightrag.txt`
+- `multi-tenant-saas-design-pattern-l2_lightrag.txt`
+- `n8n-to-webapp-migration-pattern-l2_lightrag.txt`
+- `n8n-workflow-design-patterns-l2_lightrag.txt`
+- `rag-application-design-patterns-l2_lightrag.txt`
+- `rag-pipeline-patterns-l2_lightrag.txt`
+- `skill-design-patterns-l2_lightrag.txt`
+- `superpowers-full-l2_lightrag.txt`
+- `superpowers-workflow-l2_lightrag.txt`
+- `systematic-debugging-l2_lightrag.txt`
 
-### Coding Agent / IDE拡張
-- gstack-garrytan-l3
-- daymade-skills-l3
-- antigravity-awesome-skills-l3
-- agile-studio-l3
-- mvp-builder-l3
-- impeccable-l3
-- trellis-mindfold-l3 ← **2026-05-01 新規**
+## L2c
 
-### ワークフローエンジン
-- n8n-l3
-- n8n-as-code-l3
-- inngest-l3
-- trigger-dev-l3
-- gh-aw-agentic-workflows-l3
+- `acp-agent-commerce-protocol-l2c_lightrag.txt`
+- `agentic-os-design-pattern-l2c_lightrag.txt`
+- `agentic-saas-boilerplate-l2c_lightrag.txt`
+- `agent-routing-l2c_lightrag.txt`
+- `claude-md-driven-content-generation-l2c_lightrag.txt`
+- `claude-obsidian-wiki-pattern-l2c_lightrag.txt`
+- `claude-skill-manager-design-patterns-l2c_lightrag.txt`
+- `company-profile-matching-engine-l2c_lightrag.txt`
+- `dealcopilot-domain-patterns-l2c.md`
+- `document-to-sns-image-pipeline-l2c_lightrag.txt`
+- `domain-skillpack-productized-service-l2c_lightrag.txt`
+- `graphify-mcp2cli-token-reduction-l2c_lightrag.txt`
+- `instinct-based-continuous-learning-l2c_lightrag.txt`
+- `llm-council-pattern-l2c_lightrag.txt`
+- `llm-token-reduction-proxy-l2c_lightrag.txt`
+- `miniclaw-sandbox-pattern-l2c_lightrag.txt`
+- `multi-tool-skills-sharing-l2c_lightrag.txt`
+- `n8n-self-improving-workflow-agent-l2c_lightrag.txt`
+- `openai-compat-abstraction-l2c_lightrag.txt`
+- `rag-retrieval-quality-l2c_lightrag.txt`
+- `schema-driven-lazy-cli-l2c_lightrag.txt`
+- `self-hosted-multichannel-distribution-l2c_lightrag.txt`
+- `server-side-knowledge-stack-l2c_lightrag.txt`
+- `text-first-on-demand-visuals-l2c_lightrag.txt`
+- `tool-loop-mcp-l2c_lightrag.txt`
+- `trinity-council-deliberation-l2c_lightrag.txt`
 
-### MCP・CLIツール
-- mcp-servers-l3
-- mcp2cli-l3
-- officecli-l3
-- rtk-l3
-- markitdown-l3
-- skillui-l3
-- graphify-l3
-- playwright-cli-l3
-- gh-cli (旧形式 → other枠)
-- stripe-cli (旧形式 → other枠)
-- gws-cli (Google Workspace CLI、旧形式 → other枠)
-- ui (shadcn-ui、旧形式 → other枠)
+## L3
 
-### Web/コンテンツ収集
-- crawl4ai-l3
-- firecrawl-l3
-- browser-use-l3
-- ffmpeg-l3
-- notebooklm-cli-full-l3
+- `agency-agents-msitarzewski-l3_lightrag.txt`
+- `agent-zero-l3_lightrag.txt`
+- `agile-studio-l3_lightrag.txt`
+- `andrej-karpathy-skills-l3_lightrag.txt`
+- `anthropic-claude-code-l3_lightrag.txt`
+- `anthropic-cookbook-l3_lightrag.txt`
+- `antigravity-awesome-skills-l3_lightrag.txt`
+- `arcads-claude-code-l3_lightrag.txt`
+- `art-openpipe-l3_lightrag.txt`
+- `autogen-l3_lightrag.txt`
+- `awesome-agent-skills-l3_lightrag.txt`
+- `awesome-compose-l3_lightrag.txt`
+- `awesome-design-md-l3_lightrag.txt`
+- `better-auth-l3_lightrag.txt`
+- `browser-use-l3_lightrag.txt`
+- `cal-diy-l3_lightrag.txt`
+- `ccxt-l3_lightrag.txt`
+- `claude-agent-sdk-python-l3_lightrag.txt`
+- `claude-code-action-l3_lightrag.txt`
+- `claude-octopus-l3_lightrag.txt`
+- `cli-anything-l3_lightrag.txt`
+- `codegraph-l3_lightrag.txt`
+- `codex-plugin-cc-l3_lightrag.txt`
+- `comfyui-api-server-l3_lightrag.txt`
+- `comfyui-graph-execution-l3_lightrag.txt`
+- `composio-l3_lightrag.txt`
+- `copilotkit-l3_lightrag.txt`
+- `crawl4ai-l3_lightrag.txt`
+- `crewai-l3_lightrag.txt`
+- `daymade-skills-l3_lightrag.txt`
+- `deeptutor-l3_lightrag.txt`
+- `docmost-l3_lightrag.txt`
+- `drizzle-orm-l3_lightrag.txt`
+- `dspy-l3_lightrag.txt`
+- `ecc-l3_lightrag.txt`
+- `everything-claude-code-l3_lightrag.txt`
+- `fabric-danielmiessler-l3_lightrag.txt`
+- `ffmpeg-l3_lightrag.txt`
+- `firecrawl-l3_lightrag.txt`
+- `five-whys-skill-l3_lightrag.txt`
+- `flowise-l3_lightrag.txt`
+- `foundry-l3_lightrag.txt`
+- `framer-motion-l3_lightrag.txt`
+- `freqtrade-l3_lightrag.txt`
+- `fumadocs-l3_lightrag.txt`
+- `gbrain-l3_lightrag.txt`
+- `geo-seo-claude-l3_lightrag.txt`
+- `gh-aw-agentic-workflows-l3_lightrag.txt`
+- `github-cli-gh-l3_lightrag.txt`
+- `google-workspace-cli-l3_lightrag.txt`
+- `goose-l3_lightrag.txt`
+- `graphify-l3_lightrag.txt`
+- `gstack-garrytan-l3_lightrag.txt`
+- `hermes-agent-l3_lightrag.txt`
+- `hono-l3_lightrag.txt`
+- `impeccable-l3_lightrag.txt`
+- `inngest-l3_lightrag.txt`
+- `inspect-ai-l3_lightrag.txt`
+- `instagrapi-l3_lightrag.txt`
+- `kestra-l3_lightrag.txt`
+- `langfuse-l3_lightrag.txt`
+- `langgraph-l3_lightrag.txt`
+- `letta-code-l3_lightrag.txt`
+- `lightrag-framework-l3_lightrag.txt`
+- `listmonk-l3_lightrag.txt`
+- `livekit-agents-l3_lightrag.txt`
+- `markitdown-l3_lightrag.txt`
+- `mastra-l3_lightrag.txt`
+- `mattpocock-skills-l3_lightrag.txt`
+- `mcollina-nodejs-skills-l3_lightrag.txt`
+- `mcp2cli-l3_lightrag.txt`
+- `mcp-servers-l3_lightrag.txt`
+- `microsoft-graphrag-l3_lightrag.txt`
+- `multica-l3_lightrag.txt`
+- `mvp-builder-l3_lightrag.txt`
+- `n8n-as-code-l3_lightrag.txt`
+- `n8n-l3_lightrag.txt`
+- `nextjs-l3_lightrag.txt`
+- `notebooklm-cli-full-l3_lightrag.txt`
+- `obsidian-skills-l3_lightrag.txt`
+- `odysseus-l3_lightrag.txt`
+- `officecli-l3_lightrag.txt`
+- `openclaude-l3_lightrag.txt`
+- `opencode-anomalyco-l3_lightrag.txt`
+- `openhuman-l3_lightrag.txt`
+- `open-interpreter-l3_lightrag.txt`
+- `openllmetry-l3_lightrag.txt`
+- `openspec-spec-driven-dev-l3_lightrag.txt`
+- `openswarm-vrsen-l3_lightrag.txt`
+- `openzeppelin-contracts-l3_lightrag.txt`
+- `paperclip-l3_lightrag.txt`
+- `paseo-l3_lightrag.txt`
+- `pipecat-l3_lightrag.txt`
+- `playwright-cli-l3_lightrag.txt`
+- `pm-skills-deanpeters-l3_lightrag.txt`
+- `polar-l3_lightrag.txt`
+- `posthog-l3_lightrag.txt`
+- `postiz-l3_lightrag.txt`
+- `ppt-master-l3_lightrag.txt`
+- `prd-skill-johnnychauvet-l3_lightrag.txt`
+- `qdrant-l3_lightrag.txt`
+- `quant-mind-l3_lightrag.txt`
+- `rag-anything-l3_lightrag.txt`
+- `ragas-explodinggradients-l3_lightrag.txt`
+- `reflex-l3_lightrag.txt`
+- `remotion-l3_lightrag.txt`
+- `resend-react-email-l3_lightrag.txt`
+- `rowboat-l3_lightrag.txt`
+- `rtk-l3_lightrag.txt`
+- `ruflo-l3_lightrag.txt`
+- `shadcn-ui-l3_lightrag.txt`
+- `skill-ai-seo-l3_lightrag.txt`
+- `skill-content-cascade-l3_lightrag.txt`
+- `skill-creator-l3_lightrag.txt`
+- `skill-deep-research-l3_lightrag.txt`
+- `skill-docx-l3_lightrag.txt`
+- `skill-dream-l3_lightrag.txt`
+- `skill-file-reading-l3_lightrag.txt`
+- `skill-frontend-design-l3_lightrag.txt`
+- `skill-hooks-kallaway-l3_lightrag.txt`
+- `skill-optimization-methods-l3_lightrag.txt`
+- `skill-page-cro-l3_lightrag.txt`
+- `skill-pdf-l3_lightrag.txt`
+- `skill-pdf-reading-l3_lightrag.txt`
+- `skill-pptx-l3_lightrag.txt`
+- `skill-product-self-knowledge-l3_lightrag.txt`
+- `skill-site-teardown-l3_lightrag.txt`
+- `skillui-l3_lightrag.txt`
+- `skill-xlsx-l3_lightrag.txt`
+- `skill-yt-pipeline-l3_lightrag.txt`
+- `smithery-smithery-ai-l3_lightrag.txt`
+- `smolagents-l3_lightrag.txt`
+- `sns-writing-rules-l3_lightrag.txt`
+- `stagehand-l3_lightrag.txt`
+- `stripe-cli-l3_lightrag.txt`
+- `stripe-sdk-l3_lightrag.txt`
+- `supabase-l3_lightrag.txt`
+- `syncthing-l3_lightrag.txt`
+- `taste-skill-l3_lightrag.txt`
+- `tradingagents-tauric-research-l3_lightrag.txt`
+- `trellis-mindfold-l3_lightrag.txt`
+- `trigger-dev-l3_lightrag.txt`
+- `turborepo-l3_lightrag.txt`
+- `tweepy-l3_lightrag.txt`
+- `twenty-crm-l3_lightrag.txt`
+- `understand-anything-l3_lightrag.txt`
+- `unkey-unkeyed-l3_lightrag.txt`
+- `vercel-ai-sdk-l3_lightrag.txt`
+- `vercel-l3_lightrag.txt`
+- `viga-l3_lightrag.txt`
+- `vimax-l3_lightrag.txt`
+- `virtual-protocol-org-l3_lightrag.txt`
+- `virtuals-game-framework-l3_lightrag.txt`
+- `vitest-l3_lightrag.txt`
+- `voxcpm-openbmb-l3_lightrag.txt`
+- `wshobson-agents-l3_lightrag.txt`
+- `zerolang-l3_lightrag.txt`
 
-### RAG・ナレッジ管理
-- rag-anything-l3
-- deeptutor-l3
-- flowise-l3
+## UNKNOWN
 
-### 仮想通貨・取引
-- ccxt-l3
-- freqtrade-l3
-
-### スマートコントラクト・Web3
-- foundry-l3
-- openzeppelin-contracts-l3
-- virtual-protocol-org-l3
-- virtuals-game-framework-l3
-
-### 音声・リアルタイム通信
-- pipecat-l3
-- livekit-agents-l3
-- voxcpm-openbmb-l3 ← **2026-05-01 新規**
-
-### 画像生成・ComfyUI
-- comfyui-api-server-l3
-- comfyui-graph-execution-l3
-
-### SNS・SaaS API
-- tweepy-l3
-- instagrapi-l3
-
-### テスト
-- vitest-l3
-
-### スキル: 公式Anthropic
-- skill-docx-l3
-- skill-pdf-l3
-- skill-pdf-reading-l3
-- skill-pptx-l3
-- skill-xlsx-l3
-- skill-frontend-design-l3
-- skill-file-reading-l3
-- skill-product-self-knowledge-l3
-- skill-creator-l3
-
-### スキル: コミュニティ
-- skill-deep-research-l3
-- skill-content-cascade-l3
-- skill-yt-pipeline-l3
-- skill-hooks-kallaway-l3
-- skill-site-teardown-l3
-- skill-dream-l3
-- skill-page-cro-l3
-- skill-ai-seo-l3
-- skill-optimization-methods-l3
-- sns-writing-rules-l3
-- taste-skill-l3
-- five-whys-skill-l3
-- pm-skills-deanpeters-l3
-- prd-skill-johnnychauvet-l3
-
-### その他
-- art-openpipe-l3（Agent Reinforcement Trainer）
-- anthropic-cookbook-l3
-
-### LightRAG関連
-- (lightrag 旧形式 → other枠)
-
----
-
-## L2: 検証済みパターン（18件）
-
-| # | ファイル名 | 主要用途 |
-|---|---|---|
-| 1 | skill-design-patterns-l2 | スキル設計アーキタイプ |
-| 2 | gsd-spec-driven-dev-l2 | スペック駆動開発 |
-| 3 | superpowers-full-l2 | エージェント開発フレームワーク |
-| 4 | superpowers-workflow-l2 | エージェント開発ワークフロー |
-| 5 | claude-code-agent-teams-parallel-dev-l2 | git worktree並列開発 |
-| 6 | multi-agent-design-patterns-l2 | LangGraph/CrewAI/Mastra使い分け |
-| 7 | rag-pipeline-patterns-l2 | RAGパイプライン構築 |
-| 8 | rag-application-design-patterns-l2 | RAGアプリ設計（dual-loop） |
-| 9 | multi-tenant-saas-design-pattern-l2 | Supabase RLS マルチテナント |
-| 10 | durable-execution-hitl-approval-l2 | Inngest HITLワークフロー |
-| 11 | n8n-workflow-design-patterns-l2 | n8nワークフロー設計 |
-| 12 | n8n-to-webapp-migration-pattern-l2 | n8n→Webアプリ移行判断 |
-| 13 | ai-document-generation-pipeline-l2 | AI文書生成4段階アーキ |
-| 14 | auto-design-scout-l2 | 競合デザイン自動偵察 |
-| 15 | competitive-intelligence-pipeline-l2 | 全方位競合偵察 |
-| 16 | creative-ideation-lens-l2 | クリエイティブ評価レンズ |
-| 17 | systematic-debugging-l2 | 4段階デバッグ手法 |
-| 18 | adr-templates-l2 | Architecture Decision Records |
-
----
-
-## L2c: 候補パターン（19件、未検証）
-
-| # | ファイル名 | 由来 | 検証状態 |
-|---|---|---|---|
-| 1 | agent-routing-l2c | openclaude | 未検証 |
-| 2 | tool-loop-mcp-l2c | openclaude | 未検証 |
-| 3 | openai-compat-abstraction-l2c | openclaude | 未検証 |
-| 4 | text-first-on-demand-visuals-l2c | video-use/browser-use | 未検証 |
-| 5 | llm-token-reduction-proxy-l2c | rtk | 未検証 |
-| 6 | schema-driven-lazy-cli-l2c | mcp2cli | 未検証 |
-| 7 | trinity-council-deliberation-l2c | OpenClaw | L1から昇格 |
-| 8 | n8n-self-improving-workflow-agent-l2c | SNS Autopilot | L1から昇格 |
-| 9 | claude-md-driven-content-generation-l2c | git-art | L1から昇格 |
-| 10 | acp-agent-commerce-protocol-l2c | Virtual Protocol | 未検証 |
-| 11 | agentic-os-design-pattern-l2c | Agent OS | 未検証 |
-| 12 | agentic-saas-boilerplate-l2c | OSS reference arch | 未検証 |
-| 13 | claude-obsidian-wiki-pattern-l2c | Karpathy Wiki | 未検証 |
-| 14 | claude-skill-manager-design-patterns-l2c | スキルマネージャ4類型 | 未検証 |
-| 15 | instinct-based-continuous-learning-l2c | hooks-driven学習 | 未検証 |
-| 16 | llm-council-pattern-l2c | Karpathy LLM Council | 未検証 |
-| 17 | miniclaw-sandbox-pattern-l2c | サンドボックス4層防御 | 未検証 |
-| 18 | multi-tool-skills-sharing-l2c | symlink統一供給 | 未検証 |
-| 19 | rag-retrieval-quality-l2c | ノイズ・位置・数の3因子 | 未検証 |
-
----
-
-## L1-Infra（1件）
-
-| ファイル名 | 内容 |
-|---|---|
-| dev-environment-workflow-v2-l1-infra | 開発環境前提・ワークフローv2 |
-
-## L1-Ops（2件）
-
-| ファイル名 | 内容 |
-|---|---|
-| lightrag-infra-ops-l1-ops | LightRAGインフラ運用ログ |
-| lightrag-knowledge-ops-l1-ops | LightRAGナレッジ管理運用知見 |
-
-## L1-old（1件、リネーム検討）
-
-| ファイル名 | 推奨アクション |
-|---|---|
-| awesome-agent-skills-l1 | L3にリネーム検討（カタログ系コンテンツ） |
-
----
-
-## other: 旧形式（13件、リネーム対象）
-
-ファイル名にレイヤーサフィックスがない旧形式。中身はL2/L3品質。次セッションでリネーム再投入を計画。
-
-### L3にリネーム予定（10件）
-| 現ファイル名 | 推奨新ファイル名 | 内容 |
-|---|---|---|
-| ai_lightrag.txt | vercel-ai-sdk-l3 | Vercel AI SDK |
-| awesome-design-md_lightrag.txt | awesome-design-md-l3 | デザインシステム |
-| codex-plugin-cc_lightrag.txt | codex-plugin-cc-l3 | OpenAI Codex × CC連携 |
-| gh-cli_lightrag.txt | gh-cli-l3 | GitHub CLI |
-| gws-cli_lightrag.txt | google-workspace-cli-l3 | Google Workspace CLI（Rust） |
-| lightrag_lightrag.txt | lightrag-l3 | LightRAG本体 |
-| motion_lightrag.txt | motion-framer-l3 | Reactアニメーション |
-| stripe-cli_lightrag.txt | stripe-cli-l3 | Stripe CLI |
-| ui_lightrag.txt | shadcn-ui-l3 | shadcn/ui |
-| obsidian-skills_lightrag.txt | obsidian-skills-l3 | Obsidian × Agent Skills |
-| agency-agents_lightrag.txt | agency-agents-l3 | エージェント初期設定参考 |
-
-### L2にリネーム予定（2件）
-| 現ファイル名 | 推奨新ファイル名 | 内容 |
-|---|---|---|
-| awesome-compose_lightrag.txt | awesome-compose-l2 | Docker Composeリファレンス |
-| building-llm_lightrag.txt | building-llm-applications-l2 | Building LLM-Powered Apps |
-
-> 注: ⚠️ リネームには「旧版psql削除 + 新ファイル名で再upload_document」の手順が必要。次セッションで計画的に実施。
-
----
-
-## 目標達成度（2026-05-01）
-
-| 指標 | 現状 | 目標 | 達成率 |
-|---|---|---|---|
-| L3比率 | 65.6% | 50-60% | 超過 |
-| L2比率 | 11.5% | 20-25% | 50% |
-| L2c件数 | 19 | - | 順調 |
-| 旧形式件数 | 14 | 0 | 撲滅必要 |
-| エラー件数 | 0 | 0 | ✅達成 |
-| doc整合性 | 157=157 | 一致 | ✅達成 |
-
----
-
-## セッション履歴
-
-### 2026-05-01: 整理・再棚卸し
-- doc_fullゴースト21件削除（chunks 71件 + vdb_chunks 71件巻き込み）
-- 全157件のレイヤー別棚卸し実施
-- 新規L3投入2件: trellis-mindfold-l3, voxcpm-openbmb-l3
-- 見送り判断1件: docker-android (budtmo)
-- INDEX.md / RESUME.md / GSD-PLAN.md / DECISIONS.md を157件状態に同期更新
-- 旧形式13件のリネーム計画を明文化
-
-### 2026-04-19: Phase 3 無サフィックス再投入
-- Phase 1a 重複24件削除
-- バッチ1-3で計13件再投入、26件純減
-- vdb_entities 約800件のノイズ除去
-- 検索精度向上を6テストクエリで確認
-
-### 2026-04-18: L1 v3再設計 + L2c拡充
-- L1から10件削除（プロジェクト固有情報を全除外）
-- L1維持3件をL1-Infra/L1-Opsにリネーム（計227レコードUPDATE）
-- L2cを9件に拡充
-- KNOWLEDGE-DECISIONS.md新設
-
-### 2026-04-17
-- openclaude-l3新規投入
-- L2c候補3パターン記録（Agent Routing / Tool-loop+MCP / OpenAI互換抽象化）
-
-### 2026-04-15
-- Phase 1-3 大規模リファクタリング
-- combination-architect / knowledge-navigator スキル3レイヤー化
-
----
-
-## 次のアクション（2026-05-01時点）
-
-1. **OpenRouter APIキーローテーション**（最優先・セキュリティ）
-2. **旧形式13件のリネーム再投入**（other 13件、計画は本INDEX.md記載）
-3. **L1-old 1件のリネーム**（awesome-agent-skills-l1 → l3化検討）
-4. **entity_chunks/relation_chunks のゴースト要素クリーンアップ**（LightRAG公式手順調査が必要）
-5. **L2c → L2 昇格候補の検証**（実装による検証実施）
-6. **L2拡充**（現18件 → 目標25件）
-7. **検索モード使い分け指針の明文化**（hybrid/local/global/naive）
-8. **2段階クエリ戦略のスキル化**（用途③発信用途向け）
-
----
-
-## 運用ルール（再確認用）
-
-### 投入経路
-- 本体ナレッジ: Claude.ai（LightRAGプロジェクト）→ upload_document のみ
-- 管理ファイル: VPS上で直接編集（INDEX/DECISIONS/RESUME/SCHEMA）
-
-### ファイル名規約
-- L3: `[name]-[author]-l3_lightrag.txt`
-- L2: `[name]-l2_lightrag.txt`
-- L2c: `[name]-l2c_lightrag.txt`
-- L1-Infra: `[name]-l1-infra_lightrag.txt`
-- L1-Ops: `[name]-l1-ops_lightrag.txt`
-
-### 削除原則
-- DELETE API禁止（全消しバグ）
-- psql直接操作 + 必ずpg_dumpバックアップ
-- BEGIN/ROLLBACK でドライラン → COMMIT で本番
-
-### 投入評価
-- 新規リソース評価時は必ず KNOWLEDGE-DECISIONS.md に記録
-- 4カテゴリ: L3投入 / L2c投入 / 保留 / 見送り
+- `vapi-hermes-mcp-report.md`
+- `vapi-phone-integration-report-yusuke.md`

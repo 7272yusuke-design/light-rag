@@ -348,3 +348,25 @@ ANUS / API-mega-list / build-your-own-x / ai-recruiter-claude(リポ単体L3)
 - [ ] DATA-SCHEMA.md の投入フロー記述に record_decision を反映(次回編集時で可)
 - [ ] Claude.ai側は次セッションから record_decision を直接呼べる(今セッションはツール一覧キャッシュのため不可だった)
 - [ ] 将来: C-1(Claude Codeスキル化)時に record_decision.py を流用 / RESUME.md自動更新は別途検討
+
+---
+
+## 2026-06-13 棚卸し・verified定義D・負債整理セッション
+
+### 完了事項
+- **record_decision新フロー通し検証成功**: hermes-agent-l3 投入で upload_document→record_decision を連続実行、自動push成功（commit be2e34e）。コネクタ再接続でツール可視化問題も解消。C-2本番運用可と確定
+- **ナレッジ棚卸し**: inventory.sh + psql で件数確定。総数207件（L3:157 / L2c:26 / L2:19 / L1:3 / other:2）、整合性207/207/207
+- **L2c→L2昇格レビュー（26件）**: 全件中身確認の結果、L2要件「検証済みの組み合わせパターン」を満たすものは0件 → 昇格0件（健全な結果。安易昇格を回避しL2の信頼性を保全）
+- **verified定義D成文化**: DATA-SCHEMA.mdに追記。verified:self/oss/thirdparty の3段階、L2昇格はselfのみ、昇格は pull型（実案件駆動）に変更
+- **dealcopilot是正**: 拡張子規約違反（.md → -l2c_lightrag.txt）をpsqlリネーム修正。DealCopilotは企画〜テスト段階・未構築のためverified:self非該当、昇格先はL2でなくL3想定と記録
+- **DATA-SCHEMA投入フロー反映（課題3完了）**: 投入フロー（標準手順）新設＋投入経路表をrecord_decision込みに更新。旧手動追記フロー廃止を明文化
+- **負債整理**: backups 5世代削除（1.8G→852M）、mcp_remote.py.bak等7個削除（最新.bak-rd-20260613のみ残置）
+
+### 次のアクション（優先順）
+1. KNOWLEDGE-INDEX.md ハイブリッド化（自動生成エリア=inventory.sh更新済み + 手動エリア分離の設計）
+2. 次リポジトリ評価。候補: hermes-agent-self-evolution（DSPy+GEPA、skill-verifier/客観スコアリング構想の先行事例。今セッションで評価候補キュー入り）
+3. L2比率改善は pull型昇格の正規ルート依存（実案件でL2cを使った時に個別昇格）
+
+### ユーザー側宿題（セッション外・未完なら最優先）
+- [ ] 露出PAT（ghp_ItVf...）のRevoke ※今回pushがcredential helper経由で成功＝旧PAT無効化して運用影響なしと実証済み
+- [ ] OpenRouter APIキーのローテーション（持ち越し）
