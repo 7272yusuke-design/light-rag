@@ -572,3 +572,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. マーケティング/LP/コンテンツ支援系の実案件をClaude Codeスキルパックとして構築する時
   2. combination-architectで「Webサイト監査×並列subagent×PDF納品」の縦型商品を企画する時
   3. 4件共通の構成パターンをL2c「業種特化Claude Codeスキルパック構成パターン」として抽出する判断をする時
+
+---
+
+## 2026-06-14: dataforseo-claude — 見送り
+
+- **対象:** https://github.com/zubair-trabzada/dataforseo-claude
+- **判断:** 見送り(dataforseo-claude)
+- **根拠:** 業種特化型Claude Codeスキルパック（SEO監査）。アーキテクチャは同系統だが、唯一外部有料API（DataForSEO）依存で、APIキー・課金が前提。手本としての参照価値（外部有料APIをスキルに統合し、LLM分析でなくreal dataを返すパターンの実例）は認めるが、汎用部品在庫としてのL3には不適。Star少・スポンサー連携色が強く、実案件で組む蓋然性も保留2件より低い。商品設計の対比素材（API依存型 vs LLM分析型）として外部参照に留め、現時点では投入しない。
+- **注記:** 作者zubair-trabzada(AI Workshop)。DataForSEOとのスポンサー連携で構築。13スキル+5subagent。他3件と異なり外部有料API（DataForSEO、従量課金 ~$0.10-0.30/audit）に依存する「real data型」。2★/0fork、6 commitsと新しくコミュニティ実績は薄い。
+- **関連:** ai-sales-team-claude/ai-marketing-claude（同一作者・同系統で保留）, ai-legal-claude（同系統で見送り）
+- **再検討条件:**
+  1. SEO/検索順位データを扱う実案件で、外部SEO APIをClaude Codeスキルに統合する必要が生じた時
+  2. 「外部有料APIをスキルパックに統合する」パターンをL2c化する判断をする時
+  3. DataForSEO以外も含めたSEO API統合の比較検討が実案件で必要になった時
