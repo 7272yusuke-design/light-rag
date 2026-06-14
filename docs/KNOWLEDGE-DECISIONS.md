@@ -544,3 +544,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. OpenClawからの移行を実際に検討するプロジェクトが発生した時(hermes claw migrateの実地検証)
   2. skill-verifier/客観スコアリング構想の実装に着手し自己改善ループの先行事例調査が必要になった時(self-evolution別件評価とセット)
   3. クライアント案件でメッセージング統合常駐エージェントの構築依頼が来た時
+
+---
+
+## 2026-06-14: ai-sales-team-claude — 保留
+
+- **対象:** https://github.com/zubair-trabzada/ai-sales-team-claude
+- **判断:** 保留(ai-sales-team-claude)
+- **根拠:** 業種特化型Claude Codeスキルパック（営業支援）。orchestrator SKILL + 13サブスキル + 5並列subagent + Pythonスクリプト + テンプレート + 加重合成スコア(0-100) + client-ready PDF + ワンコマンド配布という共通アーキテクチャを持つ。BANT+MEDDICの定量スコアリングとクロススキル連携（prospect→outreach/prep/proposalのデータ受け渡し）が明文化されており、4件中で最も成熟（717★/256fork）。Yusukeのアップセルモデル（n8n→Claude Code→アプリ→エージェント）のClaude Code層の商品テンプレートに直結するため、汎用部品在庫としてのL3即投入ではなく、実案件で営業支援パックを組む際に self検証を経てL3/L2c化する想定で保留。
+- **注記:** 作者zubair-trabzada(AI Workshop)。スキルパック4件は同一アーキテクチャ。スコアリング方法論・クロススキル連携図はREADMEに明示。LLM分析のみで外部API非依存。
+- **関連:** ai-marketing-claude（同一作者・同系統で保留）, dataforseo-claude/ai-legal-claude（同系統で見送り）, wshobson-agents-l3, claude-agent-sdk-python-l3
+- **再検討条件:**
+  1. 営業支援系の実案件（リード獲得・商談支援の自動化）を受注し、Claude Codeスキルパックとして構築する時
+  2. combination-architectで「業種特化×並列subagent×PDF納品」の縦型商品を企画する時
+  3. 4件共通の構成パターンをL2c「業種特化Claude Codeスキルパック構成パターン」として抽出する判断をする時
