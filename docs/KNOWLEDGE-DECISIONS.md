@@ -558,3 +558,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. 営業支援系の実案件（リード獲得・商談支援の自動化）を受注し、Claude Codeスキルパックとして構築する時
   2. combination-architectで「業種特化×並列subagent×PDF納品」の縦型商品を企画する時
   3. 4件共通の構成パターンをL2c「業種特化Claude Codeスキルパック構成パターン」として抽出する判断をする時
+
+---
+
+## 2026-06-14: ai-marketing-claude — 保留
+
+- **対象:** https://github.com/zubair-trabzada/ai-marketing-claude
+- **判断:** 保留(ai-marketing-claude)
+- **根拠:** 業種特化型Claude Codeスキルパック（マーケティング支援）。ai-sales-teamと同一アーキテクチャ（orchestrator + 14サブスキル + 5並列subagent + Pythonスクリプト + テンプレート + 加重合成スコア + PDF納品 + ワンコマンド配布）。Webサイト・LP・コピー・広告領域を扱い、YusukeのWebサイト/Webアプリ開発領域と重なる。スコアリング方法論が6次元加重で明文化されている点が設計リファレンスとして価値が高い。汎用部品在庫としてのL3即投入ではなく、実案件でマーケ支援パックを組む際にself検証を経てL3/L2c化する想定で保留。
+- **注記:** 作者zubair-trabzada(AI Workshop)。6次元加重スコア（Content25/Conversion20/SEO20/Competitive15/Brand10/Growth10）が表で明文化。email系列・提案書・コンテンツカレンダー等のテンプレート資産が厚い。LLM分析のみで外部API非依存。697★/286fork。
+- **関連:** ai-sales-team-claude（同一作者・同系統で保留）, dataforseo-claude/ai-legal-claude（同系統で見送り）, postiz-l3, wshobson-agents-l3
+- **再検討条件:**
+  1. マーケティング/LP/コンテンツ支援系の実案件をClaude Codeスキルパックとして構築する時
+  2. combination-architectで「Webサイト監査×並列subagent×PDF納品」の縦型商品を企画する時
+  3. 4件共通の構成パターンをL2c「業種特化Claude Codeスキルパック構成パターン」として抽出する判断をする時
