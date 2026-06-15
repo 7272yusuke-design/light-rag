@@ -728,3 +728,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. LightRAG MCPをIMボットのツールとして組み込む構成を設計する時
   5. スキルパック商品の配布モデル（マーケットプレイス型）をcombination-architectで検討する時
   6. Agent Sandboxの実装をminiclaw-sandbox-pattern-l2cの参照事例として見る時
+
+---
+
+## 2026-06-15: Hoppscotch — L3投入
+
+- **対象:** https://github.com/hoppscotch/hoppscotch
+- **判断:** L3投入(Hoppscotch)
+- **根拠:** オープンソースのAPI開発エコシステム（Postman/Insomnia代替）。Web/Desktop/CLI、オフライン/オンプレ/クラウド対応。REST/WebSocket/SSE/Socket.IO/MQTT/GraphQL、OAuth2.0/OIDC/PKCE認証、Pre/Post-Requestスクリプト（JS）、コレクション/環境、チーム/RBAC、CLI（CI連携）、self-host。Yusukeの開発領域「Webアプリ（認証/DB/API）」の標準的な開発・テストツールで、商品の手本ではなく開発を支える実務ツールの部品在庫。LightRAG MCP（port9622）やn8n webhookのエンドポイント動作確認、Hostinger VPSへのself-host、Post-Request TestsでのAPI監視/E2E転用、CLIでn8n/GitHub Actions連携、OAuth/OIDC認証フロー検証（Clerk/Supabase開発のデバッグ）に有用。既存在庫にAPI開発クライアントがなくYusukeスタックの部品在庫として妥当、79.4k★・MIT・成熟のためL3投入。
+- **注記:** file_name: hoppscotch-l3_lightrag.txt（2640 bytes, upload成功・background処理中）。TypeScript68%/Vue23%/Rust4%、MIT、79.4k★/5.9k fork、6134 commits、104 releases（最新2026.5.0 / 2026-05-28）。一部SSO等はEnterprise edition feature。重複チェック: naive 2クエリ実施、Hoppscotch自体の既存なし（API開発クライアント未在庫）。
+- **関連:** composio-l3, mcp-servers-l3, supabase-l3, nextjs-l3, inspect-ai-l3
+- **再検討条件:**
+  1. Webアプリ/API開発案件でAPIクライアント・テスト環境が必要な時（Hoppscotchを標準ツールに）
+  2. LightRAG MCP/n8n webhookのエンドポイントを叩いて動作確認する時
+  3. Hostinger VPSにself-hostのAPI開発環境を構築する時
+  4. CLI連携でn8n/GitHub ActionsからAPIテストを自動化する時
+  5. OAuth2.0/OIDC/PKCEの認証フローを検証する時（認証付きWebアプリのデバッグ）
+  6. チーム機能のフル活用・商用self-hostでEnterprise edition featureの機能境界を確認する時
