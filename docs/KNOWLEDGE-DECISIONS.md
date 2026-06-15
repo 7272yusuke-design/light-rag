@@ -745,3 +745,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. CLI連携でn8n/GitHub ActionsからAPIテストを自動化する時
   5. OAuth2.0/OIDC/PKCEの認証フローを検証する時（認証付きWebアプリのデバッグ）
   6. チーム機能のフル活用・商用self-hostでEnterprise edition featureの機能境界を確認する時
+
+---
+
+## 2026-06-15: 過剰実装抑制パイプライン (over-engineering-guard-pipeline) — L2c投入
+
+- **対象:** https://github.com/DietrichGebert/ponytail
+- **判断:** L2c投入(過剰実装抑制パイプライン (over-engineering-guard-pipeline))
+- **根拠:** ponytail（L3）を実装ガードレールとして組み込んだ過剰実装抑制パイプライン（L2c候補パターン、status:unverified）。Yusukeの構想「設計時にナレッジ参照して過剰設計を防ぐ」のうち、ponytail単体で確実に届く範囲＝実装フェーズの過剰実装抑制に絞った最小構成版。3ゲート構造: ゲート1=ponytail full常駐でYAGNI梯子による最小実装、ゲート2=/ponytail-review・/ponytail-auditでdiff監査・削除リスト適用、ゲート3=/ponytail-debtでponytail:近道の負債台帳化。pattern/combinationとして成立（context/persona/research非該当）。重複チェック: naive 2クエリで同趣旨の既存L2/L2cなし確認（過剰実装抑制の在庫はponytail-l3のみ、パイプライン化は新規）。検証状態はdesigned（未実装）のためL2c。設計フェーズの過剰設計抑制（knowledge-navigator/GSD/OpenSpecを前段に置く構成）は射程外として「将来拡張」に明記し、別L2c切り出し候補とした。
+- **関連:** ponytail-l3, skill-design-patterns-l2, caveman-l3, gsd-spec-driven-l3, openspec-spec-driven-dev-l3
+- **再検討条件:**
+  1. 実案件でAIエージェントにコードを書かせ、このパイプラインを通した時（ponytail導入前後のコード量・不要実装の減少、/ponytail-reviewの指摘妥当性、/ponytail-debt台帳の有効性を確認しverified:selfならL2昇格）
+  2. 設計ゲート（knowledge-navigator/GSD/OpenSpecを前段に置く拡張）を実装して有効性を確認する時（別L2c「最小設計パイプライン」として切り出し判断）
+  3. ponytailのコマンド・モード構成が更新されパイプライン手順の見直しが必要な時
+  4. caveman（出力圧縮）との併用パターンを設計する時
