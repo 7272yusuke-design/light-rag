@@ -600,3 +600,18 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. 法務/契約関連の実案件で、規制を踏まえた出力設計（ディスクレーマ・免責・士業連携）を検討する必要が生じた時
   2. 日本の非弁規制を踏まえたうえで契約レビュー補助ツールの商品化可否を本格検討する時
   3. リスク領域（法務・医療・金融助言等）での出力設計パターンをL0/L2c化する判断をする時
+
+---
+
+## 2026-06-15: agno — L3投入
+
+- **対象:** https://github.com/agno-agi/agno
+- **判断:** L3投入(agno)
+- **根拠:** エージェントプラットフォームの構築・運用・管理を行うPython SDK。単体のエージェント構築フレームワークではなく、プロダクション運用基盤（control plane）を含む点が独自。任意フレームワークで構築→tracing/scheduling/RBAC付きサービス化→単一control planeで管理という3軸構造。既存のエージェント在庫と直接の重複ポジションがなく、「プロダクション運用層を持つPython製エージェントSDK」という空きを埋める。アップセルモデル最終段（エージェント開発）の自前プラットフォーム基盤候補であり、かつL0-PRODUCT-CONSTRAINTS.mdの複数制約の参照実装になる: JWTベースRBAC/マルチテナント分離→憲章Article6、Human approvalループ→L0-002/L0-009、Observability/監査ログ→L0-010、Context Providers(MCP対応)→LightRAG MCPのcontext source組み込み。参照価値が突出して高く、安定性も十分なためL3投入。
+- **注記:** file_name: agno-l3_lightrag.txt（3079 bytes, upload成功・background処理中）。Apache-2.0、Python 99.7%、40.4k★/5.4k fork、5642 commits、192 releases（最新v2.6.9）。重複チェック: naive 2クエリ実施、Agno自体の既存なし（類似はCrewAI/Agent Zero/OpenSwarm/Vercel AI SDK/Paperclip等だがポジション重複なし）。
+- **関連:** crewai-l3, agent-zero-l3, openswarm-vrsen-l3, vercel-ai-sdk-l3, paperclip-l3, claude-agent-sdk-python-l3, agentic-os-design-pattern-l2c
+- **再検討条件:**
+  1. エージェント開発の実案件で自前運用プラットフォーム基盤を選定する時（Agnoを第一候補として技術検証）
+  2. Human approval/RBAC/監査ログの実装をL0-002/L0-009/L0-010の実装リファレンスとして参照する時
+  3. LightRAG MCPをエージェントのcontext sourceとして組み込む構成を設計する時
+  4. メジャーバージョン更新で破壊的変更や機能追加があった時（最終確認日2026-06-16の鮮度更新）
