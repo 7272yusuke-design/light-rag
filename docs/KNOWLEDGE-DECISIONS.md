@@ -615,3 +615,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. Human approval/RBAC/監査ログの実装をL0-002/L0-009/L0-010の実装リファレンスとして参照する時
   3. LightRAG MCPをエージェントのcontext sourceとして組み込む構成を設計する時
   4. メジャーバージョン更新で破壊的変更や機能追加があった時（最終確認日2026-06-16の鮮度更新）
+
+---
+
+## 2026-06-15: SurfSense — L3投入
+
+- **対象:** https://github.com/MODSetter/SurfSense
+- **判断:** L3投入(SurfSense)
+- **根拠:** チーム向けOSS NotebookLM代替（データ無制限・self-host・プライバシー重視）。27+コネクタ、100+LLM/6000+embedding（vLLM/Ollama対応）、Hybrid Search（セマンティック+全文+階層インデックス+RRF）、LangChain Deep Agentsベースのagentic構成、引用付きレポート多形式出力、スケジュール/イベントトリガー自動化+コネクタwrite-back、RBAC付きリアルタイム協働を一体化。Yusukeが自作中のLightRAGナレッジ管理と同ドメインの「完成した実装リファレンス」であり、方向性は異なる（汎用NotebookLM代替 vs 開発ナレッジ外部脳+MCP）ため置換対象ではなく設計参照元として価値が高い。具体的参照点: Hybrid Search→LightRAG検索最適化の比較対象、コネクタ+write-back+自動化→アップセル「アプリ層」完成形の手本、RBAC+マルチテナント→L0-PRODUCT-CONSTRAINTS Article6参照実装、Deliverable Studio→ナレッジ成果物生成の商品機能手本。既存在庫に同種なし・コアドメイン直撃のためL3投入。ただしv0.0.26・本番未対応のため注意タグ付き（設計参照に留め本番採用は時期尚早）。
+- **注記:** file_name: surfsense-l3_lightrag.txt（3375 bytes, upload成功・background処理中）。Apache-2.0、Python66.7%/TS30.5%、14.4k★/1.4k fork、6232 commits。★v0.0.26でREADME自身が「プロダクション未対応」明記＝注意タグ付きで投入。重複チェック: naive 2クエリ実施、SurfSense自体の既存なし（RAG在庫lightrag/rag-patterns等はあるが統合NotebookLM代替アプリは未在庫）。
+- **関連:** lightrag-framework-l3, rag-application-design-patterns-l2, rag-pipeline-patterns-l2, rag-retrieval-quality-l2c, agno-l3, supabase-l3, langgraph-l3, deeptutor-l3
+- **再検討条件:**
+  1. LightRAGの検索品質改善（L2比率・検索精度）でHybrid Search/階層インデックス/RRFの実装を参照する時
+  2. アップセル「アプリ層」でコネクタ統合・成果物生成・自動化を持つナレッジアプリを設計する時
+  3. SurfSenseが安定版（1.0系）に到達し本番採用可否を再検討する時（現v0.0.26・本番未対応）
+  4. LangChain Deep Agentsの実運用パターンを参照する時
+  5. 最終確認日2026-06-16から時間が経ち高速開発で構成が変わった可能性がある時（鮮度更新）
