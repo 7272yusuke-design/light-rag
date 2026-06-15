@@ -695,3 +695,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. skill-verifierの客観スコアリング設計で実APIトークン計測ベンチ手法を参照する時
   5. エコシステム他ツール（caveman-code/cavemem/cavekit/cavegemma）の評価可否を判断する時
   6. ponytailとの併用パターンをL2c化する判断をする時
+
+---
+
+## 2026-06-15: Claude for Small Business — L3投入
+
+- **対象:** https://claude.com/plugins/small-business
+- **判断:** L3投入(Claude for Small Business)
+- **根拠:** Anthropic公式の小規模事業者向けプラグイン（Claude Cowork）。新プランではなくPro/Max/Team契約にトグル追加するスキル+コネクタの束。15ワークフロー+15スキル（/plan-payroll, /close-month, /run-campaign, /monday-brief等、下に cash-flow forecasting/invoice chasing/contract review/margin analysis等が自動発動）。コネクタはQuickBooks/PayPal/HubSpot推奨+Canva/DocuSign/Gmail/Outlook/Slack/Stripe/Square、未接続時はgraceful degradation。money/customerに触れる操作は人間承認。Yusukeのアップセルモデル「アプリ層商品」のAnthropic公式による基準点（リファレンス実装かつ競合）。「職種特化スキルパック+コネクタ+自然言語ルーター+人間承認」構造は構想中の縦型商品そのもので差別化検討材料。前回zubator系（sales/marketing/legal）保留・見送り判断の裏付け（公式が同領域カバー）。人間承認設計はL0-002/L0-009の商用実装例、graceful degradationは堅牢な商品設計の手本、常駐自動化が別レイヤー必要な点はn8n資産の差別化余地。公式・基準点としての参照価値が高くL3投入。
+- **注記:** file_name: claude-for-small-business-l3_lightrag.txt（3507 bytes, upload成功・background処理中）。Anthropic公式（Anthropic Verified）、2026-05-13発表。Claude Coworkプラグイン（marketplace: anthropics/knowledge-work-plugins）。GitHubリポジトリではなく公式プロダクトのため出典は公式ページ（claude.com/plugins/small-business, anthropic.com/news, claude.com/solutions/small-business）。web_search+公式ページweb_fetchで一次確認。重複チェック: naive 2クエリ実施、自体の既存なし。
+- **関連:** anthropic-claude-code-l3, skill-product-self-knowledge-l3, awesome-agent-skills-l3, multi-tool-skills-sharing-l2c, domain-skillpack-productized-service-l2c, ai-sales-team-claude, ai-marketing-claude
+- **再検討条件:**
+  1. アップセル「アプリ層」で職種/業種特化スキルパック商品を企画する時（公式構造を基準点に差別化を設計）
+  2. 人間承認フロー（money/customer操作）の商用実装をL0-002/L0-009の参照として設計する時
+  3. 日本市場・特定業種向けにClaude for Small Business相当を組む際の差別化（n8n常駐自動化との組み合わせ等）を検討する時
+  4. 公式プラグインのスキル/コマンド構成・コネクタ・料金が更新された時（最終確認日2026-06-16の鮮度更新）
+  5. 日本での提供状況・日本語対応・対応会計ソフトを確認する必要が生じた時
