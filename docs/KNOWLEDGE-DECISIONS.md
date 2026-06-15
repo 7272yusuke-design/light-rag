@@ -678,3 +678,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. マルチエージェント移植（プラグイン型/ルールファイル型2系統）の実装を参照する時
   5. ベンチマーク数値の第三者検証や自前再現を行う必要が生じた時（現状は作者自己申告）
   6. 比較対象cavemanの評価結果が出てponytailとの優劣・使い分けを整理する時
+
+---
+
+## 2026-06-15: caveman — L3投入
+
+- **対象:** https://github.com/JuliusBrussee/caveman
+- **判断:** L3投入(caveman)
+- **根拠:** AIエージェント出力をトークン圧縮するClaude Code等30+対応スキル/プラグイン（原始人話法で出力トークン約65%削減・技術的正確性は保持）。ponytailと同じ「トークン削減」だが作用点が補完的: ponytailは書くコード量を減らす（YAGNI）、cavemanは話す出力トークンを減らす（電文体）。併用可能で削減レイヤーが異なる。特にYusuke文脈との接続が強い: (1)caveman-shrink（MCPミドルウェア）はLightRAG MCPに直接適用可能で、現在のブランチfeature/compression-middlewareの領域に直結する参照実装、(2)caveman-compressはRESUME.md/プロジェクトファイル圧縮に転用可能、(3)既存llm-token-reduction-proxy系パターンの実装リファレンス、(4)実APIトークン計測＋誠実な比較対象（"Answer concisely."と比較）＋再現スクリプト公開でskill-verifier構想の先行事例。69.4k★・MITでL3投入。出力トークンのみ削減（thinking不変）・電文体は顧客納品向けでない点を注意タグで明記。
+- **注記:** file_name: caveman-l3_lightrag.txt（3564 bytes, upload成功・background処理中）。MIT、JS63%/Python28%、69.4k★/3.9k fork、185 commits、14 releases（最新v1.8.2 / 2026-05-12）。ponytail評価時のnaive 2クエリでcaveman自体の既存なし確認済み。ponytailと同時期に評価キュー追加→L3投入。エコシステム他4ツール（caveman-code/cavemem/cavekit/cavegemma）は別途評価候補。
+- **関連:** ponytail-l3, llm-token-reduction-proxy-l2c, codex-plugin-cc-l3, multi-tool-skills-sharing-l2c, awesome-agent-skills-l3, hermes-agent-l3
+- **再検討条件:**
+  1. LightRAG MCPのトークンコスト削減でcaveman-shrink（MCP記述圧縮ミドルウェア）の適用を検討する時
+  2. ブランチfeature/compression-middlewareの実装でMCP圧縮の参照実装が必要な時
+  3. RESUME.md/KNOWLEDGE-INDEX等のメモリ・ドキュメント圧縮でcaveman-compress手法を参照する時
+  4. skill-verifierの客観スコアリング設計で実APIトークン計測ベンチ手法を参照する時
+  5. エコシステム他ツール（caveman-code/cavemem/cavekit/cavegemma）の評価可否を判断する時
+  6. ponytailとの併用パターンをL2c化する判断をする時
