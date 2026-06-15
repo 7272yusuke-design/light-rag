@@ -631,3 +631,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. SurfSenseが安定版（1.0系）に到達し本番採用可否を再検討する時（現v0.0.26・本番未対応）
   4. LangChain Deep Agentsの実運用パターンを参照する時
   5. 最終確認日2026-06-16から時間が経ち高速開発で構成が変わった可能性がある時（鮮度更新）
+
+---
+
+## 2026-06-15: Novu — L3投入
+
+- **対象:** https://github.com/novuhq/novu
+- **判断:** L3投入(Novu)
+- **根拠:** オープンソースの通知インフラ。In-App/Inbox・Email・SMS・Push・Chatのマルチチャネル配信を単一APIに統合し、埋め込み可能な<Inbox/>コンポーネント、Notification Workflow Engine、Digest Engine、ノーコードメールエディタ、購読者設定コンポーネントを提供。Email19/SMS37/Push8/Chat12プロバイダ対応。既存在庫に通知インフラ層がなく（Resendはメール単体でNovuに内包される関係）、アップセル「アプリ層/Webアプリ開発」で通知機能を一括搭載する標準部品として参照価値が高い。認証=Clerk、メール=Resendと並ぶ「通知=Novu」の位置。埋め込みInboxでSaaS型アプリに即通知センターを付与でき案件工数を削減、n8n/Inngestと組み合わせてイベント駆動マルチチャネル配信が組める、エージェント成果物のラストワンマイル配信部品にもなる。39k★・MIT(コア)・成熟度十分のためL3投入。ただしOpen Coreのライセンス境界（EE範囲の商用利用）の注意タグ付き。
+- **注記:** file_name: novu-l3_lightrag.txt（2503 bytes, upload成功・background処理中）。TypeScript97%、39k★/4.3k fork、21852 commits、117 releases。★Open Core（コアMIT / enterprise・ee配下はEEライセンス）＝ライセンス境界の注意タグ付き。重複チェック: naive 2クエリ実施、Novu自体の既存なし（通知系在庫はResend単体/Inngestのみ、マルチチャネル通知インフラは未在庫。ResendはNovuのEmailプロバイダの1つに内包される関係）。
+- **関連:** resend-react-email-l3, inngest-l3, nextjs-l3, shadcn-ui-l3, supabase-l3, agno-l3, surfsense-l3
+- **再検討条件:**
+  1. Webアプリ/SaaS案件で通知センター・マルチチャネル通知を実装する時（Novuを標準部品として第一候補に）
+  2. n8n/Inngestのイベント駆動と通知配信を連携させる構成を設計する時
+  3. エージェント成果物をユーザーへ通知配信するラストワンマイルを設計する時
+  4. self-hostで商用利用する際にMIT範囲/EE範囲のライセンス境界を確認する必要が生じた時
+  5. 最終確認日2026-06-16から時間が経ちプロバイダ・SDK対応（Vue/Angular/RN等）が変わった時（鮮度更新）
