@@ -711,3 +711,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. 日本市場・特定業種向けにClaude for Small Business相当を組む際の差別化（n8n常駐自動化との組み合わせ等）を検討する時
   4. 公式プラグインのスキル/コマンド構成・コネクタ・料金が更新された時（最終確認日2026-06-16の鮮度更新）
   5. 日本での提供状況・日本語対応・対応会計ソフトを確認する必要が生じた時
+
+---
+
+## 2026-06-15: AstrBot — L3投入
+
+- **対象:** https://github.com/AstrBotDevs/AstrBot
+- **判断:** L3投入(AstrBot)
+- **根拠:** IMプラットフォーム統合型のオールインワン・エージェントチャットボット基盤（"openclaw alternative"公称）。QQ/WeChat/Feishu/DingTalk/Telegram/Slack/Discord/LINE等多数のIMに対応、マルチLLM（Anthropic含む）、MCP/Skills/ナレッジベース/ペルソナ/自動コンテキスト圧縮、Agent Sandbox（隔離実行）、1000+プラグインのマーケットプレイス、豊富なデプロイ手段。既存在庫にIM常駐型エージェント基盤がなく独自ポジション。Yusuke文脈との接続が複数: (1)OpenClaw代替公称でopenclawのIMフロントエンド比較対象、(2)LINE対応が日本の小規模事業者向けアップセルの差別化手段（米国SaaS中心のClaude for Small Businessに対する日本市場の具体策）、(3)Agent Sandboxはminiclaw-sandbox-pattern-l2cの実装事例、(4)1000+プラグイン+マーケットプレイスはスキルパック配布モデルの手本、(5)MCP対応でLightRAG MCPをIMボットに組み込み可能。33.7k★・221リリースで成熟しL3投入。ただしAGPL-3.0+EULAのライセンス影響は商品化時に要精査の注意タグ付き。
+- **注記:** file_name: astrbot-l3_lightrag.txt（2899 bytes, upload成功・background処理中）。Python70%/Vue24%、33.7k★/2.3k fork、4753 commits、221 releases（最新v4.25.2 / 2026-05-30）、319 contributors。★AGPL-3.0 + EULA.md＝ライセンス注意タグ必須。重複チェック: naive 2クエリ実施、AstrBot自体の既存なし（IM常駐エージェント基盤は未在庫）。
+- **関連:** agent-zero-l3, livekit-agents-l3, flowise-l3, miniclaw-sandbox-pattern-l2c, multi-tool-skills-sharing-l2c, claude-for-small-business-l3, caveman-l3
+- **再検討条件:**
+  1. 日本の小規模事業者向けにLINE常駐AIボット/カスタマーサービスを構築する案件が出た時（AstrBotを第一候補に）
+  2. openclawのIMフロントエンド層を設計・比較する時
+  3. AGPL-3.0+EULAのライセンス影響を商用・受託組み込みの観点で精査する必要が生じた時
+  4. LightRAG MCPをIMボットのツールとして組み込む構成を設計する時
+  5. スキルパック商品の配布モデル（マーケットプレイス型）をcombination-architectで検討する時
+  6. Agent Sandboxの実装をminiclaw-sandbox-pattern-l2cの参照事例として見る時
