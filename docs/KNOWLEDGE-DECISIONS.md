@@ -661,3 +661,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. 自宅またはVPSでメディアサーバー（動画・音楽配信）をself-host運用する個人案件・実需が具体化した時
   2. C#/.NETスタックの大規模プラグインアーキテクチャを設計参照したい具体ニーズが出た時
   3. メディアストリーミング/配信領域がYusukeの開発領域・商品ドメインに加わった時
+
+---
+
+## 2026-06-15: ponytail — L3投入
+
+- **対象:** https://github.com/DietrichGebert/ponytail
+- **判断:** L3投入(ponytail)
+- **根拠:** AIコーディングエージェントの過剰実装を抑制するルールセット＋スキルパック（最良のコードは書かなかったコード）。怠惰の梯子（YAGNI→標準ライブラリ→ネイティブ機能→既存依存→1行→最小実装）でコード生成前に最初に成り立つ段で止める。「怠惰だが手抜きではない」（trust境界バリデーション/データ損失対応/セキュリティ/アクセシビリティは削らない）、取った近道はponytail:コメントで明示。13エージェント対応（Claude Code/Codex/Copilot/pi/OpenCode/Gemini/Antigravityのプラグイン型 + Cursor/Windsurf/Cline/Aider/Kiroのルールファイル型）。既存在庫に過剰実装抑制・YAGNI強制のスキルパックがなく重複なし。Yusukeのコア活動（SKILL開発/skill-verifier/combination-architect）とL0原理に直結: promptfoo定量ベンチはskill-verifier構想の先行事例（hermes-agentと同枠）、怠惰の梯子はL0-008完成度の段階や判断構造化の設計信念のスキル実装例、縦型スキルパックに過剰実装抑制の制御層を噛ませる手本、13エージェント移植の実装リファレンス。MIT・13.6k★でL3投入。ただしベンチ数値は自己申告のため注意タグ付き。
+- **注記:** file_name: ponytail-l3_lightrag.txt（3108 bytes, upload成功・background処理中）。MIT、JS91%/Python8%、13.6k★/553 fork、62 commits、8 releases（最新v4.6.0 / 2026-06-15）。★ベンチ数値80-94%減等は作者自己申告（median of 10 runs、promptfoo再現手順は公開）＝注意タグ付き。重複チェック: naive 2クエリ実施、ponytail/caveman自体の既存なし。READMEが比較対象に挙げるJuliusBrussee/cavemanは同系統で別途評価キュー追加。
+- **関連:** skill-design-patterns-l2, multi-tool-skills-sharing-l2c, codex-plugin-cc-l3, awesome-agent-skills-l3, hermes-agent-l3, openspec-spec-driven-dev-l3
+- **再検討条件:**
+  1. skill-verifierの客観スコアリング設計でpromptfooベンチ手法を参照する時
+  2. オリジナルSKILL開発で過剰実装抑制・YAGNI強制の制御を組み込む時
+  3. combination-architectで縦型スキルパックに「過剰実装抑制層」を設計する時
+  4. マルチエージェント移植（プラグイン型/ルールファイル型2系統）の実装を参照する時
+  5. ベンチマーク数値の第三者検証や自前再現を行う必要が生じた時（現状は作者自己申告）
+  6. 比較対象cavemanの評価結果が出てponytailとの優劣・使い分けを整理する時
