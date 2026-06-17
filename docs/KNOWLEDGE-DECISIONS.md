@@ -759,3 +759,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. 設計ゲート（knowledge-navigator/GSD/OpenSpecを前段に置く拡張）を実装して有効性を確認する時（別L2c「最小設計パイプライン」として切り出し判断）
   3. ponytailのコマンド・モード構成が更新されパイプライン手順の見直しが必要な時
   4. caveman（出力圧縮）との併用パターンを設計する時
+
+---
+
+## 2026-06-17: qmd (Query Markup Documents) — L3投入
+
+- **対象:** https://github.com/tobi/qmd
+- **判断:** L3投入(qmd (Query Markup Documents))
+- **根拠:** 完全ローカルで動くCLIハイブリッド検索エンジン。BM25全文+ベクトル意味検索+LLMリランクをnode-llama-cpp+GGUFでローカル実行。3モード(search/vsearch/query)、クエリ拡張(fine-tuned 1.7B、元クエリ×2重み)、RRF融合(k=60)+トップランクボーナス+位置考慮ブレンド(rank1-3=75%retrieval/rank11+=60%reranker)、スマートチャンキング(markdown境界スコアリング)、context機能、MCPサーバー(stdio+HTTP transport)、SDK利用可。Yusukeの既存タスク「LightRAG検索品質改善」に最も直接効く実装リファレンス: (1)位置考慮ブレンド/RRF重み付け/トップランクボーナスはrag-retrieval-quality-l2c・rag-pipeline-patterns-l2の具体実装例で検索キャップ調整とは別軸のretrieval品質改善ヒント、(2)Qwen3-Embedding-0.6B推奨のCJK知見は日本語ナレッジ検索の埋め込みモデル選定に直接適用可能、(3)スマートチャンキングは*_lightrag.txtのチャンク設計参考、(4)ローカルGGUF完結はOpenRouter依存(コスト・キーローテーション宿題)削減の参考、(5)context機能はKNOWLEDGE-INDEX手動エリア設計に通じる。16.5k★・MIT・Shopify CEO作で信頼性高くL3投入。LightRAGの代替ではなく検索手法の参照元（グラフ構造は持たない点を注意明記）。
+- **注記:** file_name: qmd-l3_lightrag.txt（4184 bytes, upload成功・background処理中）。作者tobi=Tobias Lütke（Shopify CEO）。MIT、TypeScript81%/Python17%、16.5k★/991 fork、364 commits、9 releases（最新v2.0.1 / 2026-03-11）。重複チェック: naive 2クエリ実施、qmd自体の既存なし。ハイブリッド検索手法はrag-retrieval-quality-l2c/rag-pipeline-patterns-l2と重なる領域で具体実装例として補完関係。
+- **関連:** rag-retrieval-quality-l2c, rag-pipeline-patterns-l2, lightrag-framework-l3, rag-anything-l3, microsoft-graphrag-l3, qdrant-l3, surfsense-l3, caveman-l3
+- **再検討条件:**
+  1. LightRAGの検索品質改善（retrieval精度・L2比率とは別軸）で位置考慮ブレンド/RRF重み付け/トップランクボーナスの融合戦略を参照する時
+  2. 日本語ナレッジ検索の埋め込みモデル選定（Qwen3-Embedding等への切替）を検討する時
+  3. *_lightrag.txt投入ドキュメントのチャンク設計を見直す時（スマートチャンキング参考）
+  4. OpenRouter依存を減らしリランク/埋め込み/クエリ拡張をローカルGGUF化する構成を検討する時
+  5. KNOWLEDGE-INDEX手動エリアやcontext付与の設計をする時（qmd context機能の発想）
+  6. qmdをVPSに実際に立ててLightRAGと検索品質を比較検証する時（リソース要件確認のうえ）
