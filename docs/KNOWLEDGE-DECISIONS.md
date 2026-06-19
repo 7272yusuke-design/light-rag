@@ -776,3 +776,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. OpenRouter依存を減らしリランク/埋め込み/クエリ拡張をローカルGGUF化する構成を検討する時
   5. KNOWLEDGE-INDEX手動エリアやcontext付与の設計をする時（qmd context機能の発想）
   6. qmdをVPSに実際に立ててLightRAGと検索品質を比較検証する時（リソース要件確認のうえ）
+
+---
+
+## 2026-06-19: Chroma — L3投入
+
+- **対象:** https://github.com/chroma-core/chroma
+- **判断:** L3投入(Chroma)
+- **根拠:** AI向けオープンソース検索/データインフラ（ベクトルDB）。コアがRust移行済みで高速。最大の特徴はAPIのミニマルさ（実質4関数: create_collection/add/query/get）で、in-memory試作→永続化→client-serverを同一APIで地続きに移行できプロトタイピングが極めて簡単。メタデータ/全文フィルタ、Chroma Cloud（サーバーレスのベクトル/ハイブリッド/全文検索）、多言語クライアント、LangChain/LlamaIndexのデフォルト統合先。既存Qdrantとは用途が異なる軽量・プロトタイプ枠として差別化（Qdrant=高性能本番志向・詳細制御 / Chroma=開発者体験・学習コスト最小）。LightRAG本体はpgvector運用のためChromaが本番に入る余地は小さいが、アップセル「アプリ層」でのRAG試作・単発PoCを最速で立てる用途、ベクトルストア選定比較（Chroma/Qdrant/pgvector）の在庫として価値がある。28k★・Apache-2.0・デファクトの一つでL3投入。注: LightRAG検索品質改善にはqmd（融合手法・CJK・リランク）の方が直接効き、Chromaはストア選択肢であって検索手法の改善ソースではない点を明記。
+- **注記:** file_name: chroma-l3_lightrag.txt（2528 bytes, upload成功・background処理中）。Apache-2.0、Rust68%/Python16%/TS7%/Go5%、28k★/2.3k fork、4378 commits、137 releases（最新1.5.9 / 2026-05-05）。重複チェック: naive 2クエリ実施、Chroma自体の既存なし。ベクトルストアはQdrant在庫済みだが用途が異なる（Qdrant=本番志向 / Chroma=軽量プロトタイプ枠）ため重複ではなく差別化して投入。
+- **関連:** qdrant-l3, lightrag-framework-l3, supabase-l3, rag-pipeline-patterns-l2, rag-retrieval-quality-l2c, qmd-l3, rag-anything-l3
+- **再検討条件:**
+  1. 別案件・PoCで軽量にRAG/ベクトル検索を最速で試作する時（Chromaを4関数で即起動、本番化時にQdrant/pgvectorへ移行）
+  2. ベクトルストアの選定比較（Chroma=試作 / Qdrant=本番 / pgvector=既存スタック統合）が必要な時
+  3. アップセル「アプリ層」でRAG機能のプロトタイプを作る時
+  4. Chroma CloudのマネージドサーバーレスRAGを検討する時
+  5. APIや永続化フォーマットがメジャー更新された時（鮮度更新）
