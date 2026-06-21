@@ -808,3 +808,22 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. v1.0.0に到達し後方互換が安定した時（本番採用可否の再評価）
   4. アップセル「アプリ層」で軽量な顧客向けアプリを1ファイル配布する構成を設計する時
   5. （注: 事務・経理・顧客統合の二層記憶＝構造化+意味検索の用途はSupabase+pgvector/LightRAGが主役。PocketBaseはこの用途では選ばない）
+
+---
+
+## 2026-06-21: last30days-skill — L3投入
+
+- **対象:** https://github.com/mvanhorn/last30days-skill
+- **判断:** L3投入(last30days-skill)
+- **根拠:** 直近30日のソーシャル世論を13プラットフォーム（Reddit/X/YouTube/TikTok/Instagram/HN/Polymarket/GitHub/Threads/Pinterest/Bluesky/Perplexity/Web）横断で並列検索しエンゲージメント重み付けで合成するAgent Skill。51以上のAgent Skillsホストに対応（Claude Code/Codex/Cursor/Copilot/Gemini CLI/Windsurf/Cline/Continue/Roo/Aider-Desk/OpenCode/goose等）。v3でpre-researchブレイン（"OpenClaw"→@steipete・r/openclaw等を事前resolve）、Best Takes（ユーモア判定第二judge）、cross-source cluster merging、single-pass比較、auto-discovered competitor、GitHub person-mode、ELI5モード、shareable HTML brief、trend monitoring（--store+watchlist+briefings）を備える成熟ツール。Yusuke文脈との接続が極めて強い: (1)アップセル「アプリ層」の受託メニュー（商談前/評判監視）に直接納品できる、(2)米国SaaS中心のClaude for Small Businessに対し日本顧客にも刺さるソーシャル横断リサーチ商品として差別化可能、(3)保留中ai-sales-team-claudeとの組み合わせで商談前リサーチ→Hermes要点抽出→Supabase記録のパイプライン、(4)--store+watchlist.pyはn8nスケジュールトリガーから回す常駐自動化素材、(5)1012テスト・実エンゲージメント計測でskill-verifier構想の先行事例（hermes-agent/ponytail/cavemanと同枠）、(6)51ホスト対応はmulti-tool-skills-sharing-l2cの上位事例（ponytail13ホスト超え）、(7)HTML brief出力はSurfSense Deliverable Studioと同方向。41.5k★・MIT・成熟でL3投入。外部API/トークン多数必要・日本語ソース限定の注意タグ付き。
+- **注記:** file_name: last30days-skill-l3_lightrag.txt（4929 bytes, upload成功・background処理中）。MIT、Python98%、41.5k★/3.4k fork、623 commits、14 releases（最新v3.3.0 / 2026-05-17）、1012テスト。GitHub Trending #1取得実績。重複チェック: naive 2クエリ実施、last30days自体の既存なし。在庫deep-research-l3とソーシャル横断リサーチで部分重複あるが「直近30日特化・エンゲージメントスコアリング・13ソース・51ホスト対応・Polymarket等独自源」で明確に差別化、補完関係として投入。
+- **関連:** deep-research-l3, hermes-agent-l3, ponytail-l3, caveman-l3, multi-tool-skills-sharing-l2c, claude-for-small-business-l3, ai-sales-team-claude, n8n-l3, surfsense-l3, awesome-agent-skills-l3
+- **再検討条件:**
+  1. アップセル「アプリ層」で商談前リサーチ/評判監視を顧客に納品する商品を設計する時（last30daysを基準点に）
+  2. 保留中のai-sales-team-claudeとの組み合わせ（商談前→Hermes→Supabase）のパイプラインを実装する時
+  3. n8nスケジュールトリガー+last30days watchlistで顧客向け常駐リサーチ自動化を組む時
+  4. skill-verifierの客観スコアリング設計で1012テスト・エンゲージメント計測手法を参照する時
+  5. HTML brief出力の成果物形式をSurfSense Deliverable Studio等と比較する時
+  6. 日本向け受託でソーシャル横断リサーチを商品化する時の鍵管理・課金モデル設計時（外部API多数の運用論点）
+  7. 日本語ソース対応（2ch/5ch/Yahoo知恵袋等）が拡張される時（最終確認日2026-06-16の鮮度更新）
+  8. ponytail/caveman/hermes-agentとの「客観スコアリング先行事例」L2c化を検討する時
