@@ -792,3 +792,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. アップセル「アプリ層」でRAG機能のプロトタイプを作る時
   4. Chroma CloudのマネージドサーバーレスRAGを検討する時
   5. APIや永続化フォーマットがメジャー更新された時（鮮度更新）
+
+---
+
+## 2026-06-21: PocketBase — L3投入
+
+- **対象:** https://github.com/pocketbase/pocketbase
+- **判断:** L3投入(PocketBase)
+- **根拠:** Goで書かれた1ファイルのオープンソース・リアルタイムバックエンド。組み込みSQLite+リアルタイム購読、ファイル/ユーザー管理、管理ダッシュボードUI、REST的APIを単一実行ファイルに含む。プリビルド実行ファイルで即起動、またはGoライブラリとして業務ロジックを組み込み単一バイナリ化（JS VMプラグインでJS拡張も可）。既存Supabaseとは差別化される軽量BaaS枠（Supabase=PostgreSQL+pgvectorの本格基盤・RAG統合可 / PocketBase=SQLite組み込みの超軽量単一ファイル・小規模/PoC/エッジ向き）。Chroma↔Qdrantと同じ本格vs軽量の対構造。アップセル「アプリ層」で小さな顧客向けアプリを最速で1ファイル配布する用途、BaaS選定比較の在庫として価値あり。58.3k★・MIT・成熟でL3投入。ただし(1)v1.0前で後方互換非保証の注意タグ、(2)事務・経理・顧客統合の二層記憶テーマではベクトル検索の都合でSupabaseが主役でありPocketBaseはSQLiteゆえRAG統合が弱く主役にならない点を明記し棲み分け。
+- **注記:** file_name: pocketbase-l3_lightrag.txt（2738 bytes, upload成功・background処理中）。Go69%/JS24%、58.3k★/3.4k fork、2317 commits、263 releases（最新v0.38.1 / 2026-05-15）。★v1.0.0前で完全な後方互換保証なし＝注意タグ必須。重複チェック: naive 2クエリ実施、PocketBase自体の既存なし（BaaSはSupabase在庫済みで対比対象）。
+- **関連:** supabase-l3, drizzle-l3, better-auth-l3, reflex-l3, qdrant-l3, chroma-l3, twenty-crm-l3
+- **再検討条件:**
+  1. 小規模アプリ/PoCのバックエンドを単一ファイルで最速に立てたい時・エッジ/低リソース環境に置きたい時（PocketBaseを選択肢に）
+  2. BaaS選定比較（PocketBase=超軽量 / Supabase=本格pgvector）が必要な時
+  3. v1.0.0に到達し後方互換が安定した時（本番採用可否の再評価）
+  4. アップセル「アプリ層」で軽量な顧客向けアプリを1ファイル配布する構成を設計する時
+  5. （注: 事務・経理・顧客統合の二層記憶＝構造化+意味検索の用途はSupabase+pgvector/LightRAGが主役。PocketBaseはこの用途では選ばない）
