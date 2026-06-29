@@ -827,3 +827,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   6. 日本向け受託でソーシャル横断リサーチを商品化する時の鍵管理・課金モデル設計時（外部API多数の運用論点）
   7. 日本語ソース対応（2ch/5ch/Yahoo知恵袋等）が拡張される時（最終確認日2026-06-16の鮮度更新）
   8. ponytail/caveman/hermes-agentとの「客観スコアリング先行事例」L2c化を検討する時
+
+---
+
+## 2026-06-29: GraphAnything — 保留
+
+- **対象:** https://github.com/InternScience/GraphAnything
+- **判断:** 保留(GraphAnything)
+- **根拠:** 何でもナレッジグラフ化するツール（10 schema presets / 8 extractors / 9 render formats / 17 MCP tools / 19 CLI sub-commands / federation / provenance / 増分更新）。設計はLightRAG/GraphRAGの弱点（暗黙スキーマ・provenance弱い・federation不可・外部出力なし）に正面から答える。Yusukeの「GraphRAGの課題を解決する可能性」「Notion×Supabase×LightRAGアーキテクチャの前処理候補」という観点で補完価値あり。ただし(1)Star 15/1 commit/リリースなしで信頼性未確立・README機能と実装の乖離可能性、(2)LightRAGをすでに事業基盤として運用中で出来たてOSSを焦って併用する根拠が薄い、(3)単独で見るより相方（HelixDB等のgraph-vector DB）とのセットで評価すべき。HelixDB（github.com/HelixDB/helix-db、Rust製OLTP graph-vector DB、YC出身、2026-04 GA、約4k★、AGPL）が「GraphAnything=抽出/HelixDB=実行エンジン」という綺麗な補完を構成しうるが、HelixDB自体もクレジット都合で投入保留中。よってGraphAnythingも保留として記録し、HelixDB投入時に併せて再評価する。
+- **注記:** 作者: InternScience。MIT、Python 100%、Star 15・Fork 1・1 commit・リリースなし（極めて新興・未検証）。中国語READMEあり。重複チェック: naive 2クエリ実施、自体の既存なし。在庫の関連グラフ系: Microsoft GraphRAG / RAG-Anything / LightRAG / graphify / Understand-Anything / CodeGraph。コード専用4件と文書グラフ系2件で、GraphAnythingは文書グラフ系の独自ポジション。
+- **関連:** microsoft-graphrag-l3, rag-anything-l3, lightrag-framework-l3, graphify-l3, understand-anything-l3, codegraph-l3, claude-obsidian-l3
+- **再検討条件:**
+  1. HelixDB投入時に「GraphAnything=抽出 + HelixDB=実行エンジン」の補完構成を実装検証する時（最有力の再評価タイミング）
+  2. GraphAnything側でcommitが増え本番運用事例が出てきた時（半年程度後の再評価）
+  3. 契約書/OpenAPI/DBスキーマなど構造が明確な文書を、明示スキーマでグラフ化する必要が実案件で出た時
+  4. Notion×Supabase×LightRAGアーキテクチャで議事録/契約のprovenance（evidence_span）が経理監査の観点で必要になった時
+  5. 複数顧客のグラフを後でfederationしたい受託モデルに進展した時
+  6. Neo4j連携・Obsidian Canvas出力が顧客成果物として求められる時
