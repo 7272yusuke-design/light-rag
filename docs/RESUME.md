@@ -408,3 +408,24 @@ ANUS / API-mega-list / build-your-own-x / ai-recruiter-claude(リポ単体L3)
 ### 未処理タスク（フェーズ1A外で対処予定）
 - main未コミットの整理系ファイル（config/, docs/KNOWLEDGE-*, untracked多数）
 - これらはナレッジ整理セッションで別途処理
+
+---
+
+## 2026-07-07 メンテナンスセッション（ブランチ統合+INDEXハイブリッド化+容量整理）
+
+### 完了
+- [x] ブランチ統合: main独自の評価記録9件(5/22,5/25,5/28)を救出コミット後、main⇔feature双方向マージ。両ブランチ同一コミットでpush済み
+- [x] DB診断: 整合性221/220/220の真因特定 = last30days-skill-l3のfailed 1件(6/21クレジット枯渇、本文投入済みグラフ未抽出)。実害なし
+- [x] KNOWLEDGE-INDEX.mdハイブリッド化(持ち越し最優先タスク): inventory.sh v2化。AUTO区画のみ自動更新+手動エリア永続保護、整合性指標をdoc_full/doc_status/processedに刷新、未処理エントリ自動可視化、L0レイヤー分類対応
+- [x] .bak掃除: docs配下13個削除(.bak-rdのみ残置)
+- [x] 容量整理: 約20GB回収(builder prune 20.26GB / hermes旧バックアップ3GB / pg_dump旧世代860M / pipキャッシュ885M)。62G→42G使用
+- [x] 恒久対策: /etc/cron.weekly/docker-builder-prune 設置(until=168h)
+
+### クレジット復活後にやること(セット)
+1. OpenRouter APIキーローテーション
+2. last30days-skill-l3 の再処理 → 221/221/221に揃う
+3. PAT revoke最終確認
+
+### 備考
+- INDEX.mdの手動エリアに既知の未処理・重複調査リスト・昇格ウォッチを記録済み
+- inventory.sh旧版は scripts/inventory.sh.bak-20260707 に保存
