@@ -370,3 +370,41 @@ ANUS / API-mega-list / build-your-own-x / ai-recruiter-claude(リポ単体L3)
 ### ユーザー側宿題（セッション外・未完なら最優先）
 - [ ] 露出PAT（ghp_ItVf...）のRevoke ※今回pushがcredential helper経由で成功＝旧PAT無効化して運用影響なしと実証済み
 - [ ] OpenRouter APIキーのローテーション（持ち越し）
+
+---
+
+<!-- 以下、mainブランチから救出した記録(2026-07-07マージ時) -->
+
+
+---
+
+## 2026-05-24 フェーズ1A セッション1完了
+
+### 達成事項
+- MCPサーバーのソースコード特定: `/docker/lightrag/scripts/mcp_remote.py` (254行, Starlette)
+- ベースライン3クエリ取得（measurement/baseline/）
+  - query1 (OpenSpec, naive): 817 tokens / 2270 bytes / 0.46s
+  - query2 (MCP token reduction, hybrid): 1338 tokens / 4415 bytes / 5.25s
+  - query3 (エージェント framework, hybrid): 1289 tokens / 4478 bytes / 3.32s
+- tools/list ベースライン: 272 tokens / 1223 bytes
+- PostgreSQL backup: backups/baseline_20260524_002542.sql (282MB)
+- feature/compression-middleware ブランチ作成・push完了
+- list_knowledge表示バグ修正をmainにコミット (bf52e40) → メモリ記載の調査タスク事実上クローズ
+
+### コミット
+- main: bf52e40 (fix: list_knowledge direct SQL query)
+- feature/compression-middleware: b54d116 (chore: baseline metrics)
+
+### 観察と気づき
+- hybridモードのレスポンスは [entities] セクション形式、naiveは [chunks] 形式
+- 既存tool descriptionは既に簡潔 → セッション2の削減余地は限定的、本丸はセッション4/5
+- hybridモードの返却は10件上限が効いている可能性あり (query2/3 がほぼ同サイズ)
+
+### 次回開始時 (セッション2)
+- 圧縮ミドルウェアのコード変更開始
+- 簡潔化対象は tools/list (272 tokens) のみ → 削減余地小
+- セッション3以降のミドルウェア基盤構築を視野に進める
+
+### 未処理タスク（フェーズ1A外で対処予定）
+- main未コミットの整理系ファイル（config/, docs/KNOWLEDGE-*, untracked多数）
+- これらはナレッジ整理セッションで別途処理
