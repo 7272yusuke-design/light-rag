@@ -38,7 +38,7 @@
 
 #### rtk
 - **判断**: L3投入 + L2c候補（本体未投入）
-- **出典URL**: （前回セッションで記載済み、別途確認）
+- **出典URL**: https://github.com/rtk-ai/rtk
 - **理由**: LLMトークン削減プロキシ、OpenClaw公式プラグインあり、Yusukeさん事業に直結
 - **ファイル名**: rtk-l3_lightrag.txt
 - **再検討条件**: 自環境にrtkを導入・動作確認後、L2c→L2昇格
@@ -52,7 +52,7 @@
 
 #### MiniCode
 - **判断**: 保留
-- **出典URL**: （前回セッションで記載済み）
+- **出典URL**: https://github.com/LiuMengxuan04/MiniCode
 - **理由**: Coding Agent学習用。openclaudeと機能が重複するため、openclaudeを優先
 - **再検討条件**: 自前Coding Agentを実装する段階に進んだとき（openclaudeで物足りなさを感じた時点）
 
@@ -65,13 +65,13 @@
 
 #### JeecgBoot
 - **判断**: 見送り
-- **出典URL**: （前回セッションで記載済み）
+- **出典URL**: https://github.com/jeecgboot/JeecgBoot
 - **理由**: 45.4k stars巨大Java/SpringBoot低代码プラットフォーム。Yusukeさんの技術スタック（TypeScript/Python中心）と言語が合わず、ドメインも企業向け低代码と距離がある
 - **再検討条件**: Javaエンタープライズ案件を受注したとき、または業界別Skill戦略の検討に着手したとき
 
 #### Agent Lightning
 - **判断**: 保留
-- **出典URL**: （前回セッションで記載済み、Microsoft公式）
+- **出典URL**: https://github.com/microsoft/agent-lightning
 - **理由**: Microsoft公式、14.1k stars、任意エージェントのRL/APO訓練フレームワーク。現フェーズは「まだ作る段階」で訓練・最適化は次段階
 - **再検討条件**: OpenClaw運用開始時、またはエージェント訓練フェーズに着手するとき
 
