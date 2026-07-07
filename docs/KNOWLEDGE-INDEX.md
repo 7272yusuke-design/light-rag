@@ -1,8 +1,8 @@
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全207件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全221件)
 
 > 自動生成ファイル。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-06-13
-> 整合性 (docs/entities/relations): 207/207/207
+> 最終更新: 2026-07-07
+> 整合性 (docs/entities/relations): 221/220/220
 
 ## レイヤー別件数
 
@@ -10,9 +10,9 @@
 |---------|------|
 | L1 | 3 |
 | L2 | 19 |
-| L2c | 26 |
-| L3 | 157 |
-| UNKNOWN | 2 |
+| L2c | 27 |
+| L3 | 169 |
+| UNKNOWN | 3 |
 
 ---
 
@@ -66,6 +66,7 @@
 - `multi-tool-skills-sharing-l2c_lightrag.txt`
 - `n8n-self-improving-workflow-agent-l2c_lightrag.txt`
 - `openai-compat-abstraction-l2c_lightrag.txt`
+- `over-engineering-guard-pipeline-l2c_lightrag.txt`
 - `rag-retrieval-quality-l2c_lightrag.txt`
 - `schema-driven-lazy-cli-l2c_lightrag.txt`
 - `self-hosted-multichannel-distribution-l2c_lightrag.txt`
@@ -79,12 +80,14 @@
 - `agency-agents-msitarzewski-l3_lightrag.txt`
 - `agent-zero-l3_lightrag.txt`
 - `agile-studio-l3_lightrag.txt`
+- `agno-l3_lightrag.txt`
 - `andrej-karpathy-skills-l3_lightrag.txt`
 - `anthropic-claude-code-l3_lightrag.txt`
 - `anthropic-cookbook-l3_lightrag.txt`
 - `antigravity-awesome-skills-l3_lightrag.txt`
 - `arcads-claude-code-l3_lightrag.txt`
 - `art-openpipe-l3_lightrag.txt`
+- `astrbot-l3_lightrag.txt`
 - `autogen-l3_lightrag.txt`
 - `awesome-agent-skills-l3_lightrag.txt`
 - `awesome-compose-l3_lightrag.txt`
@@ -92,9 +95,12 @@
 - `better-auth-l3_lightrag.txt`
 - `browser-use-l3_lightrag.txt`
 - `cal-diy-l3_lightrag.txt`
+- `caveman-l3_lightrag.txt`
 - `ccxt-l3_lightrag.txt`
+- `chroma-l3_lightrag.txt`
 - `claude-agent-sdk-python-l3_lightrag.txt`
 - `claude-code-action-l3_lightrag.txt`
+- `claude-for-small-business-l3_lightrag.txt`
 - `claude-octopus-l3_lightrag.txt`
 - `cli-anything-l3_lightrag.txt`
 - `codegraph-l3_lightrag.txt`
@@ -131,6 +137,7 @@
 - `gstack-garrytan-l3_lightrag.txt`
 - `hermes-agent-l3_lightrag.txt`
 - `hono-l3_lightrag.txt`
+- `hoppscotch-l3_lightrag.txt`
 - `impeccable-l3_lightrag.txt`
 - `inngest-l3_lightrag.txt`
 - `inspect-ai-l3_lightrag.txt`
@@ -138,6 +145,7 @@
 - `kestra-l3_lightrag.txt`
 - `langfuse-l3_lightrag.txt`
 - `langgraph-l3_lightrag.txt`
+- `last30days-skill-l3_lightrag.txt`
 - `letta-code-l3_lightrag.txt`
 - `lightrag-framework-l3_lightrag.txt`
 - `listmonk-l3_lightrag.txt`
@@ -155,6 +163,7 @@
 - `n8n-l3_lightrag.txt`
 - `nextjs-l3_lightrag.txt`
 - `notebooklm-cli-full-l3_lightrag.txt`
+- `novu-l3_lightrag.txt`
 - `obsidian-skills-l3_lightrag.txt`
 - `odysseus-l3_lightrag.txt`
 - `officecli-l3_lightrag.txt`
@@ -171,12 +180,15 @@
 - `pipecat-l3_lightrag.txt`
 - `playwright-cli-l3_lightrag.txt`
 - `pm-skills-deanpeters-l3_lightrag.txt`
+- `pocketbase-l3_lightrag.txt`
 - `polar-l3_lightrag.txt`
+- `ponytail-l3_lightrag.txt`
 - `posthog-l3_lightrag.txt`
 - `postiz-l3_lightrag.txt`
 - `ppt-master-l3_lightrag.txt`
 - `prd-skill-johnnychauvet-l3_lightrag.txt`
 - `qdrant-l3_lightrag.txt`
+- `qmd-l3_lightrag.txt`
 - `quant-mind-l3_lightrag.txt`
 - `rag-anything-l3_lightrag.txt`
 - `ragas-explodinggradients-l3_lightrag.txt`
@@ -213,6 +225,7 @@
 - `stripe-cli-l3_lightrag.txt`
 - `stripe-sdk-l3_lightrag.txt`
 - `supabase-l3_lightrag.txt`
+- `surfsense-l3_lightrag.txt`
 - `syncthing-l3_lightrag.txt`
 - `taste-skill-l3_lightrag.txt`
 - `tradingagents-tauric-research-l3_lightrag.txt`
@@ -236,5 +249,6 @@
 
 ## UNKNOWN
 
+- `003-fragments-store-itself.md`
 - `vapi-hermes-mcp-report.md`
 - `vapi-phone-integration-report-yusuke.md`
