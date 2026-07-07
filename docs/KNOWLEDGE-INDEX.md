@@ -1,8 +1,14 @@
+<!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
 # KNOWLEDGE-INDEX (LightRAG 蓄積済み 全221件)
 
-> 自動生成ファイル。`bash /docker/lightrag/scripts/inventory.sh` で更新。
+> 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
 > 最終更新: 2026-07-07
-> 整合性 (docs/entities/relations): 221/220/220
+> 整合性: doc_full=221 / doc_status=221 / processed=220 (未処理=1)
+> グラフ側 (entities/relations): 220/220
+
+## ⚠️ 未処理エントリ（processed以外）
+
+- `last30days-skill-l3_lightrag.txt` (status: failed, updated: 2026-06-21)
 
 ## レイヤー別件数
 
@@ -13,8 +19,6 @@
 | L2c | 27 |
 | L3 | 169 |
 | UNKNOWN | 3 |
-
----
 
 
 ## L1
@@ -252,3 +256,31 @@
 - `003-fragments-store-itself.md`
 - `vapi-hermes-mcp-report.md`
 - `vapi-phone-integration-report-yusuke.md`
+
+<!-- AUTO:END -->
+
+---
+
+<!-- MANUAL: 以下は手動エリア。inventory.sh は触らない -->
+
+# 手動管理エリア
+
+## 既知の未処理・異常（原因が判明しているもの）
+
+- `last30days-skill-l3_lightrag.txt` = failed（2026-06-21、OpenRouterクレジット枯渇でグラフ抽出未完走。本文は投入済み。クレジット復活後に再処理で221/221に揃う）
+
+## 重複要調査リスト
+
+- [ ] superpowers 系の複数エントリ
+- [ ] ComfyUI 系の複数エントリ
+- [ ] RAG 系の複数エントリ
+- [ ] n8n 系の複数エントリ
+
+## L2c→L2 昇格ウォッチ（pull型: 実案件で使ったら昇格検討）
+
+- 現状昇格0件（2026-06-13レビューで全26件が verified:self 未達）
+
+## 棚卸しメモ・DECISIONS.mdアンカー
+
+- 全評価履歴: `docs/KNOWLEDGE-DECISIONS.md`
+- 投入ルール: `docs/DATA-SCHEMA.md`（verified定義D、L2c昇格手順は `L2C-PROMOTION-PROCEDURE.md`）
