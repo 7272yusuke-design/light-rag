@@ -1,0 +1,9 @@
+file,bytes,tokens_full_json,tokens_content_only
+measurement/baseline/baseline_tools_list.json,1223,272,321
+measurement/baseline/query1_openspec_naive.json,2270,817,729
+measurement/baseline/query2_mcp_hybrid.json,4415,1338,1234
+measurement/baseline/query3_agent_hybrid.json,4478,1289,1171
+measurement/s2_tools_list.json,875,201,250
+measurement/s2_query1_openspec_naive.json,2670,955,870
+measurement/s2_query2_mcp_hybrid.json,3806,1154,1050
+measurement/s2_query3_agent_hybrid.json,3338,983,892
