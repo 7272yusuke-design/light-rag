@@ -1035,3 +1035,15 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 #### 再評価条件
 - Phase 1A compression middleware Session 4以降の実装着手時にTokenJuice実装詳細を深掘り
 - ナレッジMCPサービス商品化時にMemory Tree設計を比較研究素材として参照
+
+---
+
+## 2026-07-09: understand-anything-l3（既存エントリ更新） — 保留
+
+- **対象:** https://github.com/Egonex-AI/Understand-Anything
+- **判断:** 保留(understand-anything-l3（既存エントリ更新）)
+- **根拠:** org移管（Lum1104→Egonex-AI）とv2.5→v2.7.3の大幅差分（/understand-knowledge、/understand-domain、diff影響分析、--language ja、17プラットフォーム対応、72.1k★）により既存L3エントリの全面更新を決定。更新版ドキュメント作成済みだが、MCP overwrite実装が旧doc削除でHTTP 404となり投入未完。あわせてoverwrite実装がDELETE APIに依存していることが判明（運用ルール「削除はpsql直接操作のみ」に抵触する実装）。
+- **注記:** 更新版ドラフト全文は2026-07-09のClaude.aiセッション内に保存済み（過去チャット検索「Understand-Anything Egonex 更新」で取得可能）。旧エントリは無傷、重複未発生（総数221維持）を確認済み。
+- **再検討条件:**
+  1. 次回VPSターミナルセッション時: pg_dumpバックアップ→psqlで旧understand-anything doc削除→Claude.aiから新版をupload_documentで再投入
+  2. 同セッションでmcp_remote.pyのoverwrite実装修正（DELETE API依存の解消）とrescan_documentsツール追加を検討
