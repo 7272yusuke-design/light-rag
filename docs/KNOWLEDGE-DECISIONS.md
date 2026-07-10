@@ -1072,3 +1072,16 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - **再検討条件:**
   1. AIエージェント開発ナレッジ（約120件）の顧客向け体系化・前提グラフ化に着手した時（スキーマ参照として）
   2. スキルリゾルバMCP（単一入口スキル組み合わせ解決）の設計に着手した時（スキルグラフのデータ設計図として）
+
+---
+
+## 2026-07-10: openmanus-foundationagents-l3 — L3投入
+
+- **対象:** https://github.com/FoundationAgents/OpenManus
+- **判断:** L3投入(openmanus-foundationagents-l3)
+- **根拠:** MetaGPTチーム製の汎用オープンエージェント（56.4k★/MIT）。評価の決め手は4つのエントリポイント分離設計、特にrun_mcp_server.py=エージェント自体をMCPサーバー化する実装（単一入口executor型の実物）とplanning flow（意図→計画→逐次実行のプラン生成構造）。mcp-agent（SDK/部品）との役割分担が明確で補完関係。a2aプロトコル実装とOpenManus-RL（RLチューニング路線）も将来参照価値あり。
+- **注記:** Skill Resolver MCP構想（単一入口スキル組み合わせ解決）のexecutor型参照実装として評価・投入。自分用v0はresolver型（ホスト実行）で構築し、商品版でrun_mcp_server.pyパターンを参照する二段構え。VPS常駐は非推奨（依存が太くKVM2に重い）、読解対象としての投入。
+- **再検討条件:**
+  1. Skill Resolver MCPの商品版（executor型）設計に着手した時（run_mcp_server.py読解）
+  2. マルチエージェント商品でa2aプロトコル対応が必要になった時
+  3. skill-verifier発展としてRLベースのエージェント改善を検討する時（OpenManus-RL）
