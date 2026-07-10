@@ -1047,3 +1047,16 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - **再検討条件:**
   1. 次回VPSターミナルセッション時: pg_dumpバックアップ→psqlで旧understand-anything doc削除→Claude.aiから新版をupload_documentで再投入
   2. 同セッションでmcp_remote.pyのoverwrite実装修正（DELETE API依存の解消）とrescan_documentsツール追加を検討
+
+---
+
+## 2026-07-10: mcp-agent-lastmile-l3 — L3投入
+
+- **対象:** https://github.com/lastmile-ai/mcp-agent
+- **判断:** L3投入(mcp-agent-lastmile-l3)
+- **根拠:** Anthropic公式Building Effective Agentsの全パターン（Router/Orchestrator/Evaluator-Optimizer/Swarm等）をMCPネイティブ・コンポーザブルに実装した8.3k★フレームワーク。Agent-as-MCP-server（server-of-servers）がナレッジMCPサービスの商品進化経路（検索→エージェント提供）に直結。Temporal耐久実行とhuman-in-the-loop承認ゲートを標準装備。在庫のLangGraph（graph-first）と対極のcode-first思想で補完関係、MCP前提設計は在庫初。
+- **注記:** 直前セッションで議論した「状態駆動スキル・ファシリテーター」構想（gstack発）の実装土台候補。Router/Intent Classifier=遷移判断、human-inputシグナル=承認ゲートに対応。ファシリテーター層をL2c化する際の使用ナレッジ筆頭。
+- **再検討条件:**
+  1. ナレッジMCPサービスのエージェント層実装に着手した時（server-of-servers構成の検証）
+  2. 状態駆動スキル・ファシリテーターのL2c化・実装検証に着手した時
+  3. Temporal Cloudの費用対効果検討が必要になった時（KVM2同居は非推奨のため）
