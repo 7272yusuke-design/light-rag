@@ -1130,3 +1130,18 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. 顧客に「セルフホスト動画編集環境」を提供する要件が出た時点で、GPU付きホスティングのコストを含めて評価する
   4. スポンサーの fal.ai 連携によるAI動画編集機能が実装された時点で、AI機能部分を再評価する
   5. 自身のOSS公開時に、コントリビュート誘導設計(Focus / Avoid の明示)を参照する
+
+---
+
+## 2026-07-13: intent-driven-skill-resolution-l2c — L2c投入
+
+- **対象:** https://github.com/affaan-m/ECC
+- **判断:** L2c投入(intent-driven-skill-resolution-l2c)
+- **根拠:** ECC v2.0.0(affaan-m/ECC、MIT)から抽出した「意図駆動スキル解決 + 段階的インストール」のパターン。設計中の Skill Resolver MCP(resolve_skills / install_skill / backfill_skills)に対する直接的な先行事例であり、比較対象として最も価値が高い。特に(1)`npx ecc consult "<intent>"` が resolve_skills とほぼ同一UXでありながら「候補 + profile + 導入コマンド」をセットで返す点、(2)install-plan / install-apply の2相分離により dry-run / preview が成立する点(現行の install_skill 設計には無い)、(3)SQLite install-state による状態記録が「安全なアンインストール」の前提条件になっている点(backfill_skills 設計時に逆操作の可能性を最初から入れるべき)、(4)profile / module / capability の3層スコープが registry の status 1軸より豊かである点、の4つが設計に直接効く。上位原理は L0-007(Progressive Disclosure)であり、本パターンはそれをインストール層まで拡張したものとして位置づけられる。
+- **注記:** status:unverified(OSS読解ベース、自環境での実装検証は未実施)。パターン構成4段: 段1=意図から候補を解決する単一エントリ(npx ecc consult "<intent>" → 候補 + profile + 導入コマンドをセットで返す。カタログ全体を利用者に見せない)。段2=profile / module / capability の3層スコープ(既定は最小、ランタイム介入するフックはオプトイン、--with/--without の両方向)。段3=install-plan.js(計画) → install-apply.js(適用)の2相分離 + SQLite install-state記録(これがあるから doctor / repair / uninstall --dry-run が成立する。状態記録なしのインストーラは原理的に安全に消せない)。段4=導入経路の単一化(「Do not stack install methods」+ クリーンアップ順序の規定)。併走: MCP既定コネクタを6→1に削減した2026-06監査、MCP<10 / tools<80 の運用上限。Skill Resolver MCP設計への最大の含意は「解決とインストールの間に dry-run / preview の相を挟めるか」が安全性の分かれ目になる点。
+- **関連:** ecc-l3(本体、v2.0.0への更新は保留中) / instinct-based-continuous-learning-l2c(同じECC由来) / awesome-agent-skills-l3(スキルカタログの類例) / L0-007 Progressive Disclosure(上位原理)
+- **再検討条件:**
+  1. Skill Resolver MCP に「解決 → preview → 適用」の2相分離を実装し動作確認した時点でL2昇格を判定する
+  2. install-state 相当の状態記録を実装し、逆操作(uninstall / rollback)の成立を確認した時点でL2昇格を判定する
+  3. ECC の `npx ecc consult` 内部実装(埋め込み検索 / キーワードマッチ / LLM呼び出しのいずれか)を確認できた時点で、resolve_skills の実装方式選定に反映する
+  4. 自環境のMCP数・ツール数がコンテキストを圧迫している兆候が出た時点で、ECC同様のコネクタ監査(既定6→1削減)を実施する
