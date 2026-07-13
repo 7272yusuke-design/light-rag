@@ -1114,3 +1114,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. 「マルチモーダル入力のコンテキスト削減パターン」をL2cとして書き起こす判断をした時点(ffmpeg + フレーム選択思想 + Whisperの組み合わせ)
   3. リポジトリのスター数・コミット数が伸び、実運用に耐える成熟度に達した時点
   4. Gemini等のネイティブ動画入力のコスト・精度が問題になり、前処理でのフレーム削減が必要になった時点
+
+---
+
+## 2026-07-13: opencut-l3 — L3投入
+
+- **対象:** https://github.com/OpenCut-app/OpenCut
+- **判断:** L3投入(opencut-l3)
+- **根拠:** CapCutのOSS代替動画エディタ(MIT、★50.2k、fork 5.4k、1565 commits、v0.3.0)。動画編集機能そのものより、アーキテクチャ参照価値で投入する。(1)TypeScript → Rust/WASM のビジネスロジック移行が「進行中」の状態で観察できる希少な教材、(2)apps/desktop に GPUI(Zedエディタのフレームワーク)を採用しており、Electron / Tauri / GPUI の選定判断材料になる(meetily-l3 の Tauri と対比可能)、(3)Bun + Turborepo + Biome の新世代モノレポを★50k規模の本番で採用している実例、(4)WGSL/WebGPU によるブラウザGPU合成の実装参照、(5)docker compose up -d でセルフホスト完結、(6)OSS運営設計として Focus areas / Avoid for now を README に明示する運用が、自身のOSS公開時の参考になる。
+- **注記:** 在庫の主眼は「動画編集ツール」ではなく「アーキテクチャ参照実装」。特に(1)rust/ に GPUコンポジタ・エフェクト・マスク・WASMバインディングを置き、apps/web(Next.js)と apps/desktop(GPUI)の両方に供給する単一コア多面展開、(2)bun link によるローカルWASMパッケージ差し替え手順、(3)README で Focus areas / Avoid for now を明示するコントリビュート誘導設計 の3点。顧客案件(n8n / LightRAG / 顧客DB統合)とは直接接続しない。KVM2ではGPUコンポジタが本体のため本番ホスティング非現実的。プレビューパネルとエクスポートはリファクタ中(新バイナリレンダリング方式へ移行中)のため、当該領域のコード参照は近い将来変わる前提で読むこと。
+- **関連:** remotion-l3(コードで動画生成、用途が異なる) / ffmpeg-l3(下層) / meetily-l3(Tauri vs GPUI のフレームワーク対比) / claude-real-video(保留、動画→LLM入力)
+- **再検討条件:**
+  1. Rust/WASM をフロントエンドに組み込む案件・自作ツールが発生した時点で rust/wasm の構成と bun link 手順を実装参照する
+  2. デスクトップアプリのフレームワーク選定(Electron / Tauri / GPUI)が必要になった時点で apps/desktop を評価する
+  3. 顧客に「セルフホスト動画編集環境」を提供する要件が出た時点で、GPU付きホスティングのコストを含めて評価する
+  4. スポンサーの fal.ai 連携によるAI動画編集機能が実装された時点で、AI機能部分を再評価する
+  5. 自身のOSS公開時に、コントリビュート誘導設計(Focus / Avoid の明示)を参照する
