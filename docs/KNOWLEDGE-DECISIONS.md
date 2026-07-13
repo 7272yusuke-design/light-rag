@@ -1085,3 +1085,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. Skill Resolver MCPの商品版（executor型）設計に着手した時（run_mcp_server.py読解）
   2. マルチエージェント商品でa2aプロトコル対応が必要になった時
   3. skill-verifier発展としてRLベースのエージェント改善を検討する時（OpenManus-RL）
+
+---
+
+## 2026-07-13: meetily-l3 — L3投入
+
+- **対象:** https://github.com/Zackriya-Solutions/meetily
+- **判断:** L3投入(meetily-l3)
+- **根拠:** 完全ローカルAI議事録アシスタント(Tauri/Rust、Whisper.cpp + Parakeet、Ollama要約、MIT、★23.8k、v0.4.0)。顧客案件アーキテクチャ(Supabase + LightRAG + n8n + Hermes)における「会議音声 → 構造化議事録」の入力コネクタとして即戦力。LLMプロバイダ差し替え設計(Ollama/Claude/Groq/OpenRouter/OpenAI互換)が既存のOpenRouter運用と直結。プライバシー訴求(議事録がクラウドに出ない)が日本企業向け営業材料として直接使える。Community(MIT無償)/PRO/Enterpriseの3層商用モデルは、ナレッジMCPサービスの価格・機能分割の実例参照としても価値あり。制約: Tauriデスクトップアプリのため顧客側マシン前提、KVM2への常駐は非現実的。話者分離はPRO側機能でCommunity版に無い。
+- **関連:** ffmpeg-l3 / pocketbase-l3(顧客軸の二層記憶設計) / hermes-agent-l3 / Screenpipe(未投入・要調査)
+- **再検討条件:**
+  1. 顧客案件で「会議議事録の自動化」が要件として上がった時点でCommunity版のPoCを実施
+  2. 話者分離(誰が発言したか)が要件になった時点でPRO契約 or pyannote等の別解を評価
+  3. Screenpipe(音声・画面キャプチャの借用元)を独立して評価する必要が出た時点
+  4. Linux/VPS側で動く議事録パイプラインが必要になった時点(meetilyはデスクトップ前提のため別解が必要)
