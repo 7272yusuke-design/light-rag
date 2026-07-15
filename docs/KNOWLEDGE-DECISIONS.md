@@ -1145,3 +1145,18 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. install-state 相当の状態記録を実装し、逆操作(uninstall / rollback)の成立を確認した時点でL2昇格を判定する
   3. ECC の `npx ecc consult` 内部実装(埋め込み検索 / キーワードマッチ / LLM呼び出しのいずれか)を確認できた時点で、resolve_skills の実装方式選定に反映する
   4. 自環境のMCP数・ツール数がコンテキストを圧迫している兆候が出た時点で、ECC同様のコネクタ監査(既定6→1削減)を実施する
+
+---
+
+## 2026-07-15: crewai-skills — 保留
+
+- **対象:** https://github.com/crewAIInc/skills
+- **判断:** 保留(crewai-skills)
+- **根拠:** 3つの理由で今回は投入せず記録のみとする。(1)CrewAIが現在のスタック(n8n / LightRAG中心)の主軸ではなく、CrewAI採用案件が無い限り中身(CrewAI固有のRole-Goal-Backstory、Flow設計等)の直接的な参照価値が低い。(2)スキル集/スキルマーケットプレイスのパターンは既に在庫5件(mattpocock-skills / daymade-skills / awesome-agent-skills / obsidian-skills / skill-creator)でカバー済みで観点が飽和気味。「公式ベンダー配布」という差分だけでは新規投入の必要性が弱い。(3)成熟度が低い(★29、fork 9、12 commits、リリースなし)。既存ナレッジの磨き込み優先方針に照らし、パターンの存在のみ記録してCrewAI採用時に再訪する。
+- **注記:** CrewAI公式(crewAIInc org)が配布するAgent Skills形式のスキル集。中身は3スキルのみ: getting-started(抽象度選択 LLM.call/Agent.kickoff/Crew.kickoff/Flow、CLIスキャフォールド、YAML設定)、design-agent(Role-Goal-Backstory、LLM選択、ツール割当、max_iter/max_rpm等チューニング、memory/knowledge sources、guardrails)、design-task(タスク記述、context依存、構造化出力 output_pydantic/output_json/output_file、human-in-the-loop、async)。各スキルは SKILL.md + references/(tools catalog、MCP servers、structured output patterns)の構造。配布はClaude Codeプラグイン(/plugin marketplace add crewAIInc/skills → /plugin install crewai-skills@crewai-plugins)、.claude-plugin/marketplace.json 駆動。MIT。パターンとして新しいのは「フレームワーク公式ベンダーがAgent Skills形式でベストプラクティスを配布する」点。SKILL.md + references/ の分離構造は、Skill Resolver MCP設計時に公式配布スキルの実例として1つ参照する価値はある。
+- **関連:** mattpocock-skills-l3 / daymade-skills-l3 / awesome-agent-skills-l3 / obsidian-skills-l3 / skill-creator-l3 / intent-driven-skill-resolution-l2c(Skill Resolver設計文脈)
+- **再検討条件:**
+  1. CrewAI を採用する案件・自作エージェントが発生した時点で、3スキルの内容(抽象度選択・エージェント設計・タスク設計)をL3投入対象として再評価する
+  2. Skill Resolver MCP の設計で「公式ベンダーが配布するSKILL.md + references/ 構造」の実例を1つ手元に置く必要が出た時点
+  3. CrewAI公式がスキル数を増やし、フレームワーク公式スキル集として在庫価値のある規模に育った時点
+  4. 「フレームワーク公式がAgent Skillsを配布する」動きが他ベンダー(LangChain等)にも広がり、パターンとして独立したL2c化の価値が出た時点
