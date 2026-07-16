@@ -1160,3 +1160,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. Skill Resolver MCP の設計で「公式ベンダーが配布するSKILL.md + references/ 構造」の実例を1つ手元に置く必要が出た時点
   3. CrewAI公式がスキル数を増やし、フレームワーク公式スキル集として在庫価値のある規模に育った時点
   4. 「フレームワーク公式がAgent Skillsを配布する」動きが他ベンダー(LangChain等)にも広がり、パターンとして独立したL2c化の価値が出た時点
+
+---
+
+## 2026-07-16: claude-code-templates-l3 — L3投入
+
+- **対象:** https://github.com/davila7/claude-code-templates
+- **判断:** L3投入(claude-code-templates-l3)
+- **根拠:** ★28.2k/fork 2.9k/1264 commits/v1.28.3 と成熟・活発。既存のスキル集在庫(mattpocock-skills/daymade-skills/awesome-agent-skills/obsidian-skills/skill-creator)と観点が重ならない差分が3つ明確(合成インストール/運用監視レイヤー/アグリゲーター構造)。特にSkill Resolver MCP設計にとって、ECC(intent-driven-skill-resolution-l2c、意図駆動)に次ぐ第2の先行事例となり、「意図駆動 vs カタログ明示選択」「単一 vs 合成インストール」の設計判断を対比で明確化できる。加えて --chats --tunnel の Cloudflare Tunnel モバイル監視が既存インフラ(Named Tunnel + mobile運用)と接続し、外部OSSアグリゲーションのライセンス継承モデルがナレッジMCP商品化時の参考になる。単なるスキル集ではないため、在庫飽和の懸念(crewai-skills保留の理由)には該当しない。
+- **注記:** aitmpl.com。Claude Codeの6コンポーネント種別(Agents/Commands/MCPs/Settings/Hooks/Skills)を単一CLIで合成インストールできるカタログ + 運用監視ツール群 + 外部OSSアグリゲーター。中核3点: (1)合成インストール(npx claude-code-templates@latest --agent X --command Y --mcp Z --yes で多種を一括投入)。ECCの意図駆動(npx ecc consult)とは対極の「カタログ明示選択 + 合成」UX。(2)運用監視レイヤー(--analytics リアルタイムセッション監視、--chats --tunnel で Cloudflare Tunnel経由モバイル遠隔監視、--health-check、--plugins)。これは他スキル集在庫に無い観点で、既存の Named Tunnel + mobile運用と発想が一致。(3)アグリゲーター構造(anthropics/skills、obra/superpowers、wshobson/agents、K-Dense scientific-skills 等をライセンス継承 + アトリビューション付きで束ねる。外部OSS商品化時のライセンスモデル参照)。Python主体 + cli-rust/ 併設 + Vercel/Neon/Cloudflare Workers。制約: Claude Code専用(クロスハーネスではない)、カタログが大きいが意図駆動の絞り込みは薄く選択問題自体は未解決、束ねた外部OSSの品質はまちまち。
+- **関連:** intent-driven-skill-resolution-l2c(意図駆動 vs 明示選択の対比) / everything-claude-code-l3 / ecc-l3(doctor/consultとの対比) / mattpocock-skills-l3 / daymade-skills-l3 / awesome-agent-skills-l3(束ねられる側) / smithery-smithery-ai-l3(MCPカタログ類例) / crewai-skills(保留)
+- **再検討条件:**
+  1. Skill Resolver MCP の install_skill を設計する時点で、--agent X --command Y --mcp Z の合成インストール実装(cli-tool/)を参照する
+  2. Claude Code セッションのモバイル遠隔監視を自環境に導入する時点で --chats --tunnel の実装を参照する
+  3. ナレッジMCPで外部OSSを束ねて商品化する判断をした時点で、本リポジトリのアトリビューション/ライセンス継承実装を参照する
+  4. Skills種別(Plugin Skills Support、v1.28.3)が成熟した時点で Skills配布部分を再評価する
+  5. cli-rust/ が主軸化した時点で、Python→Rust移行事例として再確認する
