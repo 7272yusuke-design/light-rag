@@ -1176,3 +1176,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. ナレッジMCPで外部OSSを束ねて商品化する判断をした時点で、本リポジトリのアトリビューション/ライセンス継承実装を参照する
   4. Skills種別(Plugin Skills Support、v1.28.3)が成熟した時点で Skills配布部分を再評価する
   5. cli-rust/ が主軸化した時点で、Python→Rust移行事例として再確認する
+
+---
+
+## 2026-07-16: claude-mem-l3 — L3投入
+
+- **対象:** https://github.com/thedotmack/claude-mem
+- **判断:** L3投入(claude-mem-l3)
+- **根拠:** LightRAGプロジェクトの中核テーマ(エージェント永続メモリ/3層記憶/Progressive Disclosure/トークン効率検索)と今回の一連で最も強く重なる参照実装。★86.9k/fork 7.5k/2136 commits/296リリース/Apache-2.0と巨大・超活発・組み込みやすいライセンス。特に3層検索ワークフロー(search→timeline→get_observations)がLightRAG /query/data と Skill Resolver の index先行設計の外部実装リファレンスになり、L0-007の実装例として直接効く。Hermes/OpenClawに明示対応し日本語モード内蔵で、自環境の主要プロジェクトと直接接続する。Chroma+SQLite FTS5ハイブリッドがLightRAGのpgvector+グラフに対する別アプローチの比較対象になる。CMEMトークンの存在は技術本体と切り離して中立記録し、投入判断には影響させない。
+- **注記:** セッション横断の永続メモリ圧縮システム。ツール使用をライフサイクルフックで捕捉→AI要約→SQLite+Chromaに格納→次セッションで関連文脈注入。最重要の再利用ポイントは3層検索ワークフロー(MCP 4ツール): search(index約50-100tok/結果、ID付き、type/date/projectフィルタ)→timeline(前後の時系列文脈)→get_observations(フィルタ済みIDのみ詳細約500-1000tok/結果、バッチ)。「index先行→詳細オンデマンド」で約10xトークン節約。これは自環境のLightRAG /query/data(生データ返却→Claude側合成)とSkill Resolverのindex先行設計と同型で、L0-007 Progressive Disclosureの実装リファレンスとして最良。他の対応: SQLite+observations/summaries=L0-006 3層メモリの外部実装、Chroma+SQLite FTS5ハイブリッド=LightRAG pgvector+グラフの別アプローチ比較対象、<private>タグで機密除外=顧客情報境界ルールと同発想、5ライフサイクルフック自動捕捉=loop-architectの題材。Hermes/OpenClaw明示対応、日本語モードcode--ja内蔵。構成: Claude Agent SDK+TypeScript、Bunランタイム、Workerサービス(HTTP API+Webビューア)、uv。v3→v5アーキテクチャ進化がドキュメント化。ragtime/ディレクトリ(RAG別モジュール、要精査)。【重要な注意】READMEにCMEM暗号トークン記載(第三者発行・作者公認のコミュニティトークン、Official BASE CA: 0x76b1967...)。技術本体(Apache-2.0)とは別レイヤーだが、商用文脈で顧客紹介時はノイズ/懸念材料として認識すること。KVM2常駐コストは要実測(既にLightRAG+PG+Ollama+MCP常駐中)。npm -g は SDKのみで機能しない罠あり。v13系で296リリース、仕様変更頻繁の可能性。
+- **関連:** L0-006 3層メモリアーキテクチャ / L0-007 Progressive Disclosure / intent-driven-skill-resolution-l2c(index先行で同型) / hermes-agent-l3 / everything-claude-code-l3 / ecc-l3 / rowboat-l3 / claude-code-templates-l3 / LightRAG本体(pgvector+グラフ、ハイブリッド検索比較対象)
+- **再検討条件:**
+  1. Skill Resolver MCP / LightRAG検索の「index先行→詳細オンデマンド」を実装・改良する時点で3層検索ワークフロー(search/timeline/get_observations)の実装を参照する
+  2. Hermes に永続メモリを持たせる要件が出た時点でHermes対応部分を評価する
+  3. OpenClaw に永続メモリを組み込む判断をした時点で openclaw.sh インストーラと openclaw/ を精査する
+  4. LightRAG(pgvector+グラフ)の代替・補完として Chroma+SQLite FTS5 ハイブリッドを検討する時点で search-architecture を比較する
+  5. ragtime/ モジュールの精査が必要になった時点
+  6. メモリシステムのアーキテクチャ設計判断が必要になった時点で v3→v5 の architecture-evolution を教材として読む
+  7. claude-mem を実際に自環境へ導入検討する時点で、KVM2の追加常駐コスト(Worker+Chroma+uv)を実測する
