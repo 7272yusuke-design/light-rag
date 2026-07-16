@@ -1194,3 +1194,18 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. ragtime/ モジュールの精査が必要になった時点
   6. メモリシステムのアーキテクチャ設計判断が必要になった時点で v3→v5 の architecture-evolution を教材として読む
   7. claude-mem を実際に自環境へ導入検討する時点で、KVM2の追加常駐コスト(Worker+Chroma+uv)を実測する
+
+---
+
+## 2026-07-16: stop-slop-l3 — L3投入
+
+- **対象:** https://github.com/hardikpandya/stop-slop
+- **判断:** L3投入(stop-slop-l3)
+- **根拠:** ★13.9k/fork 981とスキル文書として高認知。実用と教材の両面で価値あり。(1)note.com収益化パイプラインの記事生成の最終工程にAI臭除去の推敲を挟むと品質が上がり、既存 sns-writing-rules-l3(書き方ルール)と補完関係(あちらは「どう書くか」、こちらは「AI臭をどう抜くか」)。(2)SKILL.md + references/ + 採点ルーブリックの構成がProgressive Disclosure(L0-007)準拠の純テキストスキル設計テンプレートとして参照でき、skill-creatorでスキルを作る際の構造見本になる。(3)5次元採点ルーブリックは言語非依存の文章品質自己評価フレームワークとして単独でも有用。日本語適用の限界(phrases.mdは英語前提)は明示済みで、日本語AI臭スキルを自作する際の下敷きにもなる。純テキストで軽量、在庫コストが低い。
+- **注記:** 散文からAI臭(AI tells)を除去するスキル。コード無しの純テキストスキル(SKILL.md + references/phrases.md + structures.md + examples.md)。検出対象: 禁止フレーズ(喉払い開始・強調松葉杖・ビジネスジャーゴン・全副詞・曖昧断定・メタコメンタリー、※英語前提)、構造的クリシェ(二項対比・否定的列挙・劇的断片化・修辞的お膳立て・偽りの主体性・遠くの語り手・受動態、※言語をまたぎやすい)、文レベルルール(Wh-文頭禁止・em dash禁止・スタッカート断片化禁止・安易な極端禁止・能動態必須)。採点ルーブリック5次元各1-10(Directness/Rhythm/Trust/Authenticity/Density)、35/50未満で改稿。この採点軸は言語非依存で流用可能。価値2軸: (1)コンテンツ=文章生成の最終工程(推敲)に挟むAI臭除去ルール、(2)スキル構造=SKILL.md + references/ オンデマンド読込 + 採点ルーブリックの型がProgressive Disclosure準拠の純テキストスキル設計テンプレート。【重要注意】phrases.mdは英語のAI臭であり日本語出力にそのまま効かない(日本語版の作成が必要)。structures.mdと採点軸は日本語適用可。「AI検出回避」に転用されうるが顧客提供時は品質向上ツールとして位置づけ検出回避目的の訴求はしない。em dash禁止等一部は作者の文体的好み。
+- **関連:** sns-writing-rules-l3(補完・書き方ルール側) / L0-007 Progressive Disclosure / skill-design-patterns-l2 / skill-creator(プロジェクトスキル) / ai-document-generation-pipeline-l2(組み込み先) / skill-verifier(採点による品質検証)
+- **再検討条件:**
+  1. note.com収益化パイプラインに推敲工程を追加する時点で、phrases.mdの日本語版を作成しつつ本スキルを組み込む
+  2. 顧客向け文書生成の品質を上げる要件が出た時点で、structures.mdと採点ルーブリックを日本語文書に適用検証する
+  3. skill-creatorで新規スキルを作る際に、純テキストスキル + references/ の構造テンプレートとして参照する
+  4. 日本語のAI臭パターンを体系化する独自スキルを作る判断をした時点で、本スキルを下敷きにする
