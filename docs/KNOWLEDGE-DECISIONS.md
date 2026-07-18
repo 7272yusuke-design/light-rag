@@ -1209,3 +1209,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. 顧客向け文書生成の品質を上げる要件が出た時点で、structures.mdと採点ルーブリックを日本語文書に適用検証する
   3. skill-creatorで新規スキルを作る際に、純テキストスキル + references/ の構造テンプレートとして参照する
   4. 日本語のAI臭パターンを体系化する独自スキルを作る判断をした時点で、本スキルを下敷きにする
+
+---
+
+## 2026-07-18: wardrobe-tandpfun-l3 — L3投入
+
+- **対象:** https://github.com/tandpfun/wardrobe
+- **判断:** L3投入(wardrobe-tandpfun-l3)
+- **根拠:** 規模は極小(★5)だが、既存プロジェクトスキル asset-sheet-extractor(素材シート→個別PNG切り出し・透過)および property-completion-prompt-builder(スケルトン物件→内装完成イメージ)と同系譜の「AIによる画像素材の抽出→整備→適用」パイプラインであり、在庫として位置づける価値がある。特に4点: (1)検出(Responses API)と生成(Images API)でモデルを使い分ける構成、(2)参照画像を固定して生成物の一貫性を保つ手法(model-reference.png)がproperty-completion-prompt-builderの強化に直接転用可能、(3)Web UI + エージェントスキルの二重提供という配布構造と README の "For agents" セクションが、自作ツール配布時の型として参照できる、(4)同梱スキルが生成→レビュー→保存のmaker/checker分離ループを内蔵しておりloop-architectの設計思想と一致。EC商品画像の整備(検出→カットアウト→モデル着用)は顧客案件で発生しうる要件であり、その実装参照として在庫化する。
+- **注記:** 服の写真から衣類を検出→商品カットアウト生成→モデル着用画像生成→ローカル管理するアプリ。パイプライン4段: (1)衣類検出=OpenAI Responses API(gpt-5.4-mini)、(2)カットアウト抽出=OpenAI Images API(gpt-image-2)で背景除去済み商品画像、(3)モデル着用画像生成=gpt-image-2 + data/model-reference.png(本人参照写真で人物を固定)、(4)ローカル保存=data/library.json + data/imported/。検出と生成でモデルを使い分ける設計、参照画像固定で生成物の一貫性を保つ手法が要点。配布構造が最大の参照ポイント: Web UI(Vite、localhost:5173、ドラッグ&ドロップ/編集/レビュー/再生成/承認)と Codexスキル(.agents/skills/ に import-clothes と generate-outfits の2本)の二重提供。両スキルとも生成物を自分でレビュー/検証してから保存するループを内蔵しており、maker/checker分離の発想が入っている(loop-architectと一致)。READMEに "For agents" セクションがあり、AIエージェントがこのリポジトリをユーザー向けにセットアップする場合の分岐手順(Codex経路 / Web UI経路)が明記されている。設定は環境変数でビジョンモデル・画像モデルを差し替え可能。【制約】★5/fork 0/9 commits/リリースなし/単独ホビープロジェクトで成熟度は最低レベル。ドメイン(ファッション)は顧客案件と直結せず、価値はパイプライン設計と配布構造の側。OpenAI API完全依存でローカルモデル差し替え経路なし。モデル着用生成は本人の顔写真を扱うため顧客提供時は肖像・個人情報の論点。スキルはCodex向け(.agents/skills/)でClaude Codeの.claude/skills/とはパスが異なる。汎用部品として抽出できるコードは薄く、参照するのは設計と手順。
+- **関連:** asset-sheet-extractor(プロジェクトスキル、素材シート→個別PNG) / property-completion-prompt-builder(プロジェクトスキル、参照画像固定の同型手法) / loop-architect(プロジェクトスキル、maker/checker分離) / ffmpeg-l3 / claude-code-templates-l3(スキル配布構造の類例) / intent-driven-skill-resolution-l2c
+- **再検討条件:**
+  1. EC商品画像の整備(検出→カットアウト→モデル着用)が顧客要件として出た時点で段1-3のパイプラインを実装参照する
+  2. asset-sheet-extractor を実写真入力に拡張する判断をした時点で、カットアウト生成とレビュー工程を参照する
+  3. property-completion-prompt-builder で参照画像固定(model-reference相当)の手法を強化する時点
+  4. 自作ツールを「Web UI + エージェントスキル」の二重構成で配布する判断をした時点で、README の "For agents" セクションと .agents/skills/ 構成を参照する
+  5. gpt-image-2 の商品カットアウト品質・コストを実測する必要が出た時点
+  6. 本リポジトリが成熟(スター/コミット増加)し実運用に耐える水準になった時点
