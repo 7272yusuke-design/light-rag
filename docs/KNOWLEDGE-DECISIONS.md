@@ -1244,3 +1244,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. 自作の討議スキルを作る判断をした時点で、実在人物ペルソナを役割名に抽象化した版を設計する
   6. マルチプロバイダ構成(Claude + Ollama + OpenRouter)でエージェントを分散実行する要件が出た時点
   7. 商用利用を検討する時点でライセンス表記(CC0 vs MIT)を確認する
+
+---
+
+## 2026-07-19: waggle-l3 — L3投入
+
+- **対象:** https://github.com/modiqo/waggle
+- **判断:** L3投入(waggle-l3)
+- **根拠:** 自環境の中核テーマ「index先行→詳細オンデマンド」を、記憶層(claude-mem)や検索層(LightRAG /query/data)ではなく「エージェント間ハンドオフ層」に適用した実装であり、同じ思想が別レイヤーでどう具体化されるかを見られる点で在庫価値が高い。特に4点が直接効く: (1)「参照層はハーネスの外に座らねばならない」という論証がSkill Resolver MCPのハーネス非依存設計の判断材料になる、(2)supersede/revoke+系譜による訂正伝播がL0-010(合意の有効性判定)の実装版として参照できる、(3)消費契約--require+coverageによる「読了の証明」がskill-verifier/loop-architectの発想の拡張として新しい、(4)「全ツール応答がnextステップを運ぶ/規約ファイルの指示は腐る」が自作MCPの設計にそのまま流用できる。加えて設計規律が異常に厚く(Sans-I/O、リプレイ等価性のCI検証、単一カタログの4射影+driftテスト、差分オラクルによる実インフラ検証)、Rustでの堅牢なMCPサーバー設計の教材として質が高い。Cloudflare Workers+Durable Object per tenantは既存のCloudflare Named Tunnel運用と地続きで、マルチテナント分離の実装参照にもなる。MCP1行設定+SQLite+単一バイナリで試用コストが低い。
+- **注記:** エージェント間ハンドオフを「コンテキスト貼り付け」から「約30バイトのトークン参照」に置き換えるMCPネイティブな参照層。Rust 75.9%、SQLite(~/.waggle/waggle.db)、Cloudflare Workers edge、MIT OR Apache-2.0。問題設定: マルチエージェントはチャットの約15倍のトークンを消費し、その overhead はベンダー自身が「エージェント間のコンテキスト複製とハンドオフのための要約」に帰しており、マルチエージェント失敗の約37%がこの継ぎ目に起因する。競合は他プロトコルではなく生のパス(/tmp/analysis.md)であり、パスに欠けるのは帰属・適応・ライフサイクル・テレメトリ・到達性の5つ。ベンチでは生パス+ls/grep/open/pdftotext が90%、waggleが96%で、READMEは「ローカル・短時間・監査不要ならパスを使え、waggleはオーバーヘッド」と明示。核心メカニズム: トークンは移動しアーティファクトは自動展開されず、resolve/read/search がバイト予算下で射影・スライスのみ返す(自環境のclaude-mem 3層検索・LightRAG /query/data・Skill Resolver index先行と完全に同型)。帰属マニフェスト(Ed25519署名、チャネル、親からの系譜ツリー、消費者別variants)、封印された決定論的マッチャー、ペイロードフリーな追記専用ログ。mint時コンテンツアドレス・スナップショットで不変化し supersede/revoke で全保持者に訂正が伝播(L0-010合意の有効性判定の実装版)。消費契約 --require symbol:X + coverage で「読んだことを証明」(skill-verifier/loop-architectの検証発想を参照層に持ち込んだもの)。tree-sitterによるmint時シンボル抽出(Rust/Python/TS/JS/Go)、配信パスでパーサは走らない。「参照層はいかなる単一ハーネスの外側に座らねばならない、ハンドオフは分散システムの問題であり一つのベンダーのハーネスロジック内で解くのは解けない唯一の場所で解こうとすること」という論証はSkill Resolverのハーネス非依存設計判断に直接効く。「全ツール応答が最大3つの実行可能なnextステップを運ぶ、mapが現在地を状態からライブ計算、規約ファイルの指示は腐るがエンベロープは腐らない」は自作MCPに流用可能。設計規律: Sans-I/O core(ドメインcrateに時計/エントロピー/ストレージなし、同コードがネイティブとWorkers wasmで動く)、イベントソース+リプレイ等価性のCIプロパティ、MCPツール/CLI/map/COMMANDS.mdが1表の4射影でdrift時ビルド失敗、差分オラクルで実Cloudflare上のedgeをSQLiteとバイト同一に検証。実測: cache-hit resolve 39ns、永続追記39µs、100万イベントfunnel 334µs、edge resolve p50 1.2ms。tmuxスイッチボード(waggle-tmux)でハーネス切替UI。【制約】v0.5.3/185commitsと若く仕様が動く可能性。マルチエージェント運用が実在しないと純粋なオーバーヘッド。Rust製追加常駐デーモンでKVM2の追加コストは要実測(SQLite+単一バイナリで軽量ではある)。edge運用にCloudflareアカウントとwrangler必要。15倍/37%の主張はベンダー資料由来で自環境未検証。
+- **関連:** claude-mem-l3(3層検索、同型の思想を記憶層に適用) / L0-010 合意の有効性判定(supersede-revokeが実装版) / L0-007 Progressive Disclosure / intent-driven-skill-resolution-l2c / claude-code-templates-l3 / ecc-l3(クロスハーネス設計) / loop-architect / skill-verifier / LightRAG /query/data(自環境の同型実装)
+- **再検討条件:**
+  1. Skill Resolver MCP をハーネス非依存に設計するか判断する時点で「参照層はハーネスの外に」の論証を参照する
+  2. 自作MCPのツール応答設計を行う時点で「全応答がnextステップを運ぶ/mapで現在地を答える」パターンを参照する
+  3. L0-010(合意の有効性判定)を実装レベルに落とす時点で supersede/revoke+系譜ツリーの実装を参照する
+  4. マルチエージェント/サブエージェント運用を実際に回し始めた時点で、ハンドオフのトークンコストを実測しwaggle導入を評価する
+  5. 顧客向けマルチテナント分離を実装する時点で Durable Object per tenant + capability-URL + Ed25519 の構成を参照する
+  6. Rustで堅牢なMCPサーバーを書く判断をした時点で Sans-I/O core と単一オペレーションカタログの設計を教材として読む
+  7. v1.0に到達した時点で仕様の安定性を再評価する
