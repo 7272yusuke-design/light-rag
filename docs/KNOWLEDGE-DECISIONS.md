@@ -1262,3 +1262,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. 顧客向けマルチテナント分離を実装する時点で Durable Object per tenant + capability-URL + Ed25519 の構成を参照する
   6. Rustで堅牢なMCPサーバーを書く判断をした時点で Sans-I/O core と単一オペレーションカタログの設計を教材として読む
   7. v1.0に到達した時点で仕様の安定性を再評価する
+
+---
+
+## 2026-07-19: scrapling-l3 — L3投入
+
+- **対象:** https://github.com/D4Vinci/Scrapling
+- **判断:** L3投入(scrapling-l3)
+- **根拠:** ★69.1k/1516 commits/48リリース/テストカバレッジ92%と極めて成熟・活発で実運用に耐える。顧客案件への接続度が高く、n8n による情報収集自動化(競合価格監視・求人情報収集・業界ニュース収集)の収集エンジンとして即戦力になる(Dockerイメージ提供済みでVPS配置が現実的、n8nのHTTP Requestノードから利用可能)。特に適応型要素追跡はサイト改修のたびにセレクタが壊れるという保守コストに直接効き、継続課金型の運用サービスと相性が良い。MCPサーバー内蔵の「抽出してからAIに渡す」設計は claude-mem / waggle / LightRAG /query/data と同じ index先行パターンのスクレイピング版であり、今セッションで揃いつつある同型事例の一つとして位置づけられる。Development Mode(レスポンスキャッシュ再生)は対象サーバーに負荷をかけずにparseロジックを反復できるため顧客案件での配慮として重要。scrapling extract get <url> content.md によるMarkdown化は、LightRAGへの外部ドキュメント取り込み前処理として現在の web_fetch 工程の代替・補完にもなる。日本語READMEあり。
+- **注記:** 適応型Webスクレイピングフレームワーク(Python 99.9%、BSD-3-Clause、★69.1k/fork 6.8k/1516commits/v0.4.10/48リリース/テストカバレッジ92%/PyRight+MyPy全型ヒント)。中核6機能: (1)適応型要素追跡=auto_save=True で保存し後日 adaptive=True で類似性アルゴリズムにより構造変化後も要素を再配置。スクレイパ保守の最大コスト(サイト改修によるセレクタ破壊)に直接効く。AutoScraper比5.2倍高速。(2)anti-bot回避4系統=Fetcher(TLSフィンガープリント/ヘッダ偽装、HTTP/3)、AsyncFetcher、StealthyFetcher(Cloudflare Turnstile/Interstitial自動突破)、DynamicFetcher(Playwright Chromium/Chrome)。ProxyRotator、広告ブロック(約3500ドメイン)、DNS-over-HTTPSによるDNSリーク防止。(3)Spiders=Scrapy風API、並行クロール、チェックポイントによるPause&Resume(Ctrl+Cで停止、同じcrawldirで再開)、Streaming Mode、Multi-Session(1spider内でHTTPとステルスブラウザをセッションIDでルーティング)、Blocked Request Detection、robots_txt_obey、Development Mode(初回レスポンスをディスクキャッシュし再生。対象サーバーを叩かずparseロジックを反復開発できる)、JSON/JSONLエクスポート。(4)MCPサーバー内蔵(scrapling[ai])=Scraplingで対象コンテンツを先に抽出してからAIに渡しトークン使用を最小化。claude-mem/waggle/LightRAG /query/data と同じindex先行パターンのスクレイピング版。(5)agent-skill/ディレクトリ同梱(Claude Skill + OpenClaw Skillバッジ)。(6)CLI/IPythonシェル(scrapling shell、curl→Scrapling変換)、scrapling extract get <url> content.md で出力拡張子により .txt=テキスト / .md=Markdown / .html=HTML を切替。性能: 5000ネスト要素のテキスト抽出でBS4+Lxml比約784倍、Parsel/Scrapyとほぼ同等の2.02ms。Dockerイメージ提供(pyd4vinci/scrapling、全ブラウザ同梱、リリース毎自動ビルド)。日本語READMEあり。【重要な制約】READMEが免責を明記(教育・研究目的、データスクレイピング/プライバシー法の遵守、利用規約とrobots.txtの尊重)。anti-bot回避は諸刃で、Cloudflare Turnstile突破は技術的に可能でも対象サイト規約に反する場合がある。顧客提供時は「公開データの取得」「規約が許す範囲」に限定する運用ルールの明文化が必要。スポンサーがプロキシ業者中心。ブラウザ依存が重くKVM2でStealthyFetcher/DynamicFetcherを常用するとメモリ・CPU負荷が高いためHTTPのみのFetcherで足りるケースの見極めが必要。素のpip installはパーサーのみでfetchers/spidersはModuleNotFoundErrorになる罠あり(extras + scrapling install 必須)。Python 3.10+。
+- **関連:** claude-mem-l3 / waggle-l3 / LightRAG /query/data(index先行パターンの同型事例) / n8n関連ナレッジ(収集エンジンの接続先) / crewai-skills(保留、公式Agent Skill配布の潮流) / gstack-garrytan-l3(anti-bot stealthブラウザの言及) / ffmpeg-l3
+- **再検討条件:**
+  1. 顧客案件で情報収集自動化(価格監視・求人収集・ニュース収集等)の要件が出た時点で n8n + Scrapling(Docker)の構成を設計する
+  2. 既存スクレイパがサイト改修で壊れる問題が発生した時点で適応型セレクタ(auto_save/adaptive)への移行を評価する
+  3. LightRAGへの外部ドキュメント取り込みを自動化する時点で scrapling extract によるMarkdown化を web_fetch の代替として評価する
+  4. Claude Code から直接スクレイピングする要件が出た時点で scrapling[ai] のMCPサーバーを導入評価する
+  5. KVM2上でブラウザ系Fetcherを常用する判断をする時点でメモリ・CPU負荷を実測する
+  6. 顧客にスクレイピングを提供する契約を結ぶ時点で、利用規約・robots.txt・個人情報保護の観点から運用ルールを明文化する
