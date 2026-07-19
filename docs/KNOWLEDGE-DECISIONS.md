@@ -1226,3 +1226,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. 自作ツールを「Web UI + エージェントスキル」の二重構成で配布する判断をした時点で、README の "For agents" セクションと .agents/skills/ 構成を参照する
   5. gpt-image-2 の商品カットアウト品質・コストを実測する必要が出た時点
   6. 本リポジトリが成熟(スター/コミット増加)し実運用に耐える水準になった時点
+
+---
+
+## 2026-07-19: council-of-high-intelligence-l3 — L3投入
+
+- **対象:** https://github.com/0xNyk/council-of-high-intelligence
+- **判断:** L3投入(council-of-high-intelligence-l3)
+- **根拠:** ★978/fork 103/v1.1.0。自環境のL0討議フォーマットB(SKILL側 + RAG側 + Yusuke の3者構造)の直接的な先行事例であり、それを18人・3ラウンド・強制反対機構つきで体系化したもの。特に流用価値が高いのは集団思考防止の強制機構(dissent quota / novelty gate / 70%閾値での強制steelman / anti-recursion)で、「早すぎる合意は失敗」を機構として実装した具体例は他に少ない。Problem Restate Gate は「正しい問いに立っているか」を検証する工程としてL0-002/L0-010と同じ層の示唆を持つ。Polarity Pairs は L0-004「複数案提示と比較思考」(Phase 2候補)の実装例であり「単一案押し付けは判断機会を奪う」という設計信念を構造化している。--dry-route / --dry-run が Skill Resolver の dry-run 設計と同型。20ドメイン×トライアドのマッピング表は「問題領域→必要な視点の組み合わせ」の設計資産として単独で有用。combination-architect の複数案+トレードオフ可視化の強化にも直結する。
+- **注記:** 18のAIペルソナが対極ペアを組んで多ラウンド討議し、集団思考を機構で防ぐスキル(/council)。中核設計5点: (1)Polarity Pairs=メンバーを意図的な反対勢力として配置(Socrates破壊 vs Feynman再構築、Torvalds今出荷 vs Musashi完璧な瞬間を待つ、Taleb隠れたテール vs Karpathy滑らかなスケーリング曲線 等13ペア)。多様性を祈らず構造で強制する。(2)Problem Restate Gate=分析前に全員が問いを言い直し代替フレーミングを提示。「3人が異なる形で言い直したなら質問自体が問題だった」。正しい答えの前に正しい問いに立っているかを検証するゲート。(3)集団思考防止の強制機構=dissent quota(反対意見の割当)、novelty gate(既出主張を弾く)、agreement check(70%超が早期同意したら2名に強制steelman)、anti-recursion、counterfactual pass、2/3多数決+ドメイン専門家重み付け。「早すぎる合意は失敗」を機構化。(4)評決がUnresolved QuestionsとRecommended Next Stepsから始まる出力設計。全評決にFollow-Upセクションで結果追跡。(5)マルチプロバイダ自動ルーティング=Claude/OpenAI(codex)/Gemini/Ollama/NVIDIA NIMを自動検出、Polarity Pairsは別プロバイダに分散(ハード制約)、失敗時Claudeへフォールバック。同一モデルにペルソナを演じさせるのは「衣装替え」に過ぎないという思想。--dry-route でルーティング表のプレビューのみ実行(Skill Resolverのdry-run設計と同型)。3モード(Full 7ステップ/Quick 2ラウンド/Duo 2名弁証法)、20ドメイン×トライアドのマッピング表、3プロファイル(classic 18名/exploration-orthogonal 12名/execution-lean 5名)。install.sh に --dry-run あり。【制約】Shell 100%/30 commitsで実装は薄く、価値の大半はプロンプト設計と討議プロトコル。18名フルモードはトークンコスト大。歴史上の実在人物ペルソナはキャラクター性に寄るリスクと実在人物への架空発言帰属の問題があり、自作時は役割名(前提破壊役/第一原理役)への抽象化が安全。ライセンス表記がCC0とMITで混在しており商用利用前に要確認。マルチプロバイダを活かすには複数CLI(codex/gemini/ollama)が必要。討議構造は「間違った合意」を防ぐが「正しい答え」は保証しない。
+- **関連:** L0討議フォーマットB(3者構造の体系化版) / L0-002 判断委譲の構造化 / L0-010 合意の有効性判定 / L0-004 複数案提示と比較思考(Phase 2候補) / combination-architect / loop-architect(maker-checker分離・停止条件) / skill-verifier(採点検証) / agency-agents-msitarzewski-l3 / tradingagents-tauric-research-l3 / intent-driven-skill-resolution-l2c(dry-runパターン)
+- **再検討条件:**
+  1. L0討議フォーマットBを改訂・拡張する時点で、Enforcement機構(dissent quota / novelty gate / 70%閾値での強制steelman)を導入検討する
+  2. combination-architect に「複数案のトレードオフ可視化」を強化する時点で、Duo/Triadモードの構造を参照する
+  3. 非エンジニア顧客向けの意思決定支援機能を商品化する時点で、Problem Restate Gate と「未解決の問いを先頭に置く評決」を参照する
+  4. Skill Resolver の dry-run 設計時に --dry-route の出力形式を参照する
+  5. 自作の討議スキルを作る判断をした時点で、実在人物ペルソナを役割名に抽象化した版を設計する
+  6. マルチプロバイダ構成(Claude + Ollama + OpenRouter)でエージェントを分散実行する要件が出た時点
+  7. 商用利用を検討する時点でライセンス表記(CC0 vs MIT)を確認する
