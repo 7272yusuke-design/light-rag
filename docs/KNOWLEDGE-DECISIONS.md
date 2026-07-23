@@ -1279,3 +1279,37 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. Claude Code から直接スクレイピングする要件が出た時点で scrapling[ai] のMCPサーバーを導入評価する
   5. KVM2上でブラウザ系Fetcherを常用する判断をする時点でメモリ・CPU負荷を実測する
   6. 顧客にスクレイピングを提供する契約を結ぶ時点で、利用規約・robots.txt・個人情報保護の観点から運用ルールを明文化する
+
+---
+
+## 2026-07-23: astrbot-l3-update-v4.25.2 — 保留
+
+- **対象:** https://github.com/AstrBotDevs/AstrBot
+- **判断:** 保留(astrbot-l3-update-v4.25.2)
+- **根拠:** AstrBot は既にL3投入済みだが、既存エントリの内容が v4.25.2 時点の現況を反映していない可能性が高い。特に Yusuke案件との接続で新しく効くのは2点: (1) LINE公式サポートにより、日本の中小企業向けn8n案件で「LINEから社内ナレッジに問い合わせる」構成が現実的になり、Hermes の代替・補完候補として位置づけが変わる。(2) Agent Sandbox(コード実行の隔離、セッション単位リソース再利用)が、既存在庫 MiniClaw の4層防御パターンと対比できる具体例として加わる。加えて openspec/ + AGENTS.md の採用は、在庫の OpenSpec の実適用例として参照価値がある。ただし DELETE API 禁止(全消しバグ)かつ psql直接操作が現環境で実行できないため、既存レコードの削除→再投入ができない。重複投入は運用ルール違反になるため、更新待ちキューとして差分を記録するに留める。ECC v2.0.0更新と同じ扱いで、psql操作が可能になった時点で一括処理する。
+- **注記:** 既存L3エントリ「AstrBot — IMプラットフォーム統合型オールインワン・エージェントチャットボット基盤」の更新待ち差分を記録する。現況(2026-07-13時点): ★33.7k / fork 2.3k / 4,753 commits / v4.25.2(2026-05-30) / 221リリース / contributors 319 / Python 70.4% + Vue 23.9%。ライセンスは AGPL-3.0(商用提供時に要注意、EULA.md も同梱)。
+
+【既存エントリ作成時になかった可能性のある主な差分】
+(1) Agent Sandbox — コード実行・shell呼び出しの隔離実行と、セッション単位のリソース再利用。docs.astrbot.app/use/astrbot-agent-sandbox.html に専用ドキュメント。既存在庫 MiniClaw(サンドボックスAIエージェントランタイムの4層防御パターン)と直接対比できる。
+(2) Auto Context Compression — 文脈の自動圧縮が公式機能として明記。claude-mem のセッション圧縮と同系統。
+(3) LINE 公式サポート — Official maintainer 扱い。日本の中小企業向け案件で「LINEから社内ナレッジに問い合わせる」構成が組める。Hermes の代替・補完候補。
+(4) uv による1コマンド導入 — `uv tool install astrbot --python 3.12` → `astrbot init` → `astrbot run`。Python 3.12+必須。ただし uv 経由デプロイは WebUI からのアップグレード非対応(コマンドラインで `uv tool upgrade` が必要)。
+(5) openspec/ ディレクトリ + AGENTS.md をリポジトリに同梱 — スペック駆動開発とエージェント前提の開発体制を採用。在庫の OpenSpec(スペック駆動開発フレームワーク)の実適用例として参照できる。
+(6) k8s/ ディレクトリ — Kubernetesデプロイ対応。
+(7) 1000+ コミュニティプラグインのワンクリック導入(マーケットプレイス、api.soulter.top でプラグイン数を動的表示)。
+(8) LLMOpsプラットフォーム連携 — Dify / Alibaba Cloud Bailian / Coze と統合可能。
+(9) Web ChatUI(agent sandbox + web search 内蔵)、WebUI、i18n対応。
+(10) 対応IMプラットフォームの拡大 — QQ / OneBot v11 / Telegram / Wecom / WeChat公式アカウント / Feishu / DingTalk / Slack / Discord / LINE / Satori / KOOK / Misskey / Mattermost が Official、WhatsApp は Coming Soon。Matrix / Rocket.Chat / VoceChat はコミュニティ製アダプタ。
+(11) STT/TTS の選択肢が豊富 — Whisper / SenseVoice / Xiaomi MiMo Omni、TTS は OpenAI / Gemini / GPT-Sovits / FishAudio / Edge / Azure / Minimax / Volcano Engine 等。VoxCPM(在庫)との比較対象。
+(12) 多様なデプロイ経路 — Docker / RainYun / デスクトップアプリ(AstrBot-desktop) / Launcher / Replit / AUR / BT-Panel / 1Panel / CasaOS。
+(13) 日本語README あり(README_ja.md)。
+
+【更新できない理由】DELETE APIが使用できず(全消しバグのため禁止)、psql直接操作による既存レコード削除も現在の環境では実行できないため、既存エントリの内容更新が不可能。ECC v2.0.0更新と同じ制約。psql操作が可能になった時点で、ECC更新と合わせて処理する。
+- **関連:** astrbot-l3(既存エントリ、更新対象) / ecc-l3(同じくpsql制約で更新保留中) / miniclaw(サンドボックス4層防御パターン、Agent Sandboxの対比対象) / hermes-agent-l3(LINE経路の代替・補完候補) / openspec-l3(openspec/採用の実例) / claude-mem-l3(Auto Context Compressionの同系統) / voxcpm-l3(TTS比較対象) / n8n関連ナレッジ
+- **再検討条件:**
+  1. psql直接操作が実行可能な環境になった時点で、ECC v2.0.0更新と合わせて既存 astrbot-l3 レコードを削除→v4.25.2内容で再投入する
+  2. 日本の中小企業向け案件で「LINEから社内ナレッジに問い合わせる」要件が出た時点で、AstrBot(LINE公式対応)を Hermes の代替・補完として評価する
+  3. エージェントのコード実行を隔離する要件が出た時点で、AstrBot Agent Sandbox と MiniClaw の4層防御パターンを比較する
+  4. OpenSpec(スペック駆動開発)の実適用例が必要になった時点で、AstrBot の openspec/ ディレクトリ構成を参照する
+  5. 商用サービスに組み込む判断をする時点で AGPL-3.0 の影響を精査する(ソース開示義務、EULA.md の内容確認)
+  6. 自環境の TTS 選定時に AstrBot がサポートする TTS 群と VoxCPM を比較する
