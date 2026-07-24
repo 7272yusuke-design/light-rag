@@ -1368,3 +1368,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   7. ラッパー構成から自作構成への移行を判断する時点
   8. 重複判定の閾値が日本語スライドや低コントラスト映像で妥当か検証する時点
   9. 投入粒度(動画1本=1エントリか、チャプター単位で分割するか)を決定する時点
+
+---
+
+## 2026-07-24: mcpsnoop-l3 — L3投入
+
+- **対象:** https://github.com/kerlenton/mcpsnoop
+- **判断:** L3投入(mcpsnoop-l3)
+- **根拠:** 自環境で繰り返し発生してきた「MCPが実際に何を返しているか見えない」問題に直接効く。具体的にはlist_knowledgeの表示バグ(MCP表示上はタグが空に見えるが実際はcontent内に存在し、現状は毎回 SELECT content FROM lightrag_doc_full でpsql直接確認する運用)と、do_searchのdownstream cap誤診(「10件制限」だと誤診していたが真因はentities/relationships/chunks=5/5/3の内部キャップだった)の両方が、実トラフィックの不可視性に起因している。mcpsnoopを挟めばレスポンスJSONを直接見て、タグがサーバー側の生成で失われているのかクライアント側の表示で失われているのかを切り分けられ、psqlでの間接確認を実観測に置き換えられる。加えてstreamable-HTTPのリバースプロキシモードがLightRAG MCP(port 9622)にそのまま適用でき、Replay機能が自作Skill Resolver MCPの反復開発ループを短縮する。ツールレベルのresult.isErrorまで捕捉するためJSON-RPCレベルでは成功に見える失敗を見逃さない。ECCが行った既定MCPコネクタ6→1削減のような監査を、推測ではなく実測で行える点も実益。単一バイナリ・ランタイム依存なしで顧客環境への持ち込みも容易。★6と極めて小規模だが、評価軸は人気度ではなく自環境の既知問題への適合性である。
+- **注記:** MCP版Wireshark。AIクライアントとMCPサーバーの間に透過プロキシとして座り、実際にやり取りされる全JSON-RPCフレームをターミナルUIでライブ表示する。Go 99.3%、MIT、★6/fork 0/15 commits/v0.1.1。問題設定: 公式MCP Inspectorはそれ自身が別クライアントとして接続するため、実クライアント(Claude Desktop/Cursor/Claude Code)とサーバー間のトラフィックを見ない。実クライアントが呼ばなかった呼び出しや予期しない引数での呼び出しを見せられず、ツールが黙って呼ばれない・capabilityが噛み合わない・呼び出しがハングする時に/tmpのログをtailして推測する羽目になる。mcpsnoopは実データ経路に座るためサーバーの実装言語を問わず実トラフィックを覗ける。機能: ライブJSON-RPCストリーム(リクエスト/レスポンス/通知/stderr色分け、遅い呼び出しにフラグ、JSON-RPCエラーだけでなくツールレベルのresult.isErrorも捕捉)、Replay(捕捉したツール呼び出しを新鮮で隔離されたサーバーコピーに再実行)、Capability inspector(ハンドシェイクの合意内容確認)、Frame inspector(整形JSON+フレーム内検索)、ハング検出(進行中リクエストをPENDING+ライブタイマー表示)、フィルタクエリ(tool:/method:/id:/kind:/dir:/status:をAND結合、例 tool:search status:slow、dir:s2c kind:req でサーバー起点リクエスト)。アーキテクチャは1バイナリ2役割で、mcpsnoop -- <server> が透過shim(バイトをそのまま転送しつつ各フレームのコピーを送る)、引数なしのmcpsnoopがhub兼TUI。よく知られたソケットとディスク上ログでペアリングするため起動順序不問、UIがディスクから過去セッションをバックフィルする。streamable-HTTPは mcpsnoop http --target http://localhost:3000/mcp --listen :7000 のリバースプロキシモードで対応(自環境のLightRAG MCP port 9622 stateless HTTPにそのまま適用可能)。mcpsnoop demo で設定なしの試用可能。【制約】pre-1.0でSemVerに従うが0.xの間はマイナーリリースでユーザー向け挙動が変わりうるとREADMEが明記。ラップしたサーバーコマンドを実行するため信頼するサーバーのみラップし信頼できないものはコンテナで動かすこと。Homebrew coreには未収載(notability bar未達)でtap経由では brew trust が必要になることがある。デバッグ時のみ挟む使い方が基本で常時プロキシを噛ませる設計ではない。作者1名でメンテナンス継続性は未知数。
+- **関連:** LightRAG MCP(自環境、デバッグ対象そのもの) / intent-driven-skill-resolution-l2c(Skill Resolver開発時に効く) / ecc-l3(MCPコネクタ6→1削減監査を実測できる) / claude-code-templates-l3(--analyticsによるセッション監視、観測レイヤーの類例) / waggle-l3(どのサブエージェントが実際に読んだかのテレメトリ、同じ問題意識) / smithery-smithery-ai-l3
+- **再検討条件:**
+  1. list_knowledge の表示バグを本格的に切り分ける時点で、mcpsnoop を挟んで実際のレスポンスJSONを確認する
+  2. Skill Resolver MCP の開発に着手する時点で、Replay と Capability inspector を開発ループに組み込む
+  3. 自環境のMCPコネクタ棚卸し(ECC同様の6→1削減監査)を行う時点で、実際に呼ばれているツールを実測する
+  4. 顧客環境でMCPのトラブルシュートが必要になった時点(単一バイナリで持ち込みが容易)
+  5. MCPサーバーがハングする・黙って呼ばれない問題が発生した時点(PENDING表示とハング検出)
+  6. v1.0 に到達した時点で挙動の安定性を再評価する
+  7. LightRAG MCP に新しいツールを追加する時点で、実クライアントがどう呼ぶかを観測する
