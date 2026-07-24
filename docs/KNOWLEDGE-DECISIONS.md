@@ -1386,3 +1386,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. MCPサーバーがハングする・黙って呼ばれない問題が発生した時点(PENDING表示とハング検出)
   6. v1.0 に到達した時点で挙動の安定性を再評価する
   7. LightRAG MCP に新しいツールを追加する時点で、実クライアントがどう呼ぶかを観測する
+
+---
+
+## 2026-07-24: opencodex — 保留
+
+- **対象:** https://github.com/lidge-jun/opencodex
+- **判断:** 保留(opencodex)
+- **根拠:** 完成度は高い(214 commits、v2.0.0、40+プロバイダ、5アダプタ、OAuth、GUI、3OS対応のサービス化、多言語README)が、現時点で自環境との接続点が薄いため保留とする。理由3点: (1)本ツールはCodexを使う前提であり、主軸はClaude Code + Claude.aiで、Codexは在庫の他リポジトリ(ECC、council-of-high-intelligence、claude-video等)でクロスハーネス対応として言及される程度にとどまる。(2)複数プロバイダを使い分けるという目的は、既存のOpenRouter運用で既に達成できている。本ツールを入れても解決する問題が現状存在しない。(3)接続点が「将来Codexを主要ハーネスとして使うなら」という条件付きであり、その予定が現時点でない。設計面で参照価値があるのは ocx stop の "Clean exit, zero residue"(プロキシ停止+サービス停止+Codex設定の原状復帰、残骸ゼロ)だが、この安全設計パターンは既に ECC の install-state による逆操作、claude-code-templates の --dry-run、council の --dry-route として在庫に複数存在しており、それだけで新規投入する理由としては弱い。既存ナレッジの磨き込み優先方針に照らし、パターンの存在のみ記録してCodex採用時に再訪する。
+- **注記:** OpenAI Codex に任意のLLMを使わせるユニバーサル・プロバイダプロキシ。TypeScript 91%、MIT、★20/fork 3/214 commits/v2.0.0(2026-06-20)/11リリース。Bun 1.1+ 必須。Codex の Responses API を各プロバイダのプロトコルに翻訳するローカルプロキシで、ストリーミング・ツール呼び出し・推論トークン・画像が双方向で動作する。5つのプロトコルアダプタ(anthropic Messages / google Gemini / azure-openai / openai-responses パススルー / openai-chat=全OpenAI互換Chat Completions)で40+プロバイダをカバー。Anthropic・xAI・Kimi はOAuthログイン対応でトークン自動更新。モデルルーティングは provider/model 構文(codex -m "anthropic/claude-opus-4-8")、prefix省略時はデフォルトプロバイダまたはモデル名パターンで自動マッチ(claude-* → Anthropic)。Codex CLI/TUI/App/SDK に自動注入され、ルーティング済みモデルがCodexのモデルピッカーにネイティブ同様に表示される。subagentピッカーに最大5モデルをフィーチャー可能(複雑なタスクは推論モデル、高速タスクは安価なモデルへ委譲)。非OpenAIモデルにも gpt-5.4-mini サイドカー経由でWeb検索と画像理解を付与できる。Webダッシュボード(ocx gui、localhost:10100)でプロバイダ・OAuth状態・モデル選択・ライブリクエストログを表示。launchd/systemd/Task Scheduler でバックグラウンドサービス化。設計面で注目すべきは ocx stop の "Clean exit, zero residue" — プロキシ停止・バックグラウンドサービス停止・Codex設定の原状復帰を一括で行い、素の codex が以前と全く同じに動く。設定ファイルの残骸も孤児プロセスも残さない。これは今セッションで観察した dry-run / uninstall 系の安全設計(ECC の install-state による逆操作、claude-code-templates の --dry-run、council の --dry-route)と同系の思想。README は英語/韓国語/簡体中国語の3言語。
+- **関連:** ecc-l3(クロスハーネス、install-stateによる逆操作) / claude-code-templates-l3(--dry-run) / council-of-high-intelligence-l3(マルチプロバイダ自動ルーティング、--dry-route) / claude-video-l3(マルチサーフェス配布) / OpenRouter運用(自環境、同目的の既存手段)
+- **再検討条件:**
+  1. Codex を主要ハーネスとして採用する判断をした時点で、プロバイダプロキシとしてL3投入を再評価する
+  2. 顧客案件で「Codexに自社契約のLLM(Anthropic/Gemini/ローカルOllama)を使わせたい」という要件が出た時点
+  3. OpenRouter運用の限界(プロバイダ固有機能が使えない、OAuth認証を使いたい等)に突き当たった時点で、5アダプタ方式との比較を行う
+  4. 自作ツールに「クリーンなアンインストール・原状復帰」を実装する時点で、ocx stop の zero residue 設計を参照する
+  5. ローカルLLM(Ollama/vLLM/LM Studio)をコーディングエージェントから使う構成を組む時点で、openai-chat アダプタの設定例を参照する
+  6. サブエージェントへのモデル振り分け(複雑なタスクは推論モデル、高速タスクは安価なモデル)を設計する時点で、subagentピッカーの実装を参照する
