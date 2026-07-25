@@ -1403,3 +1403,31 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. 自作ツールに「クリーンなアンインストール・原状復帰」を実装する時点で、ocx stop の zero residue 設計を参照する
   5. ローカルLLM(Ollama/vLLM/LM Studio)をコーディングエージェントから使う構成を組む時点で、openai-chat アダプタの設定例を参照する
   6. サブエージェントへのモデル振り分け(複雑なタスクは推論モデル、高速タスクは安価なモデル)を設計する時点で、subagentピッカーの実装を参照する
+
+---
+
+## 2026-07-25: moshi-kyutai — 保留
+
+- **対象:** https://github.com/kyutai-labs/moshi
+- **判断:** 保留(moshi-kyutai)
+- **根拠:** 技術的には極めて質が高いが、4つの理由で現時点では投入せず記録のみとする。(1)自環境で動かせない。PyTorch版は量子化未対応でGPU 24GB必須とREADMEが明記しており、KVM2(2vCPU/8GB/GPU無し)では議論の余地なく不可。MLX版はMac上で動くが顧客提供の形にならない。(2)音声領域は既存在庫でカバー済み。特に livekit-agents-l3(リアルタイム音声AIエージェント、WebRTC + 電話統合、Apache 2.0)が実用面での第一候補であり、STT→LLM→TTSを外部APIで組み立てる方式のため自前GPUを必要としない。Moshiはend-to-endのspeech-to-speech基盤モデルで層が異なるが、顧客案件で音声対話要件が出た場合の現実的な選択肢はLiveKit側になる。他に meetily-l3(ローカル議事録)、vapi-hermes-mcp-report.md も在庫にある。(3)リリースが2024年9月(rustymimi-0.2.2)で止まっており、731コミットに対してリリースタグは2つのみ。README自身がKyutaiのTTS/STT実用系として delayed-streams-modeling リポジトリを案内しており、Moshi本体は論文成果としての位置づけに移っていると読める。(4)日本語対応の記載がなく、日本企業向け案件への適合が不明。ただしMimi単体の設計思想(音声を12.5Hzトークンに落とし、テキストトークンの3-4Hzに近づけることで自己回帰ステップを削減する)は、今セッションで追跡してきたトークン予算・index先行のテーマと発想が通じるため、その観点での参照価値は記録しておく。
+- **注記:** Kyutai Labs の speech-text 基盤モデル + full-duplex 音声対話フレームワーク。★10.2k / fork 952 / 731 commits。コードは MIT(Python) / Apache-2.0(Rust)、重みは CC-BY 4.0。論文 arXiv:2410.00037。
+
+【アーキテクチャ】2つの音声ストリーム(Moshi自身の発話とユーザーの発話)を同時にモデル化する full-duplex 設計。加えて自分の発話に対応するテキストトークン(inner monologue)を予測することで生成品質を大きく向上させている。小さな Depth Transformer が同一タイムステップ内のコードブック間依存を、7Bパラメータの Temporal Transformer が時間方向の依存をモデル化する。理論レイテンシ160ms(Mimiのフレームサイズ80ms + 音響遅延80ms)、L4 GPU での実用レイテンシは約200ms。
+
+【Mimi(音声コーデック)】24kHz音声を12.5Hz表現・1.1kbps帯域に、完全ストリーミング(レイテンシ80ms = フレームサイズ)で落とす。非ストリーミングの SpeechTokenizer(50Hz, 4kbps)や SemantiCodec(50Hz, 1.3kbps)を上回る。SoundStream / EnCodec の系譜にエンコーダ・デコーダ両方へ Transformer を追加し、ストライドを調整して 12.5Hz を実現。**テキストトークンの平均フレームレート(約3-4Hz)に近づけることで Moshi の自己回帰ステップ数を削減する**という設計思想が中核。SpeechTokenizer 同様に蒸留損失で第1コードブックを WavLM の自己教師表現に一致させ、意味情報と音響情報を単一モデルで扱う。EBEN 同様に敵対的損失のみ(+特徴マッチング)で学習し、低ビットレートながら主観品質を大きく改善。`rustymimi` として Python バインディングあり。
+
+【3実装】PyTorch(研究・実験用、moshi/)、MLX(iPhone/Mac のオンデバイス推論、moshi_mlx/)、Rust(本番用、rust/。Mimi の Rust 実装を含む)。Web UI クライアントは client/。ファインチューンは kyutai-labs/moshi-finetune。
+
+【モデル】Moshiko(男性合成音声)、Moshika(女性合成音声)、Mimi。PyTorch(bf16/int8)、MLX(int4/int8/bf16)、Rust-Candle(int8/bf16)で配布。
+
+【同一コードベースで動く関連モデル】Hibiki(同時音声翻訳、kyutai-labs/hibiki)、Kyutai TTS/STT(kyutai-labs/delayed-streams-modeling)。READMEが後継として明示的に案内している。
+- **関連:** livekit-agents-l3(音声エージェントの実用第一候補、STT→LLM→TTS組み立て型) / meetily-l3(ローカル議事録、Whisper系) / vapi-hermes-mcp-report.md(音声AI + Hermes) / kyutai-labs/delayed-streams-modeling(後継のTTS/STT、未評価) / kyutai-labs/hibiki(同時音声翻訳、未評価) / kyutai-labs/moshi-finetune(ファインチューン、未評価)
+- **再検討条件:**
+  1. Kyutai の後継リポジトリ delayed-streams-modeling(TTS/STT)を評価する時点で、本記録を前提知識として参照する。実用性はこちらの方が高い可能性がある
+  2. 顧客案件でリアルタイム音声対話の要件が出た時点で、まず livekit-agents-l3 を第一候補として評価し、end-to-endモデルが必要な場合にのみMoshiを再検討する
+  3. GPU付きホスティング(24GB以上)を確保する判断をした時点で、Rust実装(rust/、本番用)のセルフホストを評価する
+  4. 音声をトークン化してLLMに食わせる要件が出た時点で、Mimi(rustymimi、Python バインディング)を音声表現の圧縮手段として単独評価する
+  5. 同時音声翻訳の要件が出た時点で kyutai-labs/hibiki を評価する
+  6. Moshiが日本語対応した、または日本語版が公開された時点
+  7. Mac上でのローカル音声対話デモが営業材料として必要になった時点でMLX版(int4量子化)を評価する
