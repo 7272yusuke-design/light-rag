@@ -1486,3 +1486,31 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   6. Cの判定をPASS/NEEDS_WORKの二値からL0-008に従った段階評価へ変更を検討する時点
   7. 自作MCP・スキル領域へ展開する時点で、mcpsnoop + skill-verifier + evals を外部証拠として接続する設計を行う
   8. 理解負債ダイジェストを人間が実際に読んでいるか(形骸化していないか)を点検する時点
+
+---
+
+## 2026-07-26: pi-agent-harness-l3 — L3投入
+
+- **対象:** https://github.com/earendil-works/pi
+- **判断:** L3投入(pi-agent-harness-l3)
+- **根拠:** ★77.5k/fork 9.5k/5,109 commits と今回評価した中で最大規模だが、投入理由はエージェント部品としてではなくセキュリティ・運営の参照実装としての価値にある。最大の理由はサプライチェーン強化の実装が具体的でそのまま転用できる点で、min-release-age=2(同日リリースの依存を避ける)、--ignore-scriptsの徹底、依存ライフサイクルスクリプトの明示的許可リスト、リポジトリ外に隔離した環境でのリリーススモークテストは、顧客案件でnpm依存を扱う際および自作MCP・スキルをnpm配布する際の防御策として即座に有用。第二に「パーミッションシステムを内蔵しない」という明示的な設計判断と外部化3パターンが、既存在庫のminiclaw-sandbox-pattern-l2c(4層防御を内蔵)と真逆の判断であり対比材料として価値が高い。特にGondolinパターン(認証はホストに残し実行をマイクロVMへ)は認証情報を隔離環境に持ち込まないという点で他2パターンより洗練されている。第三に★77.5k規模のOSS運営設計(新規コントリビュータのissue/PR自動クローズ、AGENTS.md、外部RFC、SHA256SUMS付き再現可能ビルド)が自作OSS公開時の参照になる。加えてpi-agent-coreがライブラリとして公開されているため、three-role-agent-development-loop-l2cをn8n以外で実体化する際のオーケストレーション基盤候補になる。
+- **注記:** エージェントハーネスを4npmパッケージに切り出したツールキット。MIT、★77.5k/fork 9.5k/5,109 commits、TypeScriptモノレポ(Biome + vitest + Bun executable)。badlogicgames(Mario Zechner、libgdx作者)が関与。パッケージ: pi-ai(統一マルチプロバイダLLM API)、pi-agent-core(ツール呼び出しと状態管理を持つエージェントランタイム)、pi-coding-agent(対話型CLI)、pi-tui(差分レンダリングTUI)。別リポジトリ pi-chat でSlack/チャット自動化。自身を "self extensible coding agent" と表現。
+
+【参照価値1: サプライチェーン強化 — 最重要】方針は「npm依存の変更をレビュー済みのコード変更として扱う」。実装: 直接の外部依存は厳密バージョンにピン(内部ワークスペースのみ範囲許容)、.npmrc に save-exact=true と **min-release-age=2**(同日リリースの依存を避ける)、package-lock.json が唯一の真実でpre-commitが誤コミットをブロック(PI_ALLOW_LOCKFILE_CHANGE=1 で明示解除)、npm run check がピン留め・ネイティブTSインポート互換性・生成shrinkwrapを検証、公開CLIに npm-shrinkwrap.json を同梱して推移的依存をピン、リリーススモークテストは npm run release:local でビルド・packし**リポジトリ外に隔離されたnpm/Bunインストールを作ってから**タグを打つ、ローカルリリースインストール/文書化されたnpmインストール/pi update --self は可能な限り --ignore-scripts、CIは npm ci --ignore-scripts でスケジュールワークフローが npm audit --omit=dev と npm audit signatures --omit=dev を実行、**shrinkwrap生成に依存ライフサイクルスクリプトの明示的許可リストがあり新規のものはレビューまでチェックを落とす**。
+
+【参照価値2: パーミッションを内蔵しない設計判断】READMEが「ファイルシステム・プロセス・ネットワーク・認証情報のアクセス制限のための組み込みパーミッションシステムを持たず、既定では起動したユーザーとプロセスの権限で動く」と明示。代わりに外部化3パターンを提示(packages/coding-agent/docs/containerization.md): Gondolin extension(piとプロバイダ認証をホストに残し、組み込みツールと!コマンドをローカルLinuxマイクロVMにルーティング)、Plain Docker(プロセス全体をコンテナに)、OpenShell(ポリシー制御サンドボックス)。miniclaw-sandbox-pattern-l2c(4層防御を内蔵)と真逆の判断で、MiniClawが「安全な既定値」を取るのに対しPiは「明示的な選択」を取る。特にGondolinは認証情報を隔離環境に持ち込まない点で設計として洗練されている。
+
+【参照価値3: 大規模OSS運営】新規コントリビュータのissue/PRを既定で自動クローズし、メンテナが毎日レビューする。opencut-l3の"Focus areas / Avoid for now"明示より過激。AGENTS.mdに人間とエージェント両方向けのプロジェクトルール、RFCを外部サイト(rfc.earendil.com)で運用、リリースにSHA256SUMSでカバーされたバージョン付きソースアーカイブを含め公式標準バイナリと同じビルドスクリプトで再現可能(--offline-model-dataでライブカタログを更新せずスナップショットでビルド、パッケージメンテナ向けに --skip-install --skip-deps)。
+
+【参照価値4: OSSセッションのデータセット公開】badlogic/pi-share-hf でHugging Faceにセッションを公開。「おもちゃのベンチマークではなく実世界のタスク・ツール使用・失敗・修正」という方向性。作者自身も badlogicgames/pi-mono として継続公開。
+
+【制約】部品としては使わない可能性が高い(コーディングエージェントはClaude Code、統一LLM APIはOpenRouter、TUIは不要)。価値は設計・運営・防御の参照に集中する。パーミッションを持たないため使う場合は必ずコンテナ化前提。新規コントリビュータのissue/PRは自動クローズされる。規模が大きく全体を読むのは非現実的で、目的の箇所(.npmrc、package.jsonのcheck、containerization.md)を狙って読むのが妥当。pi-agent-coreでループを組む場合マルチエージェント・オーケストレーションは自分で書くことになりTypeScriptを書く前提のため、現在の対話型開発スタイル(Claude.ai + ウェブターミナル)からは距離がある。
+- **関連:** miniclaw-sandbox-pattern-l2c(サンドボックス内蔵、真逆の設計判断として対比) / three-role-agent-development-loop-l2c(pi-agent-coreが実体化候補) / opencut-l3(TSモノレポ Bun+Biome、OSS運営のFocus-Avoid明示) / council-of-high-intelligence-l3(マルチプロバイダ、プロファイルによる規模切替) / ecc-l3 / claude-code-templates-l3(エージェントハーネス・配布の類例) / i-have-adhd-l3(evals+CI、データセットの方向性) / waggle-l3(設計規律の厚さで同系)
+- **再検討条件:**
+  1. 顧客案件でnpm依存を扱う、または自作MCP・スキルをnpm配布する時点で .npmrc の設定と npm run check の検証項目を実装参照する(本エントリで最も価値が高い行動)
+  2. エージェントのサンドボックス化を設計する時点で containerization.md の3パターン(特にGondolin)を miniclaw-sandbox-pattern-l2c と並べて比較する
+  3. 自作OSSを公開する判断をした時点で、コントリビュート運営(自動クローズ)・AGENTS.md・SHA256SUMS付き再現可能ビルドを参照する
+  4. three-role-agent-development-loop-l2c を n8n以外のランタイムで実体化する判断をした時点で pi-agent-core をオーケストレーション基盤の候補として評価する
+  5. evals を設計する時点で「おもちゃのベンチマークではなく実世界の失敗と修正」というデータセットの方向性を参照する
+  6. Slack/チャット経由のワークフロー自動化が必要になった時点で earendil-works/pi-chat を評価する
+  7. npmサプライチェーン攻撃のインシデントが発生した時点で、本エントリの防御実装を自環境に適用する
