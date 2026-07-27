@@ -1545,3 +1545,39 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   6. 顧客に「チームとエージェントが同居するワークスペース」を提案する要件が出た時点
   7. Nostrプロトコルを採用する判断をした時点で NIP-01/34/42/98 の実装(buzz-core)を参照する
   8. モバイルクライアント(Flutter)が完成した時点で、モバイルからのエージェント操作を再評価する
+
+---
+
+## 2026-07-27: cognee-l3 — L3投入
+
+- **対象:** https://github.com/topoteretes/cognee
+- **判断:** L3投入(cognee-l3)
+- **根拠:** 自環境のLightRAGと同じ役割を担う、より成熟した代替基盤(★26.6k/8,429 commits/121リリース/Apache-2.0/論文あり)であり、移行を検討する際の第一候補として在庫に持つ必要がある。特に効くのは4点。(1)cognee 1.0でメモリ層全体が単一Postgresで動く(関係=Postgres graph backend、埋め込み=pgvector、セッション=SQL session-cache、メタデータ=同Postgres)ため、KVM2の常駐削減と直結し、検討中のOllama外部API化と合わせると常駐がPostgres 1本に集約できる可能性がある。しかもCIベンチマークではgraph+vector分離構成より約10%高速。(2)Claude Codeプラグインがclaude-mem-l3と同型のフック構成(SessionStart/UserPromptSubmit/PostToolUse/Stop/PreCompact/SessionEnd)を持ち、OpenClawプラグインとMCPサーバーも公式提供されているため、自環境の主要経路すべてに接続点がある。(3)マルチテナント分離(user/tenant isolation、追跡可能性、OTEL、監査特性)が組み込みで、ナレッジMCPサービス憲章Article 6の二層防御に対する別解として商品化フェーズで直接比較すべき対象になる。(4)BEAMベンチマークでSOTA超えという客観指標を持ち、LightRAGにはない判断材料を提供する。加えてimprove操作とセッションメモリという自環境に存在しない機能がある。ただし今すぐの移行は推奨せず、235件の資産・確立した運用ルール・Skill Resolver設計中という状況を踏まえ、移行判断のトリガーと未解決論点6件を明示した上で在庫化する。
+- **注記:** 【本エントリの位置づけ】通常の部品在庫ではなく「LightRAG移行を検討する際の第一候補」として投入する。自環境の現行基盤と同じ役割を担う代替基盤であり、評価の性質が他のL3と異なる。
+
+エージェント向けAIメモリ基盤。Apache-2.0、★26.6k/fork 2.5k/8,429 commits/v1.2.2(2026-06-26)/121リリース。Python 85.1%。Python 3.10-3.14。論文 arXiv:2505.24478。日本語含む8言語README。
+
+【API】remember / recall / forget / improve の4操作。remember は永続グラフ格納(add+cognify+improve)とsession_id指定の高速キャッシュの両方に対応。recall は自動ルーティングで最適な検索戦略を選択し、session_id指定でセッションメモリを先に見てグラフへフォールスルーする。CLI(cognee-cli remember/recall/forget、-uiでローカルUI)も同形。自環境のMCP 4ツール(upload_document/search_knowledge/list_knowledge/record_decision)と対応関係を持つが、improve(学習・改善)に相当するものが自環境にはない。
+
+【最重要: Postgres単体で全メモリ層が動く(cognee 1.0)】従来は関係用グラフDB・埋め込み用ベクタDB・セッション用Redis・メタデータ用RDBを個別に配備する必要があったが、cognee 1.0では単一Postgresで完結する。関係=Postgres graph backend、埋め込み=pgvector、セッション=SQL session-cacheバックエンド、メタデータ=同じPostgres。グラフは消えたのではなく同じPostgresベースのメモリ層内に存在するため、検索が類似性と構造の間をサービス境界を跨がずに移動できる。CIベンチマークではPostgres検索がgraph+vector分離構成より約10%高速。pip install "cognee[postgres]" + DB_PROVIDER=postgres / VECTOR_DB_PROVIDER=pgvector / GRAPH_DATABASE_PROVIDER=postgres / CACHE_BACKEND=postgres。必要なら専用バックエンドに差し替え可(Neo4j/Neptune、Redis、LanceDB、コミュニティアダプタでQdrant/ChromaDB/Weaviate/Milvus)。ローカル開発は完全埋め込み(SQLite/LanceDB/Kuzudb)。
+
+【自環境との接続点】(1)Claude Codeプラグイン(claude plugin marketplace add topoteretes/cognee-integrations → cognee-memory@cognee)がclaude-mem-l3とほぼ同型のフック構成: SessionStart(モード選択・アイデンティティ)/UserPromptSubmit(データセットスコープの文脈注入)/PostToolUse(ツールトレース捕捉)/Stop(回答書き込み)/PreCompact(コンテキストリセット跨ぎの保持)/SessionEnd(永続グラフへの最終同期)。ローカルモードはlocalhost:8011にローカルAPIをブートストラップしLLM_API_KEYのみで動く。(2)OpenClawプラグイン @cognee/cognee-openclaw。(3)MCPサーバー内蔵 cognee/cognee-mcp(Docker Hub、main push毎ビルド、SSE/stdio/HTTP)。(4)マルチテナント分離が組み込み: エージェント単位のuser/tenant isolation、追跡可能性、OTELコレクター、監査特性。ナレッジMCPサービス憲章Article 6(Unkey + Supabase RLS二層防御)に対する別解。(5)Rust(cognee-rs)/TypeScript(@cognee/cognee-ts)クライアント。
+
+【ベンチマーク】BEAM(長文脈ベンチ、会話が変化する中で追跡できるかを試す)で、100Kトークン設定 0.79(質問別ルーティングで>0.8、前SOTA 0.735)、10Mトークン 0.67(前SOTA 0.641)、Obsidian/RAGベースライン約0.33。カスタムモデル・専用パイプラインなしの既定設定のみ。LightRAGには持っていない客観指標だが、README自身が「決定的な測定というより方向性のシグナル」と留保。
+
+【デプロイ】Cognee Cloud / Modal(サーバーレス・GPU) / Railway / Fly.io / Render / Daytona。Docker Composeはプロファイル切替(ui=3000, mcp=8001, postgres, neo4j)。
+
+【移行検討時の未解決論点6件】(1)L0-L3のレイヤー構造をCogneeのオントロジー生成でどう表現するか未検証。(2)MCP 4ツールの互換性、特にrecord_decision(KNOWLEDGE-DECISIONS.md追記+git commit/push)は独自実装。(3)235件の移行方法(再投入かPostgres間移送か)。(4)運用ルールの変更(psql直接操作、DELETE API禁止、pg_dumpバックアップがforget操作に置き換わる可能性)。(5)タグ運用(layer:l0 / purpose:both / pattern-classification:pure 等)の保持方法。(6)improve操作の実体と、既存ナレッジへの破壊的変更の有無。
+
+【制約】今すぐ移行すべきではない。235件の資産と確立した運用ルールがあり、Skill Resolver設計中で基盤を動かすタイミングではなく、ECC v2.0.0/AstrBot v4.25.2の更新キューがpsql実行不可で詰まっている。リポジトリにtemp/PR_review_...やworking_dir_error_replicationといった作業ディレクトリが混入しており開発が急速で整理が追いついていない兆候。121リリース/8,429コミットと回転が速く仕様変更頻度が高い可能性。cognee-cli -uiのMCPサーバーはDockerコンテナ内動作のためDocker Desktop/Colima等が必要。Issue 221件/PR 294件と未処理が多い。
+- **関連:** LightRAG(自環境の現行基盤、本エントリは移行検討の第一候補) / claude-mem-l3(Claude Codeプラグインのフック構成が同型、両者を比較すべき) / hermes-agent-l3(出力層、Cognee導入時も維持) / helixdb(保留、GraphRAG構造的解決の別候補) / waggle-l3 / buzz-block-l3(監査・帰属の設計、追跡可能性と比較可能) / codegraph-l3 / pocketbase-l3(顧客軸の二層記憶設計) / intent-driven-skill-resolution-l2c(移行時は同時に設計変更が必要)
+- **再検討条件:**
+  1. LightRAGの運用に限界を感じた時点(psql操作の制約、常駐リソース、検索品質、グラフの表現力)で移行の第一候補として本エントリを起点に評価する
+  2. Ollamaを外部API化した後、常駐構成を見直す時点で「Postgres 1本に集約」の実現可能性を検証する
+  3. ナレッジMCPサービスの商品化フェーズで、マルチテナント分離(Unkey + Supabase RLS vs Cognee組み込み)を比較する
+  4. Claude Codeに永続メモリを入れる判断をした時点で、claude-mem と cognee-memory プラグインを比較する
+  5. OpenClawに永続メモリを組み込む時点で @cognee/cognee-openclaw を評価する
+  6. 検索品質の客観評価が必要になった時点でBEAMベンチマークの方法論を参照する
+  7. 移行を本格検討する時点で、未解決論点6件(L0-L3のオントロジー表現/MCP 4ツールの互換性/235件の移行方法/運用ルールの変更/タグ運用の保持/improve操作の実体)を順に潰す
+  8. cognee 1.x が安定しリリース頻度が落ち着いた時点で仕様の安定性を再評価する
+  9. ECC/AstrBotの更新キュー(psql実行不可)を解消する時点で、移行と同時に解決できるか検討する
