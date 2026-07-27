@@ -1514,3 +1514,34 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. evals を設計する時点で「おもちゃのベンチマークではなく実世界の失敗と修正」というデータセットの方向性を参照する
   6. Slack/チャット経由のワークフロー自動化が必要になった時点で earendil-works/pi-chat を評価する
   7. npmサプライチェーン攻撃のインシデントが発生した時点で、本エントリの防御実装を自環境に適用する
+
+---
+
+## 2026-07-27: buzz-block-l3 — L3投入
+
+- **対象:** https://github.com/block/buzz
+- **判断:** L3投入(buzz-block-l3)
+- **根拠:** マルチエージェント協調における「対等性」を、メッシュ型P2Pの直接通信ではなく共有署名イベントログで実現している点が最大の参照価値。メッシュ型が抱える継ぎ目のN²増加・調停者不在・追跡困難・デッドロックといった問題を構造的に回避しており、P2P連携を検討する際の「正しい形」の参照実装になる。加えて「権限フラグではなくアイデンティティでスコープする」という設計判断は、既存在庫の miniclaw-sandbox-pattern-l2c(サンドボックス内蔵)と pi-agent-harness-l3(内蔵せず外部化)に続く第3の立場であり、エージェントの権限設計を判断する際の対比材料が3つ揃う。hash-chain監査ログと署名イベントは three-role-agent-development-loop-l2c の責任追跡・人間レビュー点の実装参照になり、YAMLワークフローのscheduleトリガーは同ループの心拍を兼ねうるため、心拍・監査・レビュー点を1基盤で満たせる可能性がある。自環境との接続では Hermes の発展形にあたり、「聞かれたら答える」層から「人間とエージェントが同じ部屋にいる」層への拡張として顧客案件に接続しうる。buzz-acp が Claude Code に対応し buzz-cli が JSON in/JSON out でLLMツール呼び出し用に設計されているため、既存ハーネスからの接続経路も用意されている。★11.7k・Block, Inc.製・Apache-2.0で実験リポジトリではない。
+- **注記:** Block, Inc.製の「人間とAIエージェントが同じ部屋を共有する」セルフホスト可能ワークスペース。実体はNostrリレーで、メッセージ・リアクション・ワークフローステップ・レビュー承認・gitイベントの全てが1本のログに入る署名済みイベントとして扱われる。Apache-2.0、★11.7k/fork 929/1,848 commits。Rust workspace + Tauri/React デスクトップ。
+
+【最重要の設計判断: 対等性の実装方法】マルチエージェント協調の「対等性」には2流派がある。方式A=メッシュ型P2P(list/send/await/processで直接通信)は、継ぎ目がN²に増える・打ち切る主体がいない・誰が何を決めたか追跡困難・ブロッキング待機でデッドロックしうる・矛盾時の調停者がいない、という問題を抱える。方式B=Buzzの共有署名イベントログは、全員(人間・エージェント・ワークフロー・CI)が1つのリレーに署名イベントを書き購読することで、継ぎ目をNに削減し、hash-chain監査ログ(buzz-audit)で追跡可能にし、非同期pub/subでデッドロックを回避し、単一イベントログを真実の源として矛盾を調停する。
+
+【権限設計の第3の立場】READMEの核心「Agents have their own keys, their own channel memberships, and their own audit trail. Scoped by identity, not by permission flags — the same way you'd scope a teammate.」エージェントに権限フラグを与えるのではなく、人間の同僚と同じく鍵とチャンネル所属で範囲を決める。"Agents are members, not bots." "Agents are part of the room, not haunted cron jobs." これは在庫の miniclaw-sandbox-pattern-l2c(サンドボックス内蔵)、pi-agent-harness-l3(内蔵せず外部化)に続く第3の立場。
+
+【crate構成】コアプロトコル: buzz-core(ゼロI/O型、NIP-01フィルタ、Schnorr検証)/ buzz-relay(Axum WS+REST)。サービス: buzz-db(Postgres)/ buzz-auth(NIP-42/98 Schnorr認証、レート制限)/ buzz-pubsub(Redis、プレゼンス、タイピング)/ buzz-search(Postgres FTS)/ buzz-audit(hash-chainログ)。エージェント面: buzz-cli(agent-first、JSON in/JSON out、LLMツール呼び出し用に設計)/ buzz-acp(Goose/Codex/Claude Code向けACPハーネス、ACP↔MCP)/ buzz-agent/ buzz-dev-mcp(shell+ファイル編集)/ buzz-workflow(YAML自動化)/ buzz-persona(ペルソナパック)。Git: git-sign-nostr / git-credential-nostr / buzz-pair-relay / buzz-pairing-cli。共有: buzz-sdk / buzz-media(Blossom/S3)。
+
+【実装状況】✅動く: リレー・チャンネル・スレッド・DM・キャンバス・メディア・検索・監査ログ、デスクトップアプリ(Tauri+React)、buzz-cli + ACPハーネス、YAMLワークフロー(message/reaction/schedule/webhookトリガー)、Gitイベント(NIP-34)、Gitホスティングバックエンド。🚧配線中: モバイルクライアント(Flutter iOS+Android)、**ワークフロー承認ゲート(基盤はあるが接着剤が乾いていない)**、ハドルのライフサイクルイベント。💭未着手: リレー横断web-of-trust評判、プッシュ通知、カルチャー機能。
+
+【インフラ要件】buzz-relay(Rust/Axum) + Postgres(events + FTS) + Redis(pub/sub) + S3/MinIO(Blossom)。VPS/単一ノードには deploy/compose/ の本番Composeバンドル(docker compose + Postgres + Redis + MinIO + 任意でCaddy/TLS)を使う。ルートのdocker-compose.ymlは日常開発専用。開発にはDocker + Hermit(またはRust 1.88+/Node 24+/pnpm 10+/just)。
+
+【制約】KVM2(2vCPU/8GB/GPU無し)には乗らない。既にLightRAG+PostgreSQL+Ollama+MCP+cloudflaredが常駐しており同居は非現実的で、別サーバーまたは上位プランが前提。Rust workspaceのビルドが重く、ビルドと実行を分離してビルド済みイメージを配置する運用が現実的。ワークフロー承認ゲートが配線中のため人間承認必須の用途では完成待ちか自作が必要。Nostrプロトコル(NIP-01/34/42/98)の学習コスト。README自身が "Not finished" と明記し💭列を前提に計画するなと警告。現行は単一リレー=単一コミュニティ。Windowsではエージェントのシェルツールがbashを要求。
+- **関連:** hermes-agent-l3(発展元、「聞かれたら答える」から「同じ部屋にいる」へ) / three-role-agent-development-loop-l2c(監査・人間レビュー点の実装参照) / miniclaw-sandbox-pattern-l2c(権限設計の立場1) / pi-agent-harness-l3(権限設計の立場2) / waggle-l3(ハンドオフ継ぎ目・帰属と系譜。問題意識が同一で解が異なる) / claude-mem-l3(セッション跨ぎの記憶) / council-of-high-intelligence-l3(協調の別形態) / astrbot-l3(エージェントをチャットに置く点で近い) / LightRAG(Postgres FTS+イベントログという検索の別解)
+- **再検討条件:**
+  1. Hermesに「人間とエージェントが同じ部屋にいる」機能を足す判断をした時点で、Buzzのチャンネル・アイデンティティモデルを参照する
+  2. three-role-agent-development-loop-l2c を実体化する際、監査ログと人間承認ゲートの実装を参照する(ただし承認ゲートの完成状況を先に確認)
+  3. ワークフロー承認ゲートが🚧から✅に移った時点で、3者ループの承認基盤として再評価する
+  4. エージェントの権限設計を行う時点で、miniclaw(内蔵)/pi(外部化)/Buzz(アイデンティティ)の3立場を並べて判断する
+  5. 上位スペックのサーバーを確保した時点で deploy/compose/ の本番バンドルによるセルフホストを評価する
+  6. 顧客に「チームとエージェントが同居するワークスペース」を提案する要件が出た時点
+  7. Nostrプロトコルを採用する判断をした時点で NIP-01/34/42/98 の実装(buzz-core)を参照する
+  8. モバイルクライアント(Flutter)が完成した時点で、モバイルからのエージェント操作を再評価する
