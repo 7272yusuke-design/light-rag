@@ -1581,3 +1581,35 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   7. 移行を本格検討する時点で、未解決論点6件(L0-L3のオントロジー表現/MCP 4ツールの互換性/235件の移行方法/運用ルールの変更/タグ運用の保持/improve操作の実体)を順に潰す
   8. cognee 1.x が安定しリリース頻度が落ち着いた時点で仕様の安定性を再評価する
   9. ECC/AstrBotの更新キュー(psql実行不可)を解消する時点で、移行と同時に解決できるか検討する
+
+---
+
+## 2026-07-28: orca-l3 — L3投入
+
+- **対象:** https://github.com/stablyai/orca
+- **判断:** L3投入(orca-l3)
+- **根拠:** three-role-agent-development-loop-l2c(3者分離型エージェント開発ループ)は実行基盤が未定のまま宙に浮いており、検証基盤が揃っているn8n領域以外での実体化経路がなかった。Orcaはその空白を埋める最有力候補であり、ループの5要件(隔離/並走/人間レビュー点/kill-switch・steer/オーケストレーション)がほぼ1対1で対応する。特に並列git worktreeによる隔離と、Annotate AI Diffsによる人間レビュー点は自作すると手間がかかる部分で、最初から揃っている価値が大きい。「1プロンプトを5エージェントに扇形展開して結果を比較し勝者をマージする」構造は、generatorを複数走らせてevaluatorが選ぶ形そのものであり、Bを複数化する運用に直接使える。加えてSSH worktrees + orca serve により、VPS側でエージェントを走らせ手元から操作する経路が用意されており、KVM2の資源制約を回避できる。モバイルコンパニオン(完了通知 + どこからでもフォローアップ)はモバイル中心の作業スタイルに合致する。Pi/Gooseを含む任意のCLIエージェントに対応し既存在庫と接続する点、usage trackingがループの予算制御に接続する点も実益。★16.4k/6,455 commits/MIT/日本語READMEあり。
+- **注記:** 並列エージェント艦隊のためのADE(Agent Development Environment)。任意のCLIコーディングエージェントを、それぞれ独立したgit worktreeで並列に走らせ1箇所で追跡する。Stably AI(YC-backed)製、MIT、★16.4k/fork 1.3k/6,455 commits/v1.4.136/806リリース。TypeScript 96.9%、Electron + Vite。デスクトップ(macOS/Windows/Linux)+ モバイルコンパニオン(iOS/Android)。日本語README あり。
+
+【three-role-agent-development-loop-l2c の要件との対応 — 最重要】隔離(作業対象は複製上、原本に触れない)=並列git worktreeが組み込み。複数エージェントの並走=1つのプロンプトを5エージェントに扇形展開し結果を比較して勝者をマージ(generator複数 + evaluator選択の構造そのもの)。人間レビュー点=Annotate AI Diffs(任意のdiff行にコメントを付けてエージェントへ返す、Orcaを離れずレビュー・編集・コミット)。kill-switch/steer=モバイルから監視・操縦、完了通知、どこからでもフォローアップ送信。オーケストレーション=Orca CLI(orca worktree create / snapshot / click / fill でエージェント自身がOrcaを操作できる)。予算・レート管理=Account switcher & usage tracking(Claude/Codexの使用量とレート制限リセット表示、再ログインなしでアカウントをホットスワップ)。
+
+【VPS活用の道】SSH worktrees: リモートの強力なマシンでエージェントを走らせ、手元からファイル編集・git・ターミナルを完全操作。自動再接続とポートフォワーディング込み。加えて orca serve によるヘッドレスLinuxサーバー運用ガイドあり(docs/reference/headless-linux-server.md)。KVM2の資源制約を回避する経路になる。
+
+【その他機能】Design Mode(実Chromiumウィンドウで任意UI要素をクリック→HTML/CSS/切り抜きスクショをプロンプトへ直送)、Terminal splits(Ghostty級WebGLレンダリング、無限分割、再起動を跨ぐスクロールバック)、GitHub & Linearネイティブ(PR/issue/プロジェクトボードをアプリ内閲覧、任意タスクからworktreeを開く)、Drag Files to Agents(VS Codeエディタ全域オートセーブ)、Quick open(worktree/ファイル/エージェント/コマンド/リポジトリ文脈の横断検索)、Computer Use、Rich repo previews、通知と未読状態。
+
+【対応エージェント】ターミナルで動くものは何でも動く。明示: Claude Code / Codex / Grok / Cursor / GitHub Copilot / OpenCode / MiMo Code / Amp / OpenClaude / Antigravity / Pi / oh-my-pi / Hermes Agent / Devin / Goose / Auggie / Autohand Code / Charm(Crush) / Cline / Codebuff / Command Code / Continue / Droid / Kilocode / Kimi / Kiro / Mistral Vibe / Qwen Code / Rovo Dev。在庫の pi-agent-harness-l3(Pi)と buzz-block-l3(Goose)が対応リストに含まれる。
+
+【インストール】brew install --cask stablyai/orca/orca / yay -S stably-orca-bin / 各OSビルド直接取得。モバイルはiOS App Store・TestFlight・Android APK。
+
+【制約】Electronデスクトップアプリであり、日常の開発スタイル(Claude.ai + Hostingerウェブターミナルの対話型)とは前提が異なるため、導入するとワークフロー自体を変えることになる。回転が異常に速く(6,455コミット/806リリース)、READMEが「we ship daily、この機能リストは常に遅れている、changelogが本当の機能リスト」と明言しており仕様が動く前提で使う必要がある。Issues 527/PR 710と未処理が多い。YC-backedのため将来OSS部分が制限される可能性を考慮。テレメトリあり(匿名、opt-out可)。モバイルコンパニオンはデスクトップとのペアリングが前提。**重要: 3者ループのevaluatorを「fresh context / 書込み権限なし」に保つ仕組みはOrca側にはない。worktreeによる隔離は成果物の分離であって文脈の分離ではないため、そこは自分で設計する必要がある。**
+- **関連:** three-role-agent-development-loop-l2c(本エントリは実行基盤の最有力候補) / pi-agent-harness-l3(対応エージェント、pi-agent-coreでループを組む場合の実行環境) / buzz-block-l3(Goose対応で接続、ただしBuzzは協調の基層でOrcaは実行環境と層が異なる) / claude-code-templates-l3(--analytics / --chats --tunnel、モバイル監視の類例) / council-of-high-intelligence-l3(協調の別形態) / waggle-l3(ハンドオフ層、補完関係) / loop-architect(プロジェクトスキル) / mcpsnoop-l3(MCP層の観測に対しOrcaはエージェント層)
+- **再検討条件:**
+  1. three-role-agent-development-loop-l2c を n8n以外の領域で実体化する判断をした時点で、実行基盤の第一候補として評価する(本エントリで最も価値が高い行動)
+  2. 並列worktreeで「1プロンプト→複数エージェント→比較」を試す時点で、generator複数化の運用として実測する
+  3. KVM2の資源制約でローカル実行が厳しくなった時点で、SSH worktrees + orca serve によるVPS実行を評価する
+  4. モバイルからエージェントを監視・操縦する要件が出た時点でコンパニオンアプリを導入する
+  5. Website制作(デザイン・LP)でUI調整を反復する時点で Design Mode を評価する
+  6. Orca CLI でループをスクリプト化する判断をした時点で worktree create / snapshot の実装を参照する
+  7. evaluatorのfresh context分離をOrca上でどう実現するか設計する時点(Orca側に仕組みがないため自作が必要)
+  8. v1.x が安定しリリース頻度が落ち着いた時点で仕様の安定性を再評価する
+  9. YC-backed企業としてOSSライセンス方針に変更があった時点
