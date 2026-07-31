@@ -1646,3 +1646,18 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. 顧客案件でレイアウト依存文書の横断検索が要件化し、テキスト抽出型RAGで精度が出ないと実測で判明した時点
   4. Hermesの統合クエリ層が複数索引のマージに対応する改修を行う時点
   5. 逆トリガー: 段階2の実数把握でレイアウト依存文書が少数と判明し、個別対応で足りると結論した時点(見送りへ変更)
+
+---
+
+## 2026-07-31: open-multi-agent-l3 — L3投入
+
+- **対象:** https://github.com/open-multi-agent/open-multi-agent
+- **判断:** L3投入(open-multi-agent-l3)
+- **根拠:** TypeScript製の動的タスクDAG型マルチエージェント基盤（MIT、★6.6k、v1.10.0）。既存ナレッジとの噛み合わせが強い3点で投入価値あり。(1) runConsensus の proposer→judge プリミティブが three-role agent development loop L2c の「独立検証役C」の実装参照になり、L2cを未検証→自己検証済みへ進めるための実装基盤候補。(2) planOnly → createPlanArtifact → runFromPlan の計画凍結・再実行機構が、L0-009（自律実行の責任境界）の承認ポイント設計、およびL0-010（合意の有効性判定）軸1（確認軸）の機構的担保の実物モデルになる。(3) shared memory / checkpoint & resume / context management の3サブシステム分離が L0-006（3層メモリアーキテクチャ）の実装例。加えて checkpoint + 予算invariant + observability は loop-architect の Loop Spec 要件（心拍・記憶・停止条件・予算上限）にほぼ1対1対応する。Ollamaによる完全ローカル実行に対応しGPU非搭載VPSでも検証可能。
+- **注記:** cronjob github-daily-discovery-yusuke（2026-07-31）経由で発見。web_fetch で実在・ライセンス・機能を直接確認済み。naive mode 重複チェック済み。懸念点として、2026-04-01ローンチで約4ヶ月と若い点、およびStar/Fork比が通常のOSS（10%前後）に対し36%と不自然に高い点をL3本文の「制約・注意点」に明記した。実績評価はエコシステム記載の実利用事例（temodar-agent等）側で行う方針。
+- **関連:** three-role-agent-development-loop（L2c）/ L0-006 / L0-009 / L0-010 / loop-architect SKILL / crewai-l3 / openswarm-vrsen-l3 / solace-agent-mesh-l3（アーキテクチャの対極）
+- **再検討条件:**
+  1. three-role agent development loop L2c の自己検証に着手する時点で、runConsensus を実装基盤として採用するか自前実装するかを比較評価する
+  2. cryptopilot または OpenClaw でマルチエージェント構成の実装フェーズに入った時点で、OMAをオーケストレーション層として採用するか判断する
+  3. v2.0系のメジャーリリースが出た時点で破壊的変更の影響を再確認する（2026-04ローンチと若く、破壊的変更リスクが高い）
+  4. Star/Fork比の異常（★6.6k対fork 2.4k、約36%）について、実利用事例が増えて実績が裏付けられたか半年後に再確認する
