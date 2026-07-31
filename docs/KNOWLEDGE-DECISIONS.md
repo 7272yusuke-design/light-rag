@@ -1661,3 +1661,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. cryptopilot または OpenClaw でマルチエージェント構成の実装フェーズに入った時点で、OMAをオーケストレーション層として採用するか判断する
   3. v2.0系のメジャーリリースが出た時点で破壊的変更の影響を再確認する（2026-04ローンチと若く、破壊的変更リスクが高い）
   4. Star/Fork比の異常（★6.6k対fork 2.4k、約36%）について、実利用事例が増えて実績が裏付けられたか半年後に再確認する
+
+---
+
+## 2026-07-31: mcp-devtools-sammcj-l3 — L3投入
+
+- **対象:** https://github.com/sammcj/mcp-devtools
+- **判断:** L3投入(mcp-devtools-sammcj-l3)
+- **根拠:** Node/Python製の複数MCPサーバーを単一Goバイナリに集約するモジュラーMCPサーバー（Apache-2.0、★148、219リリース）。投入根拠は3点。(1) Hostinger KVM2（2vCPU/8GB、GPU非搭載）上でLightRAG+PostgreSQL+Ollama+MCP+cloudflaredを同居させている現構成に対し、MCPサーバー増設ごとのプロセス積み上がりを1バイナリに畳める点がリソース制約に正面から効く。(2) MCP Proxy ツールにより上流HTTP/SSE MCPサーバー（LightRAG MCP port 9622、n8n、Hermes）を単一入口の背後に集約でき、Skill Resolver MCP構想の実装候補として mcp2cli と並ぶ選択肢になる。(3) セキュリティフレームワーク（prompt injection検知、機密ファイル保護、shell injection検知、監査ログ付きオーバーライド）とOAuth 2.0/2.1リソースサーバーモードが、L0-PRODUCT-CONSTRAINTS 制約3（Unkey+Supabase RLS二層防御）に対するMCPレイヤー側の第三の防御線の実装例になる。副次的に Code Skim（構造のみ返却でトークン削減）が graphify と Repomix の中間粒度を提供し、Agents as Tools（Claude Code/Codex/Gemini CLI）が三役エージェントループの呼び出し経路をMCPに統一できる。
+- **注記:** cronjob github-daily-discovery-yusuke（2026-07-31）経由で発見。web_fetch で実在・ライセンス・ツール一覧を直接確認済み。naive mode 重複チェック済みで mcp2cli / mcpsnoop とは役割が異なることを確認。留意点として、作者本人が「自分用に作ったもので商用サポート製品ではない」と明記している個人プロジェクトである点、セキュリティフレームワークがBETA扱いである点、ツールごとの成熟度が🔴〜🟢で混在し API to MCP と Security Override は廃止検討中である点をL3本文に明記した。商用案件の依存先とする場合はフォーク前提。
+- **関連:** mcp2cli-l3 / mcpsnoop-l3 / mcp-servers-l3 / smithery-smithery-ai-l3 / schema-driven-lazy-cli（L2c）/ L0-PRODUCT-CONSTRAINTS 制約3 / three-role-agent-development-loop（L2c）
+- **再検討条件:**
+  1. MCPサーバーを新規に1つ以上追加する必要が生じた時点で、単独サーバー追加ではなくmcp-devtoolsへの集約を採るか判断する
+  2. VPSのメモリ逼迫が観測された時点で、MCP層の統合による削減効果を試算する
+  3. ナレッジMCPサービスの商品化フェーズで方式C（Unkey APIキースコープ連動）を技術検証する際、本リポジトリのOAuthリソースサーバーモードを下地として参照する
+  4. Skill Resolver MCP の実装に着手する時点で、MCP Proxy 方式と mcp2cli 方式を比較評価する
+  5. セキュリティフレームワークがBETAを脱した時点で、顧客提供MCPの防御線として採用可否を再評価する
