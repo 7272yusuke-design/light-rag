@@ -1692,3 +1692,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. VPSをスケールアップ、または専用のイベントブローカー基盤を別途調達した時点で、設計参照専用から導入候補への区分変更を検討する
   3. Claude Tag（Slackベース）との接続設計に着手する時点で、Gateways抽象を構造参照として読み直す
   4. Ragasベースライン測定（L0-PRODUCT-CONSTRAINTS 制約1）に着手する時点で、evaluation ディレクトリの評価設計を参照する
+
+---
+
+## 2026-07-31: faros-opennswm-lab — 見送り
+
+- **対象:** https://github.com/OpenNSWM-Lab/FAROS
+- **判断:** 見送り(faros-opennswm-lab)
+- **根拠:** 【見送り】Blueprint駆動のAutoResearchランタイム（idea → experiment → paper → review）。見送り理由は2点。(1) LICENSEファイルが存在せずライセンス未設定のため、そもそも利用不可。(2) README自認で「full DAG scheduling and parallel orchestration」「full experiment execution and evaluation loop」「FAROS frontend console」「DB-backed runtime metadata」が未実装と明記されており、RC（1.1.0-rc1）として中身が伴っていない。commit数6、テスト10 passed のみ。★が短期間で728→2,828に急増している一方コミットが6件という乖離も、実体評価としては減点材料。
+
+ただし1点のみ将来価値がある。Blueprint（ワークフローグラフ・制約・出力契約・検証要件を定義）/ Capability（実行可能な研究ステップ1つを実装）/ Profile（Blueprintを具体的な実行戦略に束縛）/ Provider（LLM・ツール・API・人間レビュー等の実エンジンを供給）という4層分離は、「規約定義者と実行者は別主体であるべき」「データ層と実装層は明確に分離されるべき」という原則の外部実装事例にあたる。これは KNOWLEDGE-DECISIONS.md「将来検討候補メモ」候補1（L0将来候補-A: 責務分離の原理、Responsibility Separation Principle）の裏付け事例として記録する価値がある。特に「LLMは1つのProviderクラスに過ぎない」という設計宣言は、規約層がエンジン層に汚染されない構造を意図的に取った例として参照できる。
+- **注記:** cronjob github-daily-discovery-yusuke（2026-07-31）経由で発見。web_fetch で実在確認したところ、リポジトリルートに LICENSE ファイルが存在せず、GitHub側のライセンス表示もなし（README/Activityのみ）。見送り判断のため naive mode 重複チェックは未実施。将来検討候補メモへの追記（L0将来候補-Aの外部裏付け事例として1行）はVPS側 KNOWLEDGE-DECISIONS.md で別途実施が必要。
+- **関連:** KNOWLEDGE-DECISIONS.md 将来検討候補メモ 候補1（L0将来候補-A: 責務分離の原理、想定識別子L0-011以降）/ 論点2（コマンド層 = 規約 vs 実行抽象）
+- **再検討条件:**
+  1. LICENSEファイルが追加され、かつ「Important TODO」記載の実験実行ループとDAGランタイムが実装された時点で、L3投入を再評価する
+  2. L0将来候補-A（責務分離の原理）が独立論点として浮上した時点で、本リポジトリの Blueprint/Capability/Profile/Provider 4層分離を外部裏付け事例として参照する
+  3. 研究調査・レポート自動生成の顧客案件が発生した時点で、AutoResearchランタイムの構造を再評価する
