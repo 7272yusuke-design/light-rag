@@ -1677,3 +1677,18 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. ナレッジMCPサービスの商品化フェーズで方式C（Unkey APIキースコープ連動）を技術検証する際、本リポジトリのOAuthリソースサーバーモードを下地として参照する
   4. Skill Resolver MCP の実装に着手する時点で、MCP Proxy 方式と mcp2cli 方式を比較評価する
   5. セキュリティフレームワークがBETAを脱した時点で、顧客提供MCPの防御線として採用可否を再評価する
+
+---
+
+## 2026-07-31: solace-agent-mesh-l3 — L3投入
+
+- **対象:** https://github.com/SolaceLabs/solace-agent-mesh
+- **判断:** L3投入(solace-agent-mesh-l3)
+- **根拠:** 【設計参照専用L3として投入】イベント駆動マルチエージェントフレームワーク（Apache-2.0、★5k、2,257 commits、169リリース、v1.28.3）。Google ADK + Solace AI Connector を統合した「Universal A2A Agent Host」で、A2Aプロトコル経由のピア動的ディスカバリとタスク委譲、Gateways（REST/Web UI/Slack/Teams）によるインターフェース多重化、SAC YAMLによる宣言的エージェント定義を持つ成熟実装。参照価値は、(1) n8nがコネクタ層を担う現構成の「その先」— エージェント同士が疎結合に委譲し合う層 — の完成形として読める点、(2) Gateways抽象がHermesを出力層とする現アーキテクチャに複数入口を生やす構造の参照になる点（Claude Tag接続の設計時）、(3) YAML宣言によるエージェント定義が、非エンジニア顧客に「設定として」エージェントを提示する商品形態の先行例であり L0-002（判断委譲の構造化）の粒度設計に接続する点、(4) evaluation ディレクトリ同梱によりマルチエージェント系OSSの評価基盤の実例が得られ、保留中のRagasベースライン論点（制約1）の参考になる点。
+- **注記:** cronjob github-daily-discovery-yusuke（2026-07-31）経由で発見。web_fetch で実在・ライセンス・アーキテクチャを直接確認済み。naive mode 重複チェック済み。【重要】通常のL3（部品在庫）とは区分が異なり「設計参照専用」として投入している。理由はSolace Platform Event Brokerへの中核依存で、2vCPU/8GBのVPSへの追加導入が非現実的なため。L3本文の冒頭に位置づけを明示し、参照対象を4項目（イベント駆動でのタスク委譲設計/artifact共有/A2Aプロトコル実運用形態/ゲートウェイ抽象）に限定した。その他の留意点: Google ADK依存でOpenRouter+Sonnet主力の現構成とモデル層前提が異なる、Teams統合等はEnterprise版機能でOSS版との境界確認が必要、旧バージョンからのアップグレードが公式非サポート。
+- **関連:** open-multi-agent-l3（アーキテクチャの対極: イベント駆動疎結合 vs 同一プロセス内動的DAG）/ openswarm-vrsen-l3 / crewai-l3 / hermes-agent-l3 / agent-routing（L2c）/ L0-002 / L0-PRODUCT-CONSTRAINTS 制約1
+- **再検討条件:**
+  1. 顧客案件が単一n8nワークフローから複数専門エージェントの協調構成へ発展した時点で、SAMの疎結合設計を目標形として参照する
+  2. VPSをスケールアップ、または専用のイベントブローカー基盤を別途調達した時点で、設計参照専用から導入候補への区分変更を検討する
+  3. Claude Tag（Slackベース）との接続設計に着手する時点で、Gateways抽象を構造参照として読み直す
+  4. Ragasベースライン測定（L0-PRODUCT-CONSTRAINTS 制約1）に着手する時点で、evaluation ディレクトリの評価設計を参照する
