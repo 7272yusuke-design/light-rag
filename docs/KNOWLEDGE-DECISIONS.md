@@ -1708,3 +1708,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. LICENSEファイルが追加され、かつ「Important TODO」記載の実験実行ループとDAGランタイムが実装された時点で、L3投入を再評価する
   2. L0将来候補-A（責務分離の原理）が独立論点として浮上した時点で、本リポジトリの Blueprint/Capability/Profile/Provider 4層分離を外部裏付け事例として参照する
   3. 研究調査・レポート自動生成の顧客案件が発生した時点で、AutoResearchランタイムの構造を再評価する
+
+---
+
+## 2026-08-01: ecc-l3（v2.0.0への更新） — L3投入
+
+- **対象:** https://github.com/affaan-m/ECC
+- **判断:** L3投入(ecc-l3（v2.0.0への更新）)
+- **根拠:** 【既存エントリの更新】ecc-l3 を v2.0.0-rc.1時点（2026-06-06確認）から v2.0.0安定版（2026-06リリース）の内容へ更新。長らく「psql実行不可」を理由に保留していた更新キューを、lightrag-knowledge-maintenance スキル確立により解消した第1号。反映した差分は9点。(1) control-pane substrate（session adapters + MCP inventory）の追加により、コンポーネント集から制御面を持つ体系へ移行。(2) worktree-lifecycleのサービス化（Longform GuideのParallelizationが運用機構として実体化）。(3) orch-* オーケストレーター族の整理。(4) ecc2 = Rust製control-planeがin-tree alpha（dashboard/start/sessions/status/stop/resume/daemon）。(5) MCP既定コネクタ6→1削減（2026-06監査、chrome-devteoolsのみ、docs/MCP-CONNECTOR-POLICY.md）。(6) ハーネス対応拡張（Kimi/Qwen CLI/Zed/JoyCode・CodeBuddy/Antigravity/Gemini CLI）とECC_AGENT_DATA_HOMEによるハーネス間データ隔離。(7) ECC Hermes operatorの公開（自環境のHermes MCPとは無関係、混線防止の但し書きを本文に明記）。(8) Itô compute CLIブリッジ（ito-compute-cli未公開のため実質利用不可）。(9) Claude Code CLI v2.1.0以降が必須。自環境への含意が最も大きいのは(5)と(6)の2点で、(5)はMCPコネクタ棚卸しの型として直接転用可能、(6)のECC_AGENT_DATA_HOMEはL0-006（3層メモリアーキテクチャ）の具体化事例として読める。
+- **注記:** 【更新方式】upload_document の overwrite:True は HTTP 404 で失敗するため、psql直接削除→再投入の2段で実施。pg_dumpバックアップ（backups/pre-ecc-update-20260801.sql、365M）取得後、doc-4cd5d89a3bd42ddee3f667bf61af683d を6テーブル（doc_chunks 3件 / vdb_chunks 3件 / doc_full / doc_status / full_entities / full_relations）からトランザクション内で削除。削除後 inventory.sh で 246/246/246/246 の全数一致を確認し、同名 ecc-l3_lightrag.txt で再投入。【重要な観察】README内でsurface件数が3系統に分裂している（v2.0.0リリースノート=261 skills / Quick Start=67 agents・279 skills・94 shims / v2.0.0-rc.1=66 agents・268 skills・84 shims）。Star数も本文211.9K+に対しページバッジ233kと不一致。初版投入時に付けた「数値主張は鵜呑みにしない」注記の妥当性が裏付けられたため、注記を2項目に拡張して維持した。【記述の分離方針】インストール機構の詳細（install-plan/install-apply 2相分離、SQLite install-state、profile/module/capability 3層スコープ）は intent-driven-skill-resolution-l2c に既に厚く記述済みのため、L3側では要点＋相互参照に留めた。同一内容を2箇所に厚く書くと relationships が重複エッジで太るだけで検索精度が上がらないため。【前提の訂正】当初 KNOWLEDGE-DECISIONS.md の日付見出しで差分を探して空振りしたが、実際は intent-driven-skill-resolution-l2c（2026-07-31投入）の記録内にv2.0.0の内容が詳述されていた。今後の更新時は日付ではなく関連エントリ本文まで含めて検索すること。
+- **関連:** intent-driven-skill-resolution-l2c（本リポジトリ由来、インストール機構の詳細記述先）/ instinct-based-continuous-learning-l2c（同じECC由来）/ astrbot-l3（同じくpsql制約で更新保留中、次に処理）/ mcpsnoop-l3（MCPコネクタ監査を実測で行う手段）/ claude-code-templates-l3（カタログ明示選択 vs 意図駆動の対比）/ everything-claude-code-l3 / L0-006 3層メモリアーキテクチャ（ECC_AGENT_DATA_HOMEが具体例）/ L0-007 Progressive Disclosure / lightrag-knowledge-maintenance（本更新で発動した保守スキル）
+- **再検討条件:**
+  1. ecc2（Rust control-plane）がalphaを脱して一般リリースされた時点で、常駐control-planeの設計をSkill Resolver MCPやLightRAG MCPの常駐化設計の参照として読み直す
+  2. 自環境のMCPコネクタ棚卸しに着手する時点で、ECCの6→1削減監査を型として参照しつつ、mcpsnoopによる実測を併用して方針判断ではなく実データで削減する
+  3. skills/MCP提供プラットフォームの評価系設計に着手する時点で、AgentShieldのred/blue/auditor構成とA-F評価・exit codeによるCIゲートを再参照する
+  4. ito-compute-cliが公開された時点で、GPU調達経路としてItô compute CLIブリッジの実用性を再評価する
+  5. ECCがv2.1以降をリリースした時点で、本エントリを同じpsql削除→再投入方式で更新する
