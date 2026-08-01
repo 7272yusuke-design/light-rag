@@ -1724,3 +1724,22 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. skills/MCP提供プラットフォームの評価系設計に着手する時点で、AgentShieldのred/blue/auditor構成とA-F評価・exit codeによるCIゲートを再参照する
   4. ito-compute-cliが公開された時点で、GPU調達経路としてItô compute CLIブリッジの実用性を再評価する
   5. ECCがv2.1以降をリリースした時点で、本エントリを同じpsql削除→再投入方式で更新する
+
+---
+
+## 2026-08-01: astrbot-l3（v4.26.7への更新） — L3投入
+
+- **対象:** https://github.com/AstrBotDevs/AstrBot
+- **判断:** L3投入(astrbot-l3（v4.26.7への更新）)
+- **根拠:** 【既存エントリの更新】astrbot-l3 を v4.25.2時点（2026-06-16確認）から v4.26.7（2026-07-18）へ更新。lightrag-knowledge-maintenance スキル確立により、ECCに続き更新キュー2件目を解消。当初の保留記録は v4.25.2 を目標としていたが、その後リポジトリが v4.26.7 まで進んでおり、記録通りに投入すると即座に2バージョン遅れになるため、最新版で再導出する方針に変更した。最大の変更は v4.26.0 でのバックエンド Quart → FastAPI 移行と複数OpenAPI定義の追加であり、これは機能追加ではなく基盤の入れ替え。本プロダクトの位置づけが「IM常駐ボット基盤」から「OpenAPIを備えたIM統合基盤」へ変わり、n8nから直接叩ける対象になったため、n8nがコネクタ・AstrBotがIM入口という役割分担が現実的になった点が自環境への最大の含意。第二の含意はナレッジベース機能の成熟で、TEI rerankプロバイダ、embedding次元の送信モード設定、KB検索の障害耐性とrerank選択の改善などにより、LightRAG（nomic-embed-text 768dim + pgvector + グラフ）と機能領域が部分的に重なった。ただしAstrBotのKBはIMボットに紐づく利用が前提でグラフ構造やレイヤー設計を持たないため、本文では「代替候補ではなく比較対象」と明示した。第三にセキュリティ強化がv4.26.0に集中しており（パストラバーサル対策、hardlink拒否、サンドボックスのファイル転送とCUAヘルスチェック堅牢化、Future Task所有者検証）、MiniClawの4層防御との対比材料がサンドボックス単体から防御層全体に広がった。加えてMCPクライアントの安定性修正（SSE exit stackリークによるepoll busy-wait、disable時のanyioコンテキスト退出）は、自環境でLightRAG MCPを常駐させている以上、同種問題の参照事例として実用価値がある。運用上の変更点としてPython 3.12以上が必須になり、v4.26.0へ上げる前にv4.25.6を経由する公式推奨がある。
+- **注記:** 【保留記録の前提誤りを訂正】2026-07-23の保留記録「astrbot-l3-update-v4.25.2」は、既存エントリが v4.25.2 を反映していない「可能性が高い」という推測で13項目の差分を記録していた。今回DBの既存本文を実際に読んだところ、Star行に「最新 v4.25.2 / 2026-05-30」と明記されており、13項目のうち Agent Sandbox / LINE公式サポート / 自動コンテキスト圧縮 / 1000+プラグイン / LLMOps連携 / デプロイ経路 / STT-TTS / IMプラットフォーム一覧 の8項目は既に本文に含まれていた。実際に欠けていたのは openspec/+AGENTS.md、k8s/、uv導入の詳細、README_ja.md の4項目のみ。【運用への教訓】更新キューを登録する際は、DBの既存本文を確認せずに「反映していない可能性」で差分を記録すると、差分の大半が二重計上される。今後は保留記録の作成時点で psql により既存本文を確認し、実差分のみを記録すること。【更新方式】pg_dumpバックアップ（backups/pre-astrbot-update-20260801.sql）取得後、doc-580b73c2794ed0299edcc38cb205bdd7 を6テーブル（doc_chunks 2件 / vdb_chunks 2件 / doc_full / doc_status / full_entities / full_relations）からトランザクション内で削除。inventory.sh で Total 246 を確認（processed=245 はECC再投入分のグラフ抽出中による一時差、実害なし）。同名 astrbot-l3_lightrag.txt で再投入。【確度の明示】v4.26.0〜v4.26.5 はリリースノート本文を確認済み。v4.26.6 / v4.26.7 はリリース一覧の要約からの取得のため詳細未確認であり、本文にその旨を明記した。
+- **関連:** astrbot-l3-update-v4.25.2（2026-07-23の保留記録、本件で解消。ただし差分の前提に誤りあり）/ ecc-l3（同じくpsql制約で保留していた更新、2026-08-01に先行解消）/ miniclaw-sandbox-pattern-l2c（サンドボックス4層防御、Agent Sandbox＋防御層の対比対象）/ hermes-agent-l3（LINE経路の代替・補完候補）/ openspec-l3（openspec/採用の実例）/ claude-mem-l3（自動コンテキスト圧縮の同系統）/ voxcpm-l3（TTS比較対象）/ mcpsnoop-l3（MCPクライアント挙動の実測手段）/ LightRAG本体（KB機能の部分的競合・比較対象）/ n8n関連ナレッジ（OpenAPI経由の連携先）/ lightrag-knowledge-maintenance（本更新で発動した保守スキル）
+- **再検討条件:**
+  1. 日本の中小企業向け案件で「LINEから社内ナレッジに問い合わせる」要件が出た時点で、AstrBot（LINE公式対応）を Hermes の代替・補完として評価する。その際はFastAPI移行後のOpenAPIをn8nから叩く構成を第一候補とする
+  2. 顧客に渡すIMボットにナレッジベースを持たせる要件が出た時点で、LightRAG連携（MCP経由）とAstrBot内蔵KB（TEI rerank）のどちらを採るか比較評価する
+  3. エージェントのコード実行を隔離する要件が出た時点で、AstrBot Agent Sandbox＋v4.26系の防御層（hardlink拒否、パストラバーサル対策、CUAヘルスチェック）と MiniClaw の4層防御パターンを比較する
+  4. 自環境のLightRAG MCPで接続断・リソースリーク・epoll busy-wait 等の症状が出た時点で、AstrBotのMCPクライアント修正（#8307 / #9132 / #9070）を実装参照する
+  5. OpenSpec（スペック駆動開発）の実適用例が必要になった時点で、AstrBot の openspec/ ディレクトリ構成とAGENTS.mdを参照する
+  6. 商用サービスに組み込む判断をする時点で AGPL-3.0 の影響を精査する（ソース開示義務、EULA.md の内容確認）
+  7. 自環境の TTS 選定時に AstrBot がサポートする TTS 群（ElevenLabs追加済み）と VoxCPM を比較する
+  8. v4.27系がリリースされた時点で、本エントリを同じpsql削除→再投入方式で更新する
