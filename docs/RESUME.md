@@ -102,3 +102,11 @@ L2を増やす唯一の正規ルートは「L2cを実装して自環境で検証
 - `skill-verifier`: Claudeception方式で品質検証
 - `lightrag-knowledge-maintenance`: 更新・削除・リネームのpsql手順
 - `loop-architect` / `project-control-tower` / `n8n-workflow-builder` / `n8n-workflow-sync` 他
+
+## 2026-08-01 セッション記録
+- L2c v1.1置換完了(layout-preserving、psql手順で。overwrite 404は2件目確認、失敗は安全側=挿入前中断と判明)
+- 台帳監査: DB実数247件(L3=192/L2c=31/L2=20/L1=3/L0=1)、重複ゼロ・規約違反ゼロ。台帳側が乖離 → KNOWLEDGE-INDEX.md再棚卸しはDBから再生成する方針。inventory-20260801.csv出力済み
+- L0計画外1件発見: first-principles(7/9投入、記録なし)。内容はL0適格だが基準違反3件+L0-007と階層矛盾 → Phase 1バッチでv2.0分割と決定(DECISIONS commit 8adf122)
+- Phase 1バッチに追加: first-principles v2.0分割 / 階層矛盾解消 / L2→L0昇格ゲート明文化(定義v1.2)
+- 運用注意: docker ps -qf name=postgres は2件マッチ(コンテナ名直書き必須) / docker exec -it はWebターミナルでpsql出力が消える(-it外す)
+- 未処理: ECC v2.0.0 / AstrBot更新(今回のpsql手順を流用可) / backups 1.4GB圧迫 / 孤立ノード清掃
