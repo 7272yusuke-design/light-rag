@@ -1,25 +1,25 @@
 <!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全221件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全247件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-07-07
-> 整合性: doc_full=221 / doc_status=221 / processed=220 (未処理=1)
-> グラフ側 (entities/relations): 220/220
-
-## ⚠️ 未処理エントリ（processed以外）
-
-- `last30days-skill-l3_lightrag.txt` (status: failed, updated: 2026-06-21)
+> 最終更新: 2026-08-01
+> 整合性: doc_full=247 / doc_status=247 / processed=247 (未処理=0)
+> グラフ側 (entities/relations): 247/247
 
 ## レイヤー別件数
 
 | レイヤー | 件数 |
 |---------|------|
+| L0 | 1 |
 | L1 | 3 |
-| L2 | 19 |
-| L2c | 27 |
-| L3 | 169 |
-| UNKNOWN | 3 |
+| L2 | 20 |
+| L2c | 31 |
+| L3 | 192 |
 
+
+## L0
+
+- `first-principles-of-agent-development-l0_lightrag.txt`
 
 ## L1
 
@@ -30,6 +30,7 @@
 ## L2
 
 - `adr-templates-l2_lightrag.txt`
+- `agent-memory-design-principles-l2_lightrag.txt`
 - `ai-document-generation-pipeline-l2_lightrag.txt`
 - `auto-design-scout-l2_lightrag.txt`
 - `building-llm-claude-l2_lightrag.txt`
@@ -59,11 +60,13 @@
 - `claude-obsidian-wiki-pattern-l2c_lightrag.txt`
 - `claude-skill-manager-design-patterns-l2c_lightrag.txt`
 - `company-profile-matching-engine-l2c_lightrag.txt`
-- `dealcopilot-domain-patterns-l2c.md`
+- `dealcopilot-domain-patterns-l2c_lightrag.txt`
 - `document-to-sns-image-pipeline-l2c_lightrag.txt`
 - `domain-skillpack-productized-service-l2c_lightrag.txt`
 - `graphify-mcp2cli-token-reduction-l2c_lightrag.txt`
 - `instinct-based-continuous-learning-l2c_lightrag.txt`
+- `intent-driven-skill-resolution-l2c_lightrag.txt`
+- `layout-preserving-retrieval-hybrid-l2c_lightrag.txt`
 - `llm-council-pattern-l2c_lightrag.txt`
 - `llm-token-reduction-proxy-l2c_lightrag.txt`
 - `miniclaw-sandbox-pattern-l2c_lightrag.txt`
@@ -76,8 +79,10 @@
 - `self-hosted-multichannel-distribution-l2c_lightrag.txt`
 - `server-side-knowledge-stack-l2c_lightrag.txt`
 - `text-first-on-demand-visuals-l2c_lightrag.txt`
+- `three-role-agent-development-loop-l2c_lightrag.txt`
 - `tool-loop-mcp-l2c_lightrag.txt`
 - `trinity-council-deliberation-l2c_lightrag.txt`
+- `video-to-knowledge-pipeline-l2c_lightrag.txt`
 
 ## L3
 
@@ -98,21 +103,27 @@
 - `awesome-design-md-l3_lightrag.txt`
 - `better-auth-l3_lightrag.txt`
 - `browser-use-l3_lightrag.txt`
+- `buzz-block-l3_lightrag.txt`
 - `cal-diy-l3_lightrag.txt`
 - `caveman-l3_lightrag.txt`
 - `ccxt-l3_lightrag.txt`
 - `chroma-l3_lightrag.txt`
 - `claude-agent-sdk-python-l3_lightrag.txt`
 - `claude-code-action-l3_lightrag.txt`
+- `claude-code-templates-l3_lightrag.txt`
 - `claude-for-small-business-l3_lightrag.txt`
+- `claude-mem-l3_lightrag.txt`
 - `claude-octopus-l3_lightrag.txt`
+- `claude-video-l3_lightrag.txt`
 - `cli-anything-l3_lightrag.txt`
 - `codegraph-l3_lightrag.txt`
 - `codex-plugin-cc-l3_lightrag.txt`
+- `cognee-l3_lightrag.txt`
 - `comfyui-api-server-l3_lightrag.txt`
 - `comfyui-graph-execution-l3_lightrag.txt`
 - `composio-l3_lightrag.txt`
 - `copilotkit-l3_lightrag.txt`
+- `council-of-high-intelligence-l3_lightrag.txt`
 - `crawl4ai-l3_lightrag.txt`
 - `crewai-l3_lightrag.txt`
 - `daymade-skills-l3_lightrag.txt`
@@ -142,6 +153,7 @@
 - `hermes-agent-l3_lightrag.txt`
 - `hono-l3_lightrag.txt`
 - `hoppscotch-l3_lightrag.txt`
+- `i-have-adhd-l3_lightrag.txt`
 - `impeccable-l3_lightrag.txt`
 - `inngest-l3_lightrag.txt`
 - `inspect-ai-l3_lightrag.txt`
@@ -159,7 +171,11 @@
 - `mattpocock-skills-l3_lightrag.txt`
 - `mcollina-nodejs-skills-l3_lightrag.txt`
 - `mcp2cli-l3_lightrag.txt`
+- `mcp-agent-lastmile-l3_lightrag.txt`
+- `mcp-devtools-sammcj-l3_lightrag.txt`
 - `mcp-servers-l3_lightrag.txt`
+- `mcpsnoop-l3_lightrag.txt`
+- `meetily-l3_lightrag.txt`
 - `microsoft-graphrag-l3_lightrag.txt`
 - `multica-l3_lightrag.txt`
 - `mvp-builder-l3_lightrag.txt`
@@ -173,15 +189,21 @@
 - `officecli-l3_lightrag.txt`
 - `openclaude-l3_lightrag.txt`
 - `opencode-anomalyco-l3_lightrag.txt`
+- `opencut-l3_lightrag.txt`
 - `openhuman-l3_lightrag.txt`
 - `open-interpreter-l3_lightrag.txt`
 - `openllmetry-l3_lightrag.txt`
+- `openmanus-foundationagents-l3_lightrag.txt`
+- `open-multi-agent-l3_lightrag.txt`
 - `openspec-spec-driven-dev-l3_lightrag.txt`
 - `openswarm-vrsen-l3_lightrag.txt`
 - `openzeppelin-contracts-l3_lightrag.txt`
+- `orca-l3_lightrag.txt`
 - `paperclip-l3_lightrag.txt`
 - `paseo-l3_lightrag.txt`
+- `pi-agent-harness-l3_lightrag.txt`
 - `pipecat-l3_lightrag.txt`
+- `pixelrag-startrail-l3_lightrag.txt`
 - `playwright-cli-l3_lightrag.txt`
 - `pm-skills-deanpeters-l3_lightrag.txt`
 - `pocketbase-l3_lightrag.txt`
@@ -202,6 +224,7 @@
 - `rowboat-l3_lightrag.txt`
 - `rtk-l3_lightrag.txt`
 - `ruflo-l3_lightrag.txt`
+- `scrapling-l3_lightrag.txt`
 - `shadcn-ui-l3_lightrag.txt`
 - `skill-ai-seo-l3_lightrag.txt`
 - `skill-content-cascade-l3_lightrag.txt`
@@ -225,7 +248,9 @@
 - `smithery-smithery-ai-l3_lightrag.txt`
 - `smolagents-l3_lightrag.txt`
 - `sns-writing-rules-l3_lightrag.txt`
+- `solace-agent-mesh-l3_lightrag.txt`
 - `stagehand-l3_lightrag.txt`
+- `stop-slop-l3_lightrag.txt`
 - `stripe-cli-l3_lightrag.txt`
 - `stripe-sdk-l3_lightrag.txt`
 - `supabase-l3_lightrag.txt`
@@ -248,14 +273,11 @@
 - `virtuals-game-framework-l3_lightrag.txt`
 - `vitest-l3_lightrag.txt`
 - `voxcpm-openbmb-l3_lightrag.txt`
+- `waggle-l3_lightrag.txt`
+- `wardrobe-tandpfun-l3_lightrag.txt`
+- `watch-video-skill-l3_lightrag.txt`
 - `wshobson-agents-l3_lightrag.txt`
 - `zerolang-l3_lightrag.txt`
-
-## UNKNOWN
-
-- `003-fragments-store-itself.md`
-- `vapi-hermes-mcp-report.md`
-- `vapi-phone-integration-report-yusuke.md`
 
 <!-- AUTO:END -->
 
