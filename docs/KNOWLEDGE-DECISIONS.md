@@ -1792,3 +1792,37 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. 6件投入前に本文書のL0-007/L0-006/L0将来候補-Aとの重なり整理が必要になった時点
   3. L0-LAYER-DEFINITION.md v1.2改訂(L2→L0昇格ゲート明文化)に着手する時点
   4. 逆トリガー: Phase 1投入が3ヶ月以上先送りされ、現行版の階層矛盾が顧客クエリで実害を出し始めた場合(v2.0化のみ先行実施に切り替え)
+
+---
+
+## 2026-08-08: openmontage-calesthio-l3 — L3投入
+
+- **対象:** https://github.com/calesthio/OpenMontage
+- **判断:** L3投入(openmontage-calesthio-l3)
+- **根拠:** AIコーディングアシスタント(Claude Code / Cursor / Codex / Copilot / Windsurf)を動画制作スタジオ化するエージェンティック動画制作システム。12パイプライン・52ツール・400〜500エージェントスキル。ただし本ナレッジの主用途は「動画を作るツール」ではなく、エージェント設計の参照実装(purpose:reference-primary)。投入価値は4点。
+
+(1)コードオーケストレータが存在しない設計: READMEに「There is no code orchestrator. Your AI coding assistant IS the orchestrator.」と明記。Pythonは道具と永続化のみを提供し、創造的判断・オーケストレーション論理・レビュー基準・品質基準は全てYAMLマニフェスト+Markdownスキルという可読な指示ファイルに置かれる。SKILL中心でプロダクション級システムを組んだ場合の現存最大規模の実例であり、SKILL駆動開発を進める自環境にとって直接の参照価値が高い。
+
+(2)3層ナレッジアーキテクチャがLightRAGの層構造と対応: Layer1(tools/+pipeline_defs = 何が存在するか)/ Layer2(skills = どう使うか)/ Layer3(.agents/skills = どう動くか)。各ツールが依存Layer3スキルを宣言する仕組みも既存の相互参照設計と同型。独立した実装者が同型構造に到達した収斂進化の事例であり、層分離が流儀ではなく原則であることの傍証になる(first-principlesのメタ原則の収斂進化テストを満たす)。
+
+(3)品質ゲートと監査証跡が実運用されている: レンダー後にffprobe検証・4箇所フレーム抽出・音声レベル解析・納品約束検証・字幕確認を自動実行し、レビューが落ちたら動画を提示しない(maker≠checkerの実装)。スライドショーリスクを6次元分析で機械判定。プリコンポーズ検証ゲートでGPU時間浪費前に壊れた計画をブロック。7次元スコアリング(タスク適合30%/品質20%/制御15%/信頼性15%/コスト効率10%/レイテンシ5%/継続性5%)でプロバイダを選定し代替案・確信度・理由を判断証跡に記録。予算統制は見積→予約→精算の3段階でobserve/warn/capの3モード、既定$0.50でアクション単位承認・総額$10上限。three-role-agent-development-loop-l2が扱うmaker≠checker・予算上限・検証可能な停止条件の、実運用参照実装として機能する。
+
+(4)承認ゲートのUI実装(Backlot): ストーリーボードが実際の承認ゲートとして機能し、シーン単位コンタクトシート(テイク・プロンプト・単価・品質スコア)でレンダー前に視覚を承認する。チェックポイントライターは承認記録のない「完了」ゲートステージを拒否し、上書きされたチェックポイントもゲート遷移を含めてアーカイブされる。L0-005(段階的合意形成)やL0-009(自律実行の責任境界)が原理として記述する内容のUI実装例。
+
+重複チェック(naive: リポジトリ名)で既存エントリなしを確認済み。動画制作の需要が現時点で発生していないためL2c化は見送り、L3投入のみとした(Yusuke判断 2026-08-08)。
+- **注記:** 制約・リスク: (1)AGPL-3.0のため顧客向けSaaSへの組み込みにはHelixDBと同種のライセンス懸念が立つ。参照・自社利用は問題なし。(2)注目度と成熟度の乖離が激しい — star 36.9k / fork 4.4k に対しリリースなし・commit 276・コントリビュータ3名程度。GitHub Trending 1位でバズ先行の可能性を織り込む必要がある。(3)ローカル動画生成(WAN 2.1/Hunyuan/CogVideo/LTX-Video)はGPU必須でHostinger KVM2では実行不可。ただしゼロキー構成(Piper TTS + Archive.org/NASA/Wikimedia + Remotion/HyperFrames + FFmpeg)ならGPUなしで動作する。(4)READMEにスポンサー枠が埋め込まれており、プロバイダ選定の中立性は額面通りに受け取らない。(5)Ollama/LM Studioによるローカルapproach LLM対応は「Coming soon」で未実装。
+
+実コスト実績がREADMEに開示されている点は良質: 70秒歴史エレジー$0.02 / Ghibli風アニメ(FLUX 12枚)$0.15 / 製品広告(OpenAIキーのみ)$0.69 / 60秒Pixar風短編(Kling v3 6クリップ)$1.33。
+
+技術的に最も特徴的なのはドキュメンタリーモンタージュパイプライン: Archive.org・NASA・Wikimedia Commons等からCLIP検索可能なコーパスを構築し実際のモーション映像を取得して編集する。「静止画を数枚アニメ化して動画と称する」手法ではなく、有料動画生成APIなしで実写映像から編集済み動画を作る経路。
+
+全パイプラインが research → proposal → script → scene_plan → assets → edit → compose の同一構造化フローを共有し、各ステージに専用ディレクタースキル(実行方法を教えるMarkdown)が対応する。
+- **関連:** ffmpeg-l3_lightrag.txt(ポストプロダクション基盤) / remotion-l3_lightrag.txt(React合成エンジン) / claude-video-l3_lightrag.txt(動画のトークン予算設計) / three-role-agent-development-loop-l2_lightrag.txt(maker≠checker・予算上限・停止条件の設計。本リポジトリはその実運用参照実装) / over-engineering-guard-pipeline-l2c_lightrag.txt(実装ゲートの思想が共通) / first-principles-of-agent-development-l0_lightrag.txt(原則2/3/4/5の実装例、層分離の収斂進化テスト事例)
+- **再検討条件:**
+  1. note.com記事用の解説動画、または顧客向けサービス説明動画・オンボーディング動画の制作需要が発生した時点(ゼロキー構成での実行検証に着手)
+  2. SKILL駆動オーケストレーションの設計を自環境で本格的に組む時点(YAMLマニフェスト+Markdownディレクタースキルの分離構造を参照)
+  3. loop-architectのLoop Spec設計を改訂する時点(予算統制の見積→予約→精算3段階、observe/warn/capモード、アクション単位承認閾値を参照)
+  4. 承認ゲートのUI設計に着手する時点(Backlotのコンタクトシート方式・チェックポイントライターによる未承認完了の拒否を参照)
+  5. first-principles L0のv2.0分割時(原則2/3/4/5の実装例および層分離の収斂進化事例として証拠に組み込む)
+  6. 顧客向けSaaSへの組み込みを検討する場合はAGPL-3.0の再評価が必須
+  7. 逆トリガー: 6ヶ月以上コミットが停止し開発放棄と判断できる時点、またはstar数に対して実装が伴わないことが判明した時点(L3から除去を検討)
