@@ -1842,3 +1842,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. 長時間自律エージェントのチェックポイント/レジューム設計をL2cパターン化する際、Shannon以外の実装(Temporal以外のオーケストレータ)を2件目として投入した時点で比較・統合を実施
   4. Shannon Proの提供形態(セルフホストランナー、価格)が公開され、エンタープライズ向け再販/導入支援の商材として検討可能になった時点
   5. Claude Agent SDKのメジャーバージョン更新でShannonのハーネス構造が大きく変わった時点(v2系リリース時)
+
+---
+
+## 2026-08-12: ragflow-infiniflow-l3 — L3投入
+
+- **対象:** https://github.com/infiniflow/ragflow
+- **判断:** L3投入(ragflow-infiniflow-l3)
+- **根拠:** star 87.3k / fork 10.3k / commit 8,212のApache-2.0 RAGエンジン。単なるRAGライブラリではなくRAG+Agent+管理UI+マルチテナントを統合したプロダクトであり、自己ポジショニングも「context engine」に移行している。二つの参照用途でL3投入。(a) LightRAG運用の弱点に対する設計上の回答: DeepDoc(独自深層文書理解、v0.22以降はMinerU/Doclingをプラガブルに選択可)、テンプレートベース・チャンキング+チャンク分割結果の可視化と人間介入UI、grounded citationsの追跡可視化、orchestrable ingestion pipeline、doc engineのElasticsearch→Infinity差し替え(全文+ベクトルを1エンジンに寄せる方向性でHelixDB検討と同系譜)。特にチャンキングの可視化・介入UIは、LightRAG運用で「チャンクがどう切れたか見えない/後から直せない」というボトルネックへの直接の回答であり、layout-preserving-retrieval-hybrid-l2cのパスA/パスB設計の比較対象になる。(b) ナレッジMCPサービス商品化における業界標準ラインの把握: Confluence/S3/Notion/Google Drive/Discordのデータソース同期、Feishu/Discord/Telegram/Lineのチャットチャネル対応、GPT-5系/Gemini 3 Pro/DeepSeek v4のマルチプロバイダ、MCP+agentic workflow+Memory(2025-12)、マネージドクラウドとセルフホストの併売、Helmチャート+管理コンソール。加えてOpenClaw向け公式Skill配布(2026-03-24)は、RAGエンジン側がエージェントハーネスに対してSkillを出す配布形態の先行例として参照価値がある。
+- **注記:** purpose:reference-primary + purpose:competitive-analysis。自社基盤への導入候補ではなく参照・競合分析用途としての投入である旨をナレッジ本体冒頭に明記。リソース要件(4コア/16GB/50GB、ES+MySQL+MinIO+Redisのフルスタック)によりKVM2(2vCPU/8GB)では既存LightRAG/PostgreSQLとの同居が物理的に不可能な点を「導入可否の決定要因」として独立セクション化。LightRAGとの比較表を9観点で収録。L2c候補メモ(チャンキング品質への人間介入ポイントの設計)をナレッジ本体末尾に記載、自社側で介入UIの実装実績がないため候補メモに留める。重複チェック3ステップ実施済み(naive: リポジトリ名/組織名、naive: DeepDoc・チャンキング・Infinity、hybrid: ドキュメント解析・RAGエンジン・引用)、既存エントリなし。RAG基盤系はrag-anything-l3 / pixelrag-startrail-l3 / microsoft-graphrag-l3 が既存だがいずれも別系統。
+- **関連:** layout-preserving-retrieval-hybrid-l2c / pixelrag-startrail-l3 / rag-anything-l3 / microsoft-graphrag-l3 / HelixDB(投入保留中) / LightRAG自社基盤
+- **再検討条件:**
+  1. VPSをRAM16GB以上・4コア以上にスケールアップ、または別ホストを確保した時点(実際にセルフホストして自社LightRAGと比較検証する)
+  2. ナレッジMCPサービスの商品仕様策定フェーズに入った時点(データソース同期・チャットチャネル・マルチプロバイダ対応の要否をRAGFlowの機能ラインを基準に判断)
+  3. クライアント案件で「非構造化文書(スキャンPDF/Excel/スライド)の解析品質」が要件として発生した時点(DeepDoc/MinerU/Doclingの採用可否を検討)
+  4. 自社側でチャンキングの可視化・人間介入UIを実装した時点(L2c「チャンキング品質への人間介入ポイントの設計」の切り出しを実施)
+  5. Infinityを単体でL3評価する判断が出た時点(HelixDBと合わせて「全文+ベクトル統合エンジン」の比較を実施)
+  6. RAGFlowがv1.0に到達、または破壊的なアーキテクチャ変更が入った時点
