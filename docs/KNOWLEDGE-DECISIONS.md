@@ -1859,3 +1859,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. 自社側でチャンキングの可視化・人間介入UIを実装した時点(L2c「チャンキング品質への人間介入ポイントの設計」の切り出しを実施)
   5. Infinityを単体でL3評価する判断が出た時点(HelixDBと合わせて「全文+ベクトル統合エンジン」の比較を実施)
   6. RAGFlowがv1.0に到達、または破壊的なアーキテクチャ変更が入った時点
+
+---
+
+## 2026-08-12: milvus-l3 — L3投入
+
+- **対象:** https://github.com/milvus-io/milvus
+- **判断:** L3投入(milvus-l3)
+- **根拠:** star 44.6k / commit 24,780 / releases 164、LF AI & Data Foundation配下(主要コントリビュータZilliz)のApache-2.0ベクトルDB。SIGMOD 2021 / VLDB 2022の論文裏付けを持つベクトルDB領域の事実上のリファレンス実装であり、中立ガバナンスの点で単一ベンダー製品と差がある。三つの参照用途でL3投入。(1)段階的スケールの設計: Milvus Lite(pip installで単一ファイル永続化、SQLite的)→ Standalone(Docker単体)→ Distributed(K8s、compute/storage分離)を同一クライアントAPI(MilvusClient)のまま選べる。RAGFlowが最初から16GB以上を要求するのに対し、クライアント案件でPoCをLiteで始めて要件確定後にStandaloneへ移行する段階導入が設計として成立する数少ない選択肢。(2)全文検索とベクトル検索の統合: BM25をネイティブサポートし、SPLADE / BGE-M3等のlearned sparse embeddingsに対応、denseとsparseを同一コレクションに格納してrerank関数で融合できる。現行のPostgreSQL + pgvector構成で全文検索とベクトル検索が別レイヤー扱いになっている問題への直接の回答であり、HelixDB / Infinityと同じ「1エンジンに寄せる」系譜にありながら成熟度が突出している。(3)商品化設計の参照: マルチテナンシーをdatabase / collection / partition / partition keyの4粒度で分離でき、単一クラスタで数百万テナントを想定。憲章のUnkey + Supabase RLS二層防御と対置してDB側の分離粒度を検討できる。加えてRBAC+TLS+認証必須のセキュリティ、hot/coldストレージ、HNSW/IVF/FLAT/SCANN/DiskANN+量子化+mmapのインデックス選択、ColPaliマルチモーダル検索チュートリアル、Attu/Birdwatcher/Milvus CDC/VTSの運用エコシステムが参照対象。
+- **注記:** purpose:reference-primary。ベクトルDB領域のリファレンス実装としての投入。重要な留保点として「Milvusは知識グラフ機能を持たない」ことをナレッジ本体に明記し、LightRAGの単純な置き換え候補ではない旨を比較表とあわせて記述。検討する場合は(a)グラフはLightRAG・ベクトル+全文はMilvusという役割分担、(b)グラフを捨ててハイブリッド検索の質を取る、のいずれかの戦略判断になるため、単独の技術選定として扱わないと明記した。pgvector / HelixDB / Infinity / FAISS / Pinecone との位置関係の比較表も収録。重複チェック3ステップ実施済み(naive: Milvus・ベクトルデータベース、hybrid: ベクトル検索・pgvector・Pinecone・HNSW)、Milvus単体のL3エントリは存在せず。pgvector・FAISSは既存ナレッジ内で言及があるのみ。L2c候補メモ(PoCから本番への段階的スケールを前提としたデータストア選定)を本体末尾に記載、自社での段階移行の実施実績がないため候補止まり。
+- **関連:** LightRAG自社基盤 / HelixDB(投入保留中) / ragflow-infiniflow-l3(Infinity) / layout-preserving-retrieval-hybrid-l2c / rag-pipeline-patterns-l2 / agent-memory-design-principles-l2
+- **再検討条件:**
+  1. クライアント案件でPoC規模のベクトル検索が必要になった時点(Milvus Liteを第一候補として検討、pip installのみで開始できる)
+  2. LightRAGの全文検索とベクトル検索の分離がボトルネックとして顕在化した時点(sparse+dense同一コレクション+rerank融合の構成を実測比較)
+  3. ナレッジMCPサービスのマルチテナント分離設計を確定する段階に入った時点(4粒度分離とUnkey+Supabase RLSの二層防御を対置して検討)
+  4. 知識グラフを中核価値として維持するか、ハイブリッド検索の質を優先するかの戦略判断を行う時点(本エントリの比較表を判断材料とする)
+  5. HelixDBのL3投入を実施する時点(graph+vector統合という同方向の候補として比較を実施)
+  6. layout-preserving-retrieval-hybrid-l2cのパスB実装に着手する時点(ColPali統合を実装経路として評価)
+  7. VPSをスケールアップしMilvus Standaloneの同居が可能になった時点(KVM2 8GBでのメモリ配分実測が前提)
