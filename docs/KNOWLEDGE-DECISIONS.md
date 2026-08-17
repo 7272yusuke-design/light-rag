@@ -1877,3 +1877,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. HelixDBのL3投入を実施する時点(graph+vector統合という同方向の候補として比較を実施)
   6. layout-preserving-retrieval-hybrid-l2cのパスB実装に着手する時点(ColPali統合を実装経路として評価)
   7. VPSをスケールアップしMilvus Standaloneの同居が可能になった時点(KVM2 8GBでのメモリ配分実測が前提)
+
+---
+
+## 2026-08-17: book-to-skill-l3 — L3投入
+
+- **対象:** https://github.com/virgiliojr94/book-to-skill
+- **判断:** L3投入(book-to-skill-l3)
+- **根拠:** star 22.4k / fork 2.4k / commit 146のMITライセンスのAgent Skillコンバータ。技術書PDF・文書フォルダをGitHub Copilot CLI / Amp / Claude Codeで共通利用可能なAgent Skill形式に変換する。三つの参照用途でL3投入。(1)L0-007(Progressive Disclosure)の実装リファレンス: SKILL.md(中核メンタルモデル+章インデックス、~4,000 tokens、常時ロード)と chapters/ch*.md(章ごと1ファイル、~1,000 tokens、オンデマンド)の分離を、トークン予算という定量指標つきで具体化している。章ファイルはスキル予算に計上されない設計。さらに patterns.md(技法・アルゴリズム・設計パターン)と cheatsheet.md(意思決定テーブル)の分離が、本ナレッジベースのL2(組み合わせパターン)とL0(判断原理)の分離と同型であり、レイヤー設計の発想が一致する。「要約ではなく構造」を明示的な設計目標に置いている点も、LightRAG投入時の構造化方針のテンプレートになる。(2)構造化の定量的正当化: 「Discovery Loop Tax(発見ループ税)」という定式化 — PDFを読むエージェントは毎ターン目次を再取得し行き来し全体を再処理するナビゲーションコストを払うが、book-to-skillはその構造化コストを変換時に1回だけ支払う。実書籍での計測でコンテキスト丸ごと投入比24×〜51×のトークン削減。tools/discovery_tax.py で自己計測可能。「なぜ生PDFを渡さず構造化してLightRAGに入れるのか」への定量的回答として流用できる。(3)事業観点: Beyond booksとして社内ドキュメント(ADR/Runbook/オンボーディング)、ブランド・デザインシステム、研究クラスタ、RFC/API仕様/コンプライアンス文書を挙げており、クライアントの既存ドキュメント資産をSKILL化する納品物が構成できる。n8n自動化 → Claude Code導入 のアップセル経路の中間商材として位置付け可能。加えてアーキテクチャ面で「決定論的なPython extractor」と「仕様駆動のLLM generator」を明確に分離している設計、update/fold-inによる増分更新、tools/validate_skill.py --lens claude|copilot|amp によるホスト規約検証(自作SKILL全般に流用可)、GitHub publish(private既定)→ npx skills add の配布経路が参照対象。
+- **注記:** purpose:reference-primary + purpose:tooling。既存skill系エントリ8件(skill-creator / skill-optimization-methods / skill-pdf-reading / skill-file-reading / skill-xlsx / skill-pdf / skill-product-self-knowledge / claude-skill-manager-design-patterns-l2c)はいずれも「スキルの作り方・使い方」であり、「既存文書からスキルを自動生成する」ものは未カバーであることを確認して投入。skill-verifierとの関係を明記: validate_skill.py はホスト規約準拠チェック、skill-verifier はスコアリングと自動改善ループで役割が異なり競合しない。生成 → validate(規約) → verify(スコアリング) の直列構成が組める点をナレッジ本体に記載。著作権セクションを独立させ、クライアント案件で使う場合は「顧客が権利を保有する文書のみ」に限定する原則を明記(第三者著作物から生成したスキルは配布不可)。日本語文書での抽出・構造化品質が未検証である点をリスクとして明記。重複チェック3ステップ実施済み(naive: リポジトリ名・書籍スキル変換、hybrid: ドキュメントのナレッジ化・オンデマンド読み込み・トークン削減)、既存エントリなし。L2c候補メモ(文書資産をエージェント可読な構造に変換するメディア横断パターン)をナレッジ本体末尾に記載、自社での実行実績がないため日本語文書での実測後に判断とした。
+- **関連:** skill-creator-l3 / skill-optimization-methods-l3 / skill-pdf-reading-l3 / skill-file-reading-l3 / claude-skill-manager-design-patterns-l2c / video-to-knowledge-pipeline-l2c / ragflow-infiniflow-l3 / L0-007(Progressive Disclosure) / skill-verifier(プロジェクトSKILL)
+- **再検討条件:**
+  1. 日本語技術書または日本語社内文書で実際に変換を実行し、抽出・構造化品質を実測した時点(現在未検証。多言語対応はsponsor資金での改善項目とされている)
+  2. クライアントから既存ドキュメント資産(業務マニュアル・社内規程・製品仕様)のAI活用相談を受けた時点(顧客が権利を保有する文書に限定した上で納品物として設計)
+  3. 自社の運用ドキュメント(RESUME.md / KNOWLEDGE-INDEX.md / DATA-SCHEMA.md 等 /docker/lightrag/docs/ 配下)をSKILL化する判断をした時点
+  4. video-to-knowledge-pipeline-l2c と突き合わせてメディア横断のナレッジ変換パターンをL2c化する際(共通構造として決定論的抽出層/LLM構造化層/オンデマンド分割/増分更新が抽出できる見込み)
+  5. skill-verifier との直列構成(生成 → validate_skill.py → skill-verifier)を実際に組んだ時点でL2c化を検討
+  6. Agent Skills標準(agentskills/agentskills)に破壊的変更が入った時点、または対応ホストが増減した時点
