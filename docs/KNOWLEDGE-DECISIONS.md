@@ -1894,3 +1894,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. video-to-knowledge-pipeline-l2c と突き合わせてメディア横断のナレッジ変換パターンをL2c化する際(共通構造として決定論的抽出層/LLM構造化層/オンデマンド分割/増分更新が抽出できる見込み)
   5. skill-verifier との直列構成(生成 → validate_skill.py → skill-verifier)を実際に組んだ時点でL2c化を検討
   6. Agent Skills標準(agentskills/agentskills)に破壊的変更が入った時点、または対応ホストが増減した時点
+
+---
+
+## 2026-08-18: lightpanda-browser-l3 — L3投入
+
+- **対象:** https://github.com/lightpanda-io/browser
+- **判断:** L3投入(lightpanda-browser-l3)
+- **根拠:** star 33.6k / commit 8,580、Zig 0.15.2で一から書かれたAIエージェント・自動化専用ヘッドレスブラウザ。Chromium/Blink/WebKitを基盤とせず、グラフィックレンダリングエンジンを持たない設計。四つの理由でL3投入。(1)リソース効率が自社VPS制約への直接の回答: AWS m5.large上で実ページ933件の計測で、100ページあたりメモリ123MB(Headless Chromeは2GB、約16分の1)、実行時間5秒(同46秒、約9倍速)。Hostinger KVM2(2vCPU/8GB)で既存LightRAG+PostgreSQLと同居する前提では、Headless Chromeの2GBは現実的でないが123MBなら成立する。営業リスト自動生成パイプラインの設計で最大の技術的不確実性としたVPSメモリ配分問題に対し、JS実行を諦めずに解決する経路を提供する。(2)移行コストが極めて低い: CDPサーバー互換のため lightpanda serve --port 9222 を起動しPuppeteer/PlaywrightのbrowserWSEndpointを差し替えるだけで、スクリプト本体を書き換えずにエンジンだけ交換して効果測定できる。加えて --dump markdown で取得と同時にMarkdown化できLightRAG投入の前処理が1コマンドで完結、--obey-robots でrobots.txt遵守を担保できる(営業リスト案件の法務・倫理面のガードレールとして機能)。(3)Agent mode + PandaScriptのコスト構造: 自然言語でブラウザを操作しセッション出力を素のJavaScript(PandaScript)としてエクスポートでき、lightpanda run で再生する。スクリプトは決定論的でトークン不要のため本番実行時にモデルが不要。browser-use等が毎回LLMを呼ぶのに対し、探索フェーズのみLLMを使い確定手順を焼き付ける設計であり、定期巡回のような反復用途ではコスト構造が根本的に変わる。Anthropic/OpenAI/Gemini/Vertex AI/HuggingFace/Ollama対応。(4)ネイティブMCPのセッション設計: HTTPトランスポート時にMcp-Session-Idヘッダで各接続を独自のブラウジングセッション(独自のページ・Cookie・メモリ)にルーティングし、同一IDを送れば共有、省略すれば分離という形で「分離」と「共有」を同一メカニズムで切り替える。マルチエージェント環境の状態管理パターンとして参照価値がある。session_new/session_list/session_close ツールとDELETE /mcp で明示管理可能。専用Agent Skillが lightpanda-io/agent-skill に存在。
+- **注記:** purpose:reference-primary + purpose:candidate-adoption。参照用途に留まらず、進行中の営業リスト自動生成パイプライン(WF-C 定期巡回)の実行エンジン採用候補として位置付けた点が他のL3と異なる。既存のブラウザ自動化系エントリ(playwright-cli-l3 / browser-use-l3 / stagehand-l3 / scrapling-l3 / firecrawl-l3 / crawl4ai-l3)はいずれもブラウザ上のレイヤーまたはマネージドAPIであり、ブラウザエンジンそのものは未カバーであることを確認して投入。他候補6件との位置関係比較表をナレッジ本体に収録。Beta段階でCORS未実装、クラッシュしうるため「本番の基幹処理に単独で据えるのは時期尚早、フォールバック経路(Playwright等)を用意する設計が前提」と明記。AGPL-3.0のSaaS提供時改変公開義務、musl系Linux非対応、テレメトリ既定有効(クライアント環境設置時は無効化検討)もリスクとして記載。重複チェック3ステップ実施済み(naive: Lightpanda・Zig・ヘッドレスブラウザ、hybrid: CDP・Puppeteer・Playwright・メモリ消費)、既存エントリなし。L2c候補メモ(探索フェーズはLLM/本番フェーズは決定論的スクリプトという二段構えのコスト設計)をナレッジ本体末尾に記載。DSPyのコンパイルやPlaywrightのcodegenに同型構造が見られるため、2件目以降との突合時に切り出しを判断する。
+- **関連:** playwright-cli-l3 / scrapling-l3 / firecrawl-l3 / crawl4ai-l3 / browser-use-l3 / stagehand-l3 / shannon-keygraph-l3 / 営業リスト自動生成パイプライン(プロジェクト) / L0-009(自律実行の責任境界)
+- **再検討条件:**
+  1. 営業リスト自動生成パイプラインのPhase 1(VPSメモリ実測)を実施する時点で、Scrapling単体・Lightpanda併用の両構成を実測比較する
+  2. 巡回対象にJavaScript実行必須のサイト(SPA・無限スクロール・インスタント検索)が含まれることが判明した時点(Scrapling単体では取得できないため実行エンジンとして評価)
+  3. WF-Cの巡回手順が確定し反復実行フェーズに入った時点(Agent mode → PandaScript焼き付けによるLLMコスト削減を検証)
+  4. LightpandaがBetaを脱してGAに到達した時点、またはCORS(#2015)が実装された時点(本番基幹処理への採用可否を再評価)
+  5. クライアント向けサービスにブラウザ自動化を組み込む判断をする時点(AGPL-3.0の改変公開義務とテレメトリ無効化の要否を法務観点で確認)
+  6. Crawl4AIの実行エンジンをLightpandaに差し替える構成を検証する機会が生じた時点
+  7. DSPyのコンパイルやPlaywrightのcodegenと突き合わせて「探索LLM/本番決定論」パターンをL2c化する2件目の事例が揃った時点
