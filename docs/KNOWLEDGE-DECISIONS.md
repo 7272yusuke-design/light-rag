@@ -1947,3 +1947,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. openbot-copilotkitの再評価時(本エントリの投入により見送り理由4点目の前提条件が解消済み。残る3条件はAlpha脱却・Intelligence依存解消・リソース要件)
   6. AG-UIのガバナンスがCopilotKit単独から中立財団へ移行した時点(MCP・A2Aとの中立性の差が解消される)
   7. Claude Agent SDK統合がコミュニティ区分から1st party区分に格上げされた時点
+
+---
+
+## 2026-08-22: a2a-protocol-l3 — L3投入
+
+- **対象:** https://github.com/a2aproject/A2A
+- **判断:** L3投入(a2a-protocol-l3)
+- **根拠:** star 25.4k / fork 2.6k / commit 613、Apache-2.0。Googleが2025年4月に発表し同年6月に仕様・SDKごとLinux Foundationへ寄贈、ベンダー中立ガバナンスが確立された。支持組織は150超(AWS、Cisco、Google、IBM、Microsoft、Salesforce、SAP、ServiceNow)で、v1.0(2026)で署名付きAgent Card・マルチテナンシー・バージョンネゴシエーションのエンタープライズ機能が追加された。五つの理由でL3投入。(1)プロトコルスタックの完成: MCP(ツール)/ A2A(エージェント間)/ AG-UI(ユーザー接続)の3層が揃い、ナレッジベースの構造的空白(部品は多数あるがプロトコル層が薄い)が解消される。(2)Preserve Opacity という中核思想: 異なるフレームワーク・企業・サーバー上のエージェントが、内部状態・記憶・ツールを露出せずに協働できる。内部記憶・独自ロジック・ツール実装を共有せずに済むためセキュリティと知的財産保護が両立し、顧客のエージェントと自社のエージェントを接続する際の設計原理として直接使える。(3)Agent Card の設計: MCPのツール定義がツール単位であるのに対しAgent Cardはエージェント単位で能力と接続情報を公開する。v1.0で署名付きとなり真正性検証が可能。(4)商品設計への参照価値: マルチテナンシーとバージョンネゴシエーションがプロトコルレベルで定義されており、ナレッジMCPサービスのテナント分離・バージョン管理設計の比較対象になる。(5)ガバナンス構造の参照: リポジトリに adrs/(Architecture Decision Records)と .gitvote.yml(投票による意思決定)、GOVERNANCE.md / MAINTAINERS.md が整備されており、オープン標準の意思決定プロセスの実例として、ナレッジMCPサービス憲章の運用(冷却期間14日等)を設計する際の比較対象になる。加えて DeepLearning.AI 公式短期コース(Google Cloud + IBM Research提携)が存在し、Google ADK / LangGraph / BeeAI で構築したエージェントのA2A準拠化、逐次型・階層型ワークフローのオーケストレーション、異フレームワーク混在のマルチエージェント構築を扱う。この主題がそのまま顧客案件(顧客側の既存フレームワークを問わず接続する)に対応する。SDKはPython / Go / JavaScript / Java / .NET / Rust の6言語。
+- **注記:** purpose:reference-primary。ag-ui-protocol-l3 投入時に「未投入の補完候補」として記録した2件のうちの1件を消化。本エントリにより MCP / A2A / AG-UI の3プロトコルスタックが揃い、L2c「エージェントプロトコルスタックの3層分担」の切り出し条件が整った(次の棚卸しタイミングで実施可能、切り出し軸は各層が何を標準化し何を標準化しないかの境界)。⚠️要対応: 同セッションで投入した ag-ui-protocol-l3 の制約セクションに「MCPはAnthropic、A2AはLinux Foundationが管理する」と記述したが、MCPも現在はLinux Foundationプロジェクトであり誤り。本エントリ内に訂正事項として明記したが、ag-ui-protocol-l3 本体の修正は lightrag-knowledge-maintenance の psql手順で別途実施が必要。訂正により「AG-UIのみが単一ベンダー主導」という対比はむしろ強まるため、結論自体は変わらない。名称混同への注意も再掲: 既存の acp-agent-commerce-protocol-l2c(Virtual Protocol の Agent Commerce Protocol、オンチェーン)、OpenAI の ACP(Agentic Commerce Protocol)、A2A、AG-UI が略称レベルで3重に衝突しているため参照時は出典元の確認が必須。重複チェック3ステップ実施済み(naive: A2A protocol Linux Foundation、naive: AG-UI protocol、hybrid: エージェント相互運用)、独立エントリなし・openmanus-foundationagents-l3 内での言及のみを確認。
+- **関連:** ag-ui-protocol-l3(要訂正) / acp-agent-commerce-protocol-l2c(名称混同注意) / openmanus-foundationagents-l3 / hermes-agent-l3 / shannon-keygraph-l3 / L0-009(自律実行の責任境界) / L0-010(合意の有効性判定) / MCP Apps(未投入・次の優先候補)
+- **再検討条件:**
+  1. 次回のナレッジ棚卸しタイミングでL2c「エージェントプロトコルスタックの3層分担」を切り出す(3プロトコルが揃い条件が整ったため、L2比率改善にも寄与する)
+  2. ag-ui-protocol-l3 のMCPガバナンス記述を psql手順で訂正する時点(lightrag-knowledge-maintenance スキル発動)
+  3. MCP Apps(modelcontextprotocol/ext-apps、SEP-1865)を投入する時点で、プロトコル層の残り1件を消化する
+  4. クライアント案件で複数フレームワークのエージェントを接続する要件が発生した時点(Agent Card + JSON-RPC 2.0 による共通言語化を第一候補として検討)
+  5. ナレッジMCPサービスをA2Aサーバーとして公開する構想が出た時点(MCPサーバーとしての提供と並列に、エージェントとしての提供経路を検討)
+  6. 認可スキームのAgentCard組み込みがロードマップから実装に移った時点(現在は自前設計が必要な領域)
+  7. AP2 / UCP の商取引レイヤーを評価する時点(A2Aが下位層として前提になる)
