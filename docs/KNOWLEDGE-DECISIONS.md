@@ -1965,3 +1965,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. ナレッジMCPサービスをA2Aサーバーとして公開する構想が出た時点(MCPサーバーとしての提供と並列に、エージェントとしての提供経路を検討)
   6. 認可スキームのAgentCard組み込みがロードマップから実装に移った時点(現在は自前設計が必要な領域)
   7. AP2 / UCP の商取引レイヤーを評価する時点(A2Aが下位層として前提になる)
+
+---
+
+## 2026-08-22: mcp-apps-ext-apps-l3 — L3投入
+
+- **対象:** https://github.com/modelcontextprotocol/ext-apps
+- **判断:** L3投入(mcp-apps-ext-apps-l3)
+- **根拠:** SEP-1865として策定されたMCPの公式UI拡張(拡張ID: io.modelcontextprotocol/ui)。Finalに到達しMCP 2026-07-28リリース候補に公式拡張として同梱される段階にあり、ホストは Claude / Claude Desktop / VS Code GitHub Copilot / Microsoft 365 Copilot / Goose / Postman / MCPJam / Archestra.AI が対応済み、サーバーは Shopify / Hugging Face / ElevenLabs から登場している。MCP-UI作者陣とOpenAI・Anthropicのメンテナが共同策定し、MCP-UI・OpenAI Apps SDK・各ホスト独自実装が互換性なく解いていた問題を単一のオープン標準に統一した。四つの理由でL3投入。(1)ナレッジMCPサービスのUI化: LightRAG MCPサーバーは現在テキストのみを返すが、ui:// スキームによるUIリソース宣言とツールメタデータ連携により、検索結果の構造化ビュー(レイヤー別・スコア別の可視化)、L0原理の対話的フォーム・意思決定テーブルとしての提示、ナレッジ投入判断(3つの問い・4項目品質基準)のウィザード化が可能になる。ホスト側が既に対応済みのため顧客側の追加実装なしで体験が変わり、テキスト応答に留まる競合との明確な差別化になる。(2)セキュリティモデルが「デフォルトで制限的」: 全Viewがサンドボックスiframeで動作しホストのDOM・Cookie・ストレージへのアクセスがなく、通信はpostMessageのみを経由するため監査可能。サーバーはCSPメタデータで必要なネットワークドメインを宣言しホストがこれを強制、未宣言なら外部接続を一切許可しないためデータ流出を防ぐ。MCPの監査可能性を最も攻撃面の広いUI領域に構造的に担保しており、OpenBotのゲートウェイ設計と突き合わせるとエージェント系ガバナンス設計パターンが見える。(3)Graceful Degradation: ホストが接続時にUI対応状況を告知しサーバーがcapabilityを確認してからUI対応ツールを登録する。非対応ホストではツールが従来どおり動作する(UIが付かないだけ)後方互換設計であり、L0-008(完成度の段階)の実装例として参照できる。(4)Claude Code連携: リポジトリがAgent Skillsを同梱しプラグインとして導入できる(/plugin marketplace add modelcontextprotocol/ext-apps)。SDKは App開発者向け(App クラス)/ React hooks / Host開発者向け(AppBridge)/ サーバー向けヘルパーの4系統。examples/ に map viewer・PDF viewer・system monitor 等の実用デモが揃い basic-host で一括起動できる。
+- **注記:** purpose:reference-primary + purpose:candidate-adoption。ag-ui-protocol-l3 および a2a-protocol-l3 で「未投入の補完候補」として記録していた最後の1件を消化。これによりプロトコル層の充足状況は MCP(既存・厚い)/ A2A / AG-UI / MCP Apps の4件が揃い、残る未投入は AP2 / UCP の商取引レイヤーのみとなった(商材の方向が固まってから判断)。参照用途に留まらず採用候補として位置付けた理由は、ナレッジMCPサービスにUIを持たせる経路が提案段階ではなく実装済み標準として存在するため。L0-LAYER-DEFINITION.md 論点D(MCPツール化: explain_design_principle 等)が想定していた方向の具体的実装手段に相当する。同梱Agent Skills(create-mcp-app / migrate-oai-app / add-app-to-server / convert-web-app)のうち add-app-to-server が既存MCPサーバーへのUI追加を支援するため、LightRAG MCPサーバーへの適用時の直接の作業経路になる点を明記。リスクとして、OpenAI Apps SDKとの仕様差が残存(Issue #201)、リポジトリに本格的なホスト実装が含まれない(basic-hostサンプルのみ)、クライアント側SDKの対応が追いついていない実装がある(pydantic-ai は capabilities.extensions 未対応、MCP SDK 1.28.1 は extensions フィールドを持たずFastMCPが model_copy で回避、2026-07時点)ことを記載し、自社実装時はSDKバージョンの対応状況を先に確認するよう明記した。重複チェック3ステップ実施済み、既存エントリなし。L2c候補メモとして「MCPサービスのUI化パターン」を新規に記録、自社での実装実績がないためLightRAG MCPサーバーに実際にUIを載せた時点で切り出しを判断する。
+- **関連:** ag-ui-protocol-l3 / a2a-protocol-l3 / openbot-copilotkit(見送り記録) / L0-007(Progressive Disclosure) / L0-008(完成度の段階) / L0-LAYER-DEFINITION.md論点D / L0-PRODUCT-CONSTRAINTS.md制約4 / AP2・UCP(未投入・商取引レイヤー)
+- **再検討条件:**
+  1. LightRAG MCPサーバーにUIを載せる実装に着手する時点(Agent Skill add-app-to-server を作業経路として使用、事前にMCP SDKバージョンのextensions対応状況を確認)
+  2. ナレッジMCPサービスの商品仕様でUI提供の要否を確定する段階(L0原理の提示形態をテキストにするかUIにするかの判断)
+  3. L0-PRODUCT-CONSTRAINTS.md 制約4(P95 2秒以内)の検証を行う時点(UIリソースは事前宣言型のため動的生成オーバーヘッドは構造的に小さいが実測が必要)
+  4. L0-LAYER-DEFINITION.md 論点D(MCPツール化 explain_design_principle / apply_principle_to_case)の設計判断を行う時点
+  5. MCP 2026-07-28リリースが正式版になった時点(リリース候補段階からの変更有無を確認)
+  6. OpenAI Apps SDKとの仕様差(Issue #201)が解消された時点
+  7. 自社でMCPサービスのUI化を実装した後、L2c「MCPサービスのUI化パターン」として切り出す時点
