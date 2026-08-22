@@ -1912,3 +1912,20 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. クライアント向けサービスにブラウザ自動化を組み込む判断をする時点(AGPL-3.0の改変公開義務とテレメトリ無効化の要否を法務観点で確認)
   6. Crawl4AIの実行エンジンをLightpandaに差し替える構成を検証する機会が生じた時点
   7. DSPyのコンパイルやPlaywrightのcodegenと突き合わせて「探索LLM/本番決定論」パターンをL2c化する2件目の事例が揃った時点
+
+---
+
+## 2026-08-22: openbot-copilotkit — 見送り
+
+- **対象:** https://github.com/CopilotKit/openbot
+- **判断:** 見送り(openbot-copilotkit)
+- **根拠:** CopilotKit製のAIコワーカープラットフォーム(MIT、Bun + React + Hono + PostgreSQL/pgvector)。各Botに専用のコンピュータ(独自のChromium・ログイン・ワークスペース)を与え、全アクションを実行前に判定し実行後に記録する設計。エージェントガバナンスの実装として内容は優れているが、以下4点により現時点では見送る。(1)成熟度が不足: commit 15件、star 1.2k、READMEに公式にAlpha表記があり「早期段階でrough edgesとバグを想定せよ」と明記されている。同セッションで投入したShannon(commit 8,580)、Milvus(commit 24,780)、RAGFlow(commit 8,212)と比べて桁が違い、現時点で「参照実装」と位置付けるには実績が足りない。(2)ライセンス依存でセルフホスト完結しない: MITだが、CopilotKit Intelligenceのプロジェクトとライセンストークンが必須で、durable threadsとmemoryが同社マネージドサービスに依存する。COPILOTKIT_LICENSE_TOKEN と INTELLIGENCE_API_KEY がないとAPIサーバーが起動しない。自社基盤の設計思想(1人運用・セルフホスト完結)と整合しない。(3)リソース要件が現行環境と逆行: Bot1体につきコンテナ1つ + Chromium1つを払い出す設計のため、KVM2(2vCPU/8GB)では動作しない。同セッションでLightpandaを低メモリ化の候補として評価した方向と逆行する。(4)前提となるプロトコルが未投入: OpenBotの中核はAG-UI(ag-ui-protocol/ag-ui)への準拠であり、ガバナンスがフレームワークではなくプロトコルに乗る設計。OpenBotを入れるより先にAG-UIプロトコル自体をL3投入する方が、寿命が長く参照価値も高い。順序として先にプロトコル、次に実装例が正しい。
+- **注記:** 技術的な内容自体は評価が高いが、成熟度とライセンス依存の観点で現時点の投入を見送る。設計として参照価値が高い箇所は以下のとおりで、再検討時にはこの観点から評価を再開する。(1)ゲートウェイが唯一の経路: ターゲット解決 → ポリシー評価 → 監査行の書き込み → 実行 の順序が強制され、記録が存在しない状態で動く経路が構造的に存在しない。(2)CELポリシーのfail closed設計: tool.name / intent / bot.id / actor.id / page.url / page.host / element.* / key / file.* / mcp.* を検査でき、denyをallowより先に評価、ポリシー欠如は何も許可しない、ルール破損は開放ではなく拒否に倒れる。(3)Take the wheel: ログイン壁や2FAでBotが助けを求め、人間が同一パネルで操作を引き取る。computer.help_requested / computer.control_taken / computer.control_released として記録され、人間が運転中はBotのアクションをキューせず拒否する。(4)シークレットの非記録: 秘密が要求された事実とその長さのみを記録し、内容はトランスクリプトに残さない。(5)AG-UIプロトコル準拠: LangGraph / Mastra / CrewAI / Pydantic AI / Google ADK / 手書きのいずれもBotとして同じ形で到着し、ガバナンスがフレームワークではなくプロトコルに乗る。(6)MCPガバナンス: readと明示的に分類されないツールは全てwrite扱いとする保守的既定。(7)1Botにつき1コンピュータ: supervisorが専用コンテナ・専用/workspaceボリューム・専用ブラウザプロファイルを払い出し、COMPUTER_RUNTIME=runsc でgVisor下実行も可能。computersは127.0.0.1にバインドしコンテナ単位トークンを要求する。これらはL0-009(自律実行の責任境界)の3軸AND判定を製品として具体化したものと読める。
+- **関連:** L0-009(自律実行の責任境界) / shannon-keygraph-l3 / lightpanda-browser-l3 / buzz-block-l3(hash-chain監査ログ) / AG-UIプロトコル(未投入・先行投入推奨)
+- **再検討条件:**
+  1. AG-UIプロトコル(ag-ui-protocol/ag-ui)をL3投入した時点で、その実装例としてOpenBotを再評価する(こちらが先行すべき順序)
+  2. OpenBotがAlphaを脱してBeta以降に到達し、commit数・リリース実績が実用水準に達した時点
+  3. CopilotKit Intelligence依存が解消され、durable threads/memoryをセルフホストで完結できるようになった時点
+  4. クライアント案件でエージェントの監査ログ・ポリシー制御・人間介入(take the wheel)が要件として発生した時点(CELポリシーのfail closed設計と監査必須ゲートウェイを設計参考として再評価)
+  5. L0-009(自律実行の責任境界)のPhase 1投入後、原理の実装リファレンスが必要になった時点(3軸AND判定の製品実装例として)
+  6. VPSをスケールアップし、Bot単位のコンテナ払い出しが可能なリソースを確保した時点
