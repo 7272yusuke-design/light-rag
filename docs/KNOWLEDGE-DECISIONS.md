@@ -1929,3 +1929,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   4. クライアント案件でエージェントの監査ログ・ポリシー制御・人間介入(take the wheel)が要件として発生した時点(CELポリシーのfail closed設計と監査必須ゲートウェイを設計参考として再評価)
   5. L0-009(自律実行の責任境界)のPhase 1投入後、原理の実装リファレンスが必要になった時点(3軸AND判定の製品実装例として)
   6. VPSをスケールアップし、Bot単位のコンテナ払い出しが可能なリソースを確保した時点
+
+---
+
+## 2026-08-22: ag-ui-protocol-l3 — L3投入
+
+- **対象:** https://github.com/ag-ui-protocol/ag-ui
+- **判断:** L3投入(ag-ui-protocol-l3)
+- **根拠:** star 14.7k / commit 2,670 / releases 31(最新2026-07-03)/ used by 101のMITライセンスのオープンプロトコル。エージェントとユーザー向けアプリケーションの接続方法を標準化するイベントベースプロトコルで、約16種の標準イベントタイプの発行と少数の標準入力の受理だけで任意のエージェントを任意のフロントエンドに接続できる。五つの理由でL3投入。(1)ナレッジベースの構造的空白を埋める: READMEがプロトコルスタックの分担を明示している — MCPはエージェントにツールを与え、A2Aはエージェント同士を通信させ、AG-UIはエージェントをユーザー向けアプリに持ち込む。本ナレッジベースはMCPが厚く蓄積される一方、A2Aは他エントリ内の言及に留まり、AG-UIは完全な空白だった。個別のエージェントフレームワーク(部品)は多数投入済みだが、それらを繋ぐプロトコル層が薄いという構造的な偏りへの補完。(2)Claude Agent SDK対応: integrations/claude-agent-sdk に実装があり、Dojoにshared_stateデモがある。Shannonで確認したClaude Agent SDKの実運用と、UI層が標準プロトコルで接続される。(3)MCP Apps対応: 2025-11-21仕様のMCP AppsがGenerative UIとして対応済み。ナレッジMCPサービスをテキスト応答だけでなくUIコンポーネントを返す形に拡張する具体経路であり、L0レイヤーの「思考の足場」を散文ではなくUIとして提示する設計が視野に入る。(4)顧客納品時のフレームワーク非依存性: LangGraph / CrewAI(パートナーシップ)、Microsoft Agent Framework / Google ADK / AWS Strands / Mastra / Pydantic AI / Agno / LlamaIndex / AG2(1st party)、Amazon Bedrock AgentCore(1st party)に対応。顧客が既にどのフレームワークを使っていても同じUI層を載せられ、ベンダーロックインを避けた提案が可能になる。SDKはKotlin/Go/Dart/Java/Rust/Ruby/C++。(5)機能面でhuman-in-the-loopと双方向state同期がプロトコルレベルで標準化されている点が、単なるチャットストリーミング規格との決定的な差。L0-009(自律実行の責任境界)における人間承認地点を、実装ではなくプロトコルの語彙で表現できる。加えてリポジトリに .claude-plugin / .claude / .mcp.json / AGENTS.md / CLAUDE.md / skills/ag-ui-a2ui-integration が整備されておりClaude Codeでの読解・改変が前提になっている点、Dojoが各構成要素を50〜200行の例で示す形式がL0-007(Progressive Disclosure)の実践例になる点も参照価値がある。
+- **注記:** purpose:reference-primary。同セッションで見送ったopenbot-copilotkit(Alpha段階、CopilotKit Intelligence依存)の見送り理由4点目「前提となるプロトコルが未投入」への直接の対応。順序としてプロトコルを先に投入し、実装例は後に回すという判断を実行した。ナレッジ本体に「未投入の関連プロトコル(補完候補)」セクションを設け、A2A(Linux Foundation管理、現状は他エントリ内での言及のみで独立L3なし)とMCP Apps(2025-11仕様、Generative UIの中核)を明示的に記録。名称混同への注意も記載: 既存のacp-agent-commerce-protocol-l2c(Virtual Protocolのオンチェーン商取引プロトコル)とAG-UI・A2Aは全く別物であり、略称が紛らわしいため対比を明記した。制約として、CopilotKit主導で中立ガバナンス下にない点(MCPはAnthropic、A2AはLinux Foundation管理との対比)、緩いイベント形式マッチにより実装間の挙動差が出うる点、統合のステータス区分(1st party / パートナーシップ / コミュニティ)でドキュメントとサポートの厚みが大きく異なる点(Claude Agent SDK統合はコミュニティ区分)を記載。重複チェック3ステップ実施済み(naive: AG-UI protocol、naive: A2A protocol Linux Foundation、hybrid: エージェント相互運用)、独立エントリなしを確認。L2c候補メモ(エージェントプロトコルスタックの3層分担)を本体末尾に記載、A2Aの独立エントリがなく3点が揃わないためA2A投入後に判断とした。
+- **関連:** openbot-copilotkit(見送り記録) / shannon-keygraph-l3 / openmanus-foundationagents-l3(A2A言及) / acp-agent-commerce-protocol-l2c(名称混同注意) / hermes-agent-l3 / L0-007(Progressive Disclosure) / L0-009(自律実行の責任境界) / A2A(未投入・補完候補) / MCP Apps(未投入・補完候補)
+- **再検討条件:**
+  1. A2A(Agent2Agent)プロトコルをL3投入した時点で、3プロトコルスタック(MCP/A2A/AG-UI)のL2cパターン化を判断する
+  2. MCP Apps(2025-11仕様)を単独評価する時点(ナレッジMCPサービスにUIを持たせる商品設計と直結するため)
+  3. ナレッジMCPサービスの商品設計でUI層の要否を検討する段階に入った時点(Generative UIとMCP Apps対応を前提に設計できるか判断)
+  4. クライアント案件でエージェントのUI提供が要件として発生した時点(顧客側の既存フレームワークを問わず同じUI層を載せられる利点を活かす)
+  5. openbot-copilotkitの再評価時(本エントリの投入により見送り理由4点目の前提条件が解消済み。残る3条件はAlpha脱却・Intelligence依存解消・リソース要件)
+  6. AG-UIのガバナンスがCopilotKit単独から中立財団へ移行した時点(MCP・A2Aとの中立性の差が解消される)
+  7. Claude Agent SDK統合がコミュニティ区分から1st party区分に格上げされた時点
