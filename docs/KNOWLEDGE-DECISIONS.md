@@ -2002,3 +2002,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   6. LightRAGの検索がブラックボックスであることが運用上の障害になった時点
   7. OpenVikingをPoCで実際に動かした時点(L2c「知識の階層化を人が判断するか自動生成するか」の切り出しを判断)
   8. OpenVikingがv1.0に到達、または第三者による独立ベンチマークが公開された時点(自社計測の妥当性を検証)
+
+---
+
+## 2026-09-07: figranium-l3 — L3投入
+
+- **対象:** https://github.com/figranium/figranium
+- **判断:** L3投入(figranium-l3)
+- **根拠:** star 524 / fork 21 / watchers 4 / commit 1,001、GPL-3.0。Apify等のSaaSクラウドスクレイパーに対するセルフホスト代替で、React/Vite管制画面 + Express/Playwrightランタイムによりブロックを視覚的に積んでブラウザワークフローを組み即座にAPIエンドポイント化する。規模は小さいが、進行中の営業リスト自動生成パイプラインの要件と適合点が多いため代替アーキテクチャ候補として投入する。適合点は六つ。(1)n8nとActivepiecesを名指しで統合対象にしており、POST /api/tasks/:id/api に variables を渡してn8nのHTTP Requestノードから起動できる。(2)スケジューラ内蔵(ビジュアル設定 + 標準5フィールドcron式、サーバー再起動をまたいで永続、Next Run/Last Runを確認可能)でWF-Cのスケジュール層を代替できる。(3)HTTP/SOCKSプロキシのローテーション(round-robin/random、タスク単位トグル、import/export)が組み込まれており巡回対象増加時のIPブロック対策になる。(4)DB_TYPE=postgres で既存のVPS上PostgreSQL(port 5433)をそのまま流用でき新規DBが不要。(5)/api/executions が全過去実行のステップ・結果JSON・設定状態を保存し、営業リストの取得根拠を後から追跡できる監査証跡になる。(6)ロードマップに Page triggers と Database Tab / Local CRM という要件そのものの項目がある(ただし未実装)。加えて実行カーネル Figranite の作り込みが規模に対して例外的に厚い: ベジェ曲線のカーソル移動・ランダムジッタ・疲労を考慮したタイピングという人間の物理シミュレーション、入れ子 if/else・while・foreach のカスタムjump-map最適化、SSRF保護とプライベートネットワーク保護を組み込んだ保護コンテキスト内実行、browserscan.net のアンチ検知チェックリスト完走。単なる薄いPlaywrightラッパーではない。
+- **注記:** purpose:candidate-alternative-architecture。他のL3と異なり参照用途ではなく、進行中の営業リスト自動生成パイプラインの代替アーキテクチャ候補として投入。ナレッジ本体の冒頭に「本エントリの位置付け」ブロックを置き、成熟度を他のL3エントリと同列に扱わないこと(star 524 / watchers 4)を明記した。⚠️最重要リスク: Playwright + stealth Chromium + ヘッドフルVNC構成のため、lightpanda-browser-l3 を評価した理由(Headless Chrome 2GB/100ページがKVM2に載らない)と同じメモリ問題に戻る。営業リストパイプラインのPhase 1メモリ実測に構成C(Figranium)として追加し、A(Scrapling単体)/ B(Scrapling+Lightpanda)と3構成で比較すべきと記載。ロードマップの Page triggers(Webページの変化でタスク自動起動=WF-Cの差分検知そのもの)と Database Tab / Local CRM(抽出データのスプレッドシート的管理=営業リストそのもの)は要件に完全一致するが、いずれも未実装のため採用判断の根拠にしないと明記。Automatic self-healing selectors も未実装で、この機能は scrapling-l3 の Smart Element Tracking が既に提供しているため現時点ではScraplingに分がある。ライセンスはGPL-3.0でAGPLではないため、SaaS/ホスト提供ではcopyleftが発動しない(AGPLのScrapling/Lightpanda/OpenVikingより有利)が、クライアント納品は配布にあたり改変部分のソース提供義務が生じる点を記載。商業的文脈としてFeatured Partner/Integration Partnerがいずれもプロキシベンダー(Swiftproxy / SimplyNode)である点も明記。重複チェック実施済み、既存エントリなし。L2c候補メモ「ブラウザ自動化基盤に何を内蔵させ何を外部に出すか」を記録、実運用実績がないためメモリ実測とPoC後に判断。
+- **関連:** 営業リスト自動生成パイプライン(プロジェクト) / scrapling-l3 / lightpanda-browser-l3 / firecrawl-l3 / crawl4ai-l3 / playwright-cli-l3 / shannon-keygraph-l3 / L0-009(自律実行の責任境界)
+- **再検討条件:**
+  1. 営業リスト自動生成パイプラインのPhase 1メモリ実測を実施する時点(構成A: Scrapling単体 / B: Scrapling+Lightpanda / C: Figranium の3構成で比較。Playwrightベースのメモリ消費がKVM2で許容範囲かが採用可否の唯一の関門)
+  2. Figraniumの Page triggers(ページ変化によるタスク自動起動)が実装された時点(WF-Cの差分検知を自前実装せずに済む可能性)
+  3. Figraniumの Automatic self-healing selectors が実装された時点(Scraplingとの機能差が解消され選定が変わりうる)
+  4. Figraniumの Database Tab / Local CRM が実装された時点(営業リストのデータ管理UIを自前構築せずに済む可能性)
+  5. プロキシローテーションが必要な規模(IPブロックの発生)に達した時点(現行設計には該当機能がないため部分採用も検討)
+  6. star数・contributor数が増えbus factorが改善した時点(現在 watchers 4 で1人運用の基幹に据えるにはリスクが高い)
+  7. クライアント納品でブラウザ自動化基盤が必要になった時点(GPL-3.0の配布時ソース提供義務を法務確認)
