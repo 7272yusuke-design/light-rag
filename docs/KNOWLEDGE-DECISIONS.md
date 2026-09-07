@@ -2020,3 +2020,21 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. プロキシローテーションが必要な規模(IPブロックの発生)に達した時点(現行設計には該当機能がないため部分採用も検討)
   6. star数・contributor数が増えbus factorが改善した時点(現在 watchers 4 で1人運用の基幹に据えるにはリスクが高い)
   7. クライアント納品でブラウザ自動化基盤が必要になった時点(GPL-3.0の配布時ソース提供義務を法務確認)
+
+---
+
+## 2026-09-07: gridex-l3 — L3投入
+
+- **対象:** https://github.com/gridex/gridex
+- **判断:** L3投入(gridex-l3)
+- **根拠:** star 1.5k / fork 115 / commit 321、Apache-2.0のAIネイティブDB IDE。PostgreSQL / MySQL / SQLite / Redis / MongoDB / SQL Server / ClickHouse の7ドライバが単一ネイティブバイナリに同居し、macOS(Swift+AppKit)/ Windows(WinUI 3)/ Linux(Qt 6)でElectronを使わず実装されている。三つの理由でL3投入。(1)MCP権限ティアの実装リファレンス(最大の価値): 15ツールを5権限ティア(Schema / Read / Write / DDL / Advanced)に分割し、6つのセキュリティ層で制御する — MCPPermissionEngine(接続ごとに locked/read_only/read_write)、MCPSQLSanitizer(宣言ティアを逸脱するDDL/DMLを拒否)、MCPIdentifierValidator(識別子経由のSQLインジェクション防止)、MCPRowCountEstimator(変更が何行に影響するか事前プレビュー)、MCPRateLimiter(ツールごと・分あたりの呼び出し制限)、MCPApprovalGate(破壊的操作でユーザープロンプト)。全ツール呼び出しがティア・SQL・所要時間・行数・承認状態つきで活動ログに記録され、「昨夜エージェントが何をしたのか」を推測せずに答えられる。MCPToolプロトコルがティアを型レベルで持つ設計は、権限をコードの外に置かない実装として参照価値が高い。(2)L0-009の3軸AND判定が製品として実装されている: 原理として定めたリスクレベル別・フェーズ別・影響範囲別の3軸が、権限ティア・接続モード・行数推定に正確に対応する。見送ったOpenBotと同じ監査必須ゲートウェイ思想だが、Apache-2.0で外部依存なし・commit数が20倍以上と成熟度で上回る。(3)実務ツールとしての候補: SSHトンネル(swift-nio-ssh、password/秘密鍵/パスフレーズ付き鍵)とmTLS(Teleport形式)によりVPS上のPostgreSQL 5433へ安全に接続でき、Windows版も存在する。AIチャットはOllama対応でローカルLLMが使え、プロンプトはプロバイダへ直送されGridexは一切中継しない(APIキーはOSキーチェーン保管、クラウド同期・テレメトリ・プロキシなし)。営業リストパイプラインの leads / lead_changes テーブルをClaude Codeから権限制御付きで操作する経路にもなりうる。TablePlus/Navicat/DataGrip/DBeaverからの接続情報インポートにも対応。
+- **注記:** purpose:reference-primary(MCP権限モデル)+ purpose:candidate-adoption(DB操作ツール)。DBクライアント/IDE系は本ナレッジベース初のエントリ。投入価値の中心はDBツールとしてではなくMCP権限ティアと監査ログの実装リファレンスであり、その旨をナレッジ本体冒頭に明記した。L0-009(自律実行の責任境界)との対応表を独立セクションとして収録: 軸1リスクレベル別→権限ティア(Schema/Readは可逆、Write/DDLは不可逆)、軸2フェーズ別→接続ごとのモード設定(locked/read_only/read_write)、軸3影響範囲別→MCPRowCountEstimatorによる変更行数の事前提示、人間承認地点→MCPApprovalGate、事後検証可能性→活動ログ。同セッションで見送った openbot-copilotkit との比較表も収録し、GridexがApache-2.0で外部依存なし・ベンダーロックなし・commit 321(OpenBotは15)である点から、L0-009の実装リファレンスとしてはGridexを優先すべきと明記した。⚠️重要な留保: バージョンが v0.0.11 でありstar 1.5kはTrendshift経由の急上昇によるもので成熟度を示さない、watchers 3、著作権者が単独個人(Thinh Nguyen)でbus factorが極めて低い、本番DBにread_writeモードで接続するのは時期尚早、デスクトップアプリでありVPSに置くサーバー基盤ではない、という5点をリスクとして明記。重複チェック実施済み、既存エントリなし。L2c候補メモ「エージェントにDBを触らせる際の権限階層設計」を記録: Gridex(5ティア+6セキュリティ層+監査ログ)、unkey-unkeyed-l3(APIキースコープ)、openbot-copilotkit(CELポリシー+fail closed)で権限制御の3実装が揃うため、ナレッジMCPサービスの権限モデル確定段階で切り出しを判断する。
+- **関連:** L0-009(自律実行の責任境界) / openbot-copilotkit(見送り記録) / unkey-unkeyed-l3 / mcp-apps-ext-apps-l3 / 営業リスト自動生成パイプライン(プロジェクト) / LightRAG自社基盤 / milvus-l3
+- **再検討条件:**
+  1. ナレッジMCPサービスの権限モデルを確定する段階に入った時点(Gridex 5ティア + Unkey APIキースコープ + OpenBot CELポリシーの3実装を突き合わせてL2c化を判断)
+  2. LightRAG MCPサーバーに書き込み系ツールを追加する判断をした時点(read_only/read_write の分離、行数推定、承認ゲート、監査ログの設計を参照)
+  3. Gridexが v0.1 以降に到達した時点(v0.0.11 は本番DB接続には早すぎるため、バージョン進行を待って実務採用を再評価)
+  4. contributor数が増え単独個人依存が解消された時点(現在 watchers 3、著作権者1名でbus factorが極めて低い)
+  5. VPS上のPostgreSQL(5433)へのGUI接続が必要になった時点(SSHトンネル + mTLS 対応、Windows版あり)
+  6. 営業リストパイプラインの leads / lead_changes を運用フェーズで扱う段階(Claude Codeから権限制御付きでDB操作する経路として検討)
+  7. DDLティア・Advancedティアのツールが実装された時点(現在は将来対応の枠のみ)
