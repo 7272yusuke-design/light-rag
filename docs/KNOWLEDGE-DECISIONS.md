@@ -2080,3 +2080,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. Difyのライセンス条件が改定された時点（producerが条件を変更できる旨がLICENSEに明記されているため、メジャーバージョン更新時は必ず再確認）
   2. 顧客案件でDify導入を検討し、マルチテナント構成が必要と判明した時点（business@dify.ai への商用ライセンス問い合わせが前提になる）
   3. Flowise等の代替と実比較を行い、選定基準がL2候補として抽出できた時点
+
+---
+
+## 2026-09-17: openshorts-l3 — L3投入
+
+- **対象:** https://github.com/mutonby/openshorts
+- **判断:** L3投入(openshorts-l3)
+- **根拠:** ショート動画の運用代行サービス基盤として投入。KBの動画系エントリ（OpenCut=エディタ、OpenMontage=制作オーケストレーション、content-cascade=テキスト転用、Remotion=生成ライブラリ、Postiz=配信）はいずれも役割が異なり、切り抜き〜UGC生成〜多プラットフォーム予約投稿までを1パッケージにしたサービス化前提の構成はKB内に存在しなかった。MIT、Docker Compose一発、Gemini+faster-whisper+YOLOv8/MediaPipeの顔追従リフレーム、fal.ai経由のAI俳優UGC生成（低コスト約$0.65/本）、Upload-Post経由のSNS配信までを内包。棲み分け表をエントリ内に記載。
+- **注記:** purpose:product。本家は mutonby/openshorts（328 commits）。Hyperkind/openshorts 等のフォークが多数存在するため参照時は本家を確認すること。重要な制約：生成物とアバターがパブリックS3のSEOギャラリー（/gallery、/video/{id}、JSON-LD付き）に保存される既定動作があるため、顧客案件では必ず無効化またはプライベート化する。他に権利処理（顧客自身が権利を持つ動画に限定）、AI生成である旨の表示要否、GPU前提のサイジング、外部API4系統への依存を記載。参考価格帯（外部動画の想定値・米国基準）月額約$400（月4エピソード）。
+- **関連:** opencut-l3, openmontage-l3, postiz-l3, remotion-l3, skill-content-cascade-l3
+- **再検討条件:**
+  1. 日本語の字幕体裁・ElevenLabs日本語音声・日本語トランスクリプトからのバイラル箇所抽出精度を実測し、顧客納品水準に達しないと判明した時点
+  2. 既存のPostiz運用構成と併用する案件が発生し、生成層と配信層の分担方針がL2候補として抽出できた時点
+  3. Gemini/fal.ai/ElevenLabs/Upload-Postのいずれかで価格改定または提供終了が発表された時点
