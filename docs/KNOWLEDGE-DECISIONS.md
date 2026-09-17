@@ -2038,3 +2038,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   5. VPS上のPostgreSQL(5433)へのGUI接続が必要になった時点(SSHトンネル + mTLS 対応、Windows版あり)
   6. 営業リストパイプラインの leads / lead_changes を運用フェーズで扱う段階(Claude Codeから権限制御付きでDB操作する経路として検討)
   7. DDLティア・Advancedティアのツールが実装された時点(現在は将来対応の枠のみ)
+
+---
+
+## 2026-09-17: openseo-l3 — L3投入
+
+- **対象:** https://github.com/every-app/open-seo
+- **判断:** L3投入(openseo-l3)
+- **根拠:** 顧客提供向けSEO/GEO診断サービスの基盤として投入。KB内の geo-seo-claude・ai-seo はスキル層のみでデータソースを持たず、SEO指標データ層が空白だった。OpenSEOはDataForSEOをバックエンドに、キーワード・順位・被リンク・サイト監査・AI可視性を提供し、MCPサーバーとAgent Skillsを標準搭載（Claude Code/OpenClaw/Hermesから直接呼出可）。MIT、star 19.1k/556 commitsで成熟度も十分。制約としてDataForSEO単一依存、日本語ローカルSEOのカバレッジ未実測、従量課金の予算超過リスク、Cloudflare経路推奨（Docker経路は公式が非推奨寄り）を記載。
+- **注記:** purpose:product（顧客提供向け記録）。自社VPS環境での同居可否は評価対象外とする方針をYusukeが明示（2026-09-18）。参考価格帯（外部動画の想定値・米国基準）初期診断$499/月次$199は日本市場向けに再設計前提。
+- **関連:** geo-seo-claude-l3, ai-seo, treg-people-data-l3
+- **再検討条件:**
+  1. 日本語キーワード・日本のSERPで実データ検証を行い、カバレッジが顧客提案水準に達しないと判明した時点
+  2. DataForSEOの価格改定または提供終了が発表された時点
+  3. GEO診断SaaS案件でOpenSEOを実導入し、運用知見がL2候補として抽出できた時点
