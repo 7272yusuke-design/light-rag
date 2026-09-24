@@ -2152,3 +2152,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - **再検討条件:**
   1. SNSリサーチ自動化の顧客案件が発生した時
   2. jev-socialがデモを脱し、リリース・継続開発が確認された時
+
+---
+
+## 2026-09-25: socai-l3 — 見送り
+
+- **対象:** https://github.com/socai-io/socai
+- **判断:** 見送り(socai-l3)
+- **根拠:** 成熟度は一定水準（star 203 / fork 23 / commit 361）だが、動作はmacOS/Windowsのローカル既存Chrome前提でKVM2同居不可（remoteモードはベータ・有料）。LinkedIn/Instagramの自動閲覧は利用規約抵触リスクがあり、中小企業向け提供に組み込みにくい。現時点で自社スタックの需要なし。
+- **注記:** Yusuke判断による見送り（2026-09-25）。CLIはClaude Code/Codex向け設計、.claude/skills同梱、読み取り専用設計。
+- **関連:** jev-social-l3（同日見送り）
+- **再検討条件:**
+  1. SNS（Instagram/TikTok/LinkedIn/小紅書）リサーチを含む顧客案件が発生した時
+  2. クラウドブラウザ（remoteモード）が正式版になりVPS/n8nから呼べるようになった時
+  3. 各プラットフォームの規約上の扱いが明確化した時
