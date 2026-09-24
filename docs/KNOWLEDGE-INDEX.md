@@ -1,10 +1,10 @@
 <!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全247件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全265件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-08-01
-> 整合性: doc_full=247 / doc_status=247 / processed=247 (未処理=0)
-> グラフ側 (entities/relations): 248/248
+> 最終更新: 2026-09-24
+> 整合性: doc_full=265 / doc_status=265 / processed=265 (未処理=0)
+> グラフ側 (entities/relations): 266/266
 
 ## レイヤー別件数
 
@@ -13,8 +13,8 @@
 | L0 | 1 |
 | L1 | 3 |
 | L2 | 20 |
-| L2c | 31 |
-| L3 | 192 |
+| L2c | 32 |
+| L3 | 209 |
 
 
 ## L0
@@ -70,6 +70,7 @@
 - `llm-council-pattern-l2c_lightrag.txt`
 - `llm-token-reduction-proxy-l2c_lightrag.txt`
 - `miniclaw-sandbox-pattern-l2c_lightrag.txt`
+- `multi-provider-data-routing-l2c_lightrag.txt`
 - `multi-tool-skills-sharing-l2c_lightrag.txt`
 - `n8n-self-improving-workflow-agent-l2c_lightrag.txt`
 - `openai-compat-abstraction-l2c_lightrag.txt`
@@ -86,10 +87,12 @@
 
 ## L3
 
+- `a2a-protocol-l3_lightrag.txt`
 - `agency-agents-msitarzewski-l3_lightrag.txt`
 - `agent-zero-l3_lightrag.txt`
 - `agile-studio-l3_lightrag.txt`
 - `agno-l3_lightrag.txt`
+- `ag-ui-protocol-l3_lightrag.txt`
 - `andrej-karpathy-skills-l3_lightrag.txt`
 - `anthropic-claude-code-l3_lightrag.txt`
 - `anthropic-cookbook-l3_lightrag.txt`
@@ -102,6 +105,7 @@
 - `awesome-compose-l3_lightrag.txt`
 - `awesome-design-md-l3_lightrag.txt`
 - `better-auth-l3_lightrag.txt`
+- `book-to-skill-l3_lightrag.txt`
 - `browser-use-l3_lightrag.txt`
 - `buzz-block-l3_lightrag.txt`
 - `cal-diy-l3_lightrag.txt`
@@ -128,6 +132,7 @@
 - `crewai-l3_lightrag.txt`
 - `daymade-skills-l3_lightrag.txt`
 - `deeptutor-l3_lightrag.txt`
+- `dify-l3_lightrag.txt`
 - `docmost-l3_lightrag.txt`
 - `drizzle-orm-l3_lightrag.txt`
 - `dspy-l3_lightrag.txt`
@@ -135,6 +140,7 @@
 - `everything-claude-code-l3_lightrag.txt`
 - `fabric-danielmiessler-l3_lightrag.txt`
 - `ffmpeg-l3_lightrag.txt`
+- `figranium-l3_lightrag.txt`
 - `firecrawl-l3_lightrag.txt`
 - `five-whys-skill-l3_lightrag.txt`
 - `flowise-l3_lightrag.txt`
@@ -149,6 +155,7 @@
 - `google-workspace-cli-l3_lightrag.txt`
 - `goose-l3_lightrag.txt`
 - `graphify-l3_lightrag.txt`
+- `gridex-l3_lightrag.txt`
 - `gstack-garrytan-l3_lightrag.txt`
 - `hermes-agent-l3_lightrag.txt`
 - `hono-l3_lightrag.txt`
@@ -163,6 +170,7 @@
 - `langgraph-l3_lightrag.txt`
 - `last30days-skill-l3_lightrag.txt`
 - `letta-code-l3_lightrag.txt`
+- `lightpanda-browser-l3_lightrag.txt`
 - `lightrag-framework-l3_lightrag.txt`
 - `listmonk-l3_lightrag.txt`
 - `livekit-agents-l3_lightrag.txt`
@@ -172,11 +180,13 @@
 - `mcollina-nodejs-skills-l3_lightrag.txt`
 - `mcp2cli-l3_lightrag.txt`
 - `mcp-agent-lastmile-l3_lightrag.txt`
+- `mcp-apps-ext-apps-l3_lightrag.txt`
 - `mcp-devtools-sammcj-l3_lightrag.txt`
 - `mcp-servers-l3_lightrag.txt`
 - `mcpsnoop-l3_lightrag.txt`
 - `meetily-l3_lightrag.txt`
 - `microsoft-graphrag-l3_lightrag.txt`
+- `milvus-l3_lightrag.txt`
 - `multica-l3_lightrag.txt`
 - `mvp-builder-l3_lightrag.txt`
 - `n8n-as-code-l3_lightrag.txt`
@@ -194,9 +204,13 @@
 - `open-interpreter-l3_lightrag.txt`
 - `openllmetry-l3_lightrag.txt`
 - `openmanus-foundationagents-l3_lightrag.txt`
+- `openmontage-calesthio-l3_lightrag.txt`
 - `open-multi-agent-l3_lightrag.txt`
+- `openseo-l3_lightrag.txt`
+- `openshorts-l3_lightrag.txt`
 - `openspec-spec-driven-dev-l3_lightrag.txt`
 - `openswarm-vrsen-l3_lightrag.txt`
+- `openviking-l3_lightrag.txt`
 - `openzeppelin-contracts-l3_lightrag.txt`
 - `orca-l3_lightrag.txt`
 - `paperclip-l3_lightrag.txt`
@@ -213,11 +227,13 @@
 - `postiz-l3_lightrag.txt`
 - `ppt-master-l3_lightrag.txt`
 - `prd-skill-johnnychauvet-l3_lightrag.txt`
+- `presenton-l3_lightrag.txt`
 - `qdrant-l3_lightrag.txt`
 - `qmd-l3_lightrag.txt`
 - `quant-mind-l3_lightrag.txt`
 - `rag-anything-l3_lightrag.txt`
 - `ragas-explodinggradients-l3_lightrag.txt`
+- `ragflow-infiniflow-l3_lightrag.txt`
 - `reflex-l3_lightrag.txt`
 - `remotion-l3_lightrag.txt`
 - `resend-react-email-l3_lightrag.txt`
@@ -226,6 +242,7 @@
 - `ruflo-l3_lightrag.txt`
 - `scrapling-l3_lightrag.txt`
 - `shadcn-ui-l3_lightrag.txt`
+- `shannon-keygraph-l3_lightrag.txt`
 - `skill-ai-seo-l3_lightrag.txt`
 - `skill-content-cascade-l3_lightrag.txt`
 - `skill-creator-l3_lightrag.txt`
@@ -258,6 +275,7 @@
 - `syncthing-l3_lightrag.txt`
 - `taste-skill-l3_lightrag.txt`
 - `tradingagents-tauric-research-l3_lightrag.txt`
+- `treg-people-data-l3_lightrag.txt`
 - `trellis-mindfold-l3_lightrag.txt`
 - `trigger-dev-l3_lightrag.txt`
 - `turborepo-l3_lightrag.txt`
