@@ -2124,3 +2124,18 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   2. 自社鍵優先ルーティングが実際に費用低減として機能したことが確認できた時点
   3. プロバイダ間のデータ差異が業務上許容範囲に収まることが確認できた時点
   4. 日本市場のデータで第1段（search）のヒット率が実用水準に達しないと判明した時点（越境・外資系案件限定のパターンとして範囲を狭めて記述し直す）
+
+---
+
+## 2026-09-24: openmontage-calesthio-l3（エントリ更新） — L3投入
+
+- **対象:** https://github.com/calesthio/OpenMontage
+- **判断:** L3投入(openmontage-calesthio-l3（エントリ更新）)
+- **根拠:** 既存エントリ（2026-08-08）の更新。規模の変化（star 36.9k→56.1k、fork 4.4k→7.0k、commit 276→448、ツール52→100+、スキル400〜500→700+、プロバイダ60+）と、参照動画から制作計画を起こす入口・キャラクターアニメーションパイプライン・新規プロバイダ群（Kling公式/Seedance Ark/Atlas Cloud/Gemini Omni/Grok等）を反映。顧客提供向け記録の方針に合わせ purpose:product を追加し「顧客提供時の位置づけ」セクションを新設：AGPL-3.0の線引き（完成動画の納品・自社内利用はOK、改変版を顧客がネットワーク越しに操作するSaaS化はAGPL第13条のソース開示義務により実質不可）、Backlot承認ゲートを顧客確認プロセスとして転用する型、OpenShortsとの棲み分け表（制作スタジオ型 vs 運用代行型）。既存のエージェント設計参照実装としての本文（maker≠checker、7次元スコアリング、予算統制、承認ゲート強制等）は全て保持。
+- **注記:** psql手順で更新：pg_dump（pre-om-os-update-20260924-0921.sql、415MB）→ 6テーブル削除（7/7/2/2/2/2件、カウントと一致）→ upload_document。OpenShortsの誤記修正と同一トランザクションで実施。status:hype-ahead-of-maturity は維持（commit増だがリリースは依然ゼロ）。「Hostinger KVM2では実行不可」は「GPUなし環境では実行不可」に一般化。本作業からVPSコマンド操作はn8n-yusukeのSSHターミナルワークフロー（htnREXF9uUGCsYWV）経由で実施。
+- **関連:** openshorts-l3, multi-provider-data-routing-l2c, three-role-agent-development-loop-l2, first-principles-of-agent-development-l0
+- **再検討条件:**
+  1. 初の正式リリース（タグ付きバージョン）が出た時点（status:hype-ahead-of-maturity の解除判断）
+  2. ライセンスがAGPL-3.0から変更された時点
+  3. Ollama/LM Studioによるローカル LLM 対応が実装された時点
+  4. 顧客向け動画制作案件でOpenMontageとOpenShortsの実比較を行い、使い分け基準がL2候補として抽出できた時点
