@@ -4,7 +4,7 @@
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
 > 最終更新: 2026-09-24
 > 整合性: doc_full=265 / doc_status=265 / processed=265 (未処理=0)
-> グラフ側 (entities/relations): 266/266
+> グラフ側 (entities/relations): 265/265
 
 ## レイヤー別件数
 
