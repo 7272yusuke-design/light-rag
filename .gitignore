@@ -35,3 +35,4 @@ data/
 # Backup variants (timestamp/session suffixed)
 *.bak-*
 *.save
+.env.bak*
