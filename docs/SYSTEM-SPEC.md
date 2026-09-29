@@ -39,7 +39,7 @@ LightRAGを「外部脳」として運用。GitHub OSS・Claude Code SKILL・技
 | LightRAG本体 | Docker | 9621 | network_mode: host |
 | データベース | PostgreSQL + pgvector:pg16 | 5433 | ベクトル・グラフ・チャンク全保存 |
 | 埋め込みモデル | Ollama + nomic-embed-text | 11434 | 768次元 / systemd管理 |
-| LLM | OpenRouter → claude-sonnet-4.6 | 外部API | ナレッジ投入・合成に使用 |
+| LLM | OpenRouter → claude-sonnet-5.5（2026-09-29に4.6から切替、旧設定 .env.bak_sonnet46_20260929） | 外部API | ナレッジ投入・合成に使用 |
 | MCP公開 | Cloudflare Named Tunnel | 9622 | mcp.7272yusuke.cloud/mcp |
 | テキスト化 | Repomix (npm global) | — | GitHubリポジトリのテキスト化 |
 | 別プロジェクト | OpenClaw | 46819 | 干渉注意 |
