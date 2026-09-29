@@ -51,7 +51,7 @@ LightRAGを「外部脳」として運用。GitHub OSS・Claude Code SKILL・技
 - Services: `mcp-lightrag.service` + `cloudflared-mcp.service`
 
 ### WebUI認証
-- URL: `http://76.13.187.66:9621`
+- URL: `https://rag.7272yusuke.cloud/webui/`（Cloudflare Tunnel経由・Cloudflare Accessでログイン保護。LightRAGは127.0.0.1:9621のみで待受。旧 `http://76.13.187.66:9621` は廃止）
 - User: `admin` / Pass: `LightRag@2026!`
 - .env: git管理外 / VPS上 `/docker/lightrag/.env`
 

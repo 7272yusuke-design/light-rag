@@ -4,7 +4,7 @@
 外部エージェント（OpenClaw等）からLightRAG APIを利用する際のルール。
 
 ## 認証
-- エンドポイント: http://localhost:9621 (VPS内部) / http://76.13.187.66:9621 (外部)
+- エンドポイント: http://localhost:9621 (VPS内部) / https://rag.7272yusuke.cloud (外部。Cloudflare Access保護のためAccess認証が別途必要。旧 http://76.13.187.66:9621 は廃止)
 - 認証方式: JWT Bearer Token
 - トークン取得: POST /login (username + password)
 - トークン有効期限: 取得後都度利用を推奨（キャッシュする場合は1時間以内に再取得）
