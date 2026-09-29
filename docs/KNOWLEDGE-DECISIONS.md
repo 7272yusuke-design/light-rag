@@ -2194,3 +2194,16 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. 顧客案件でLINE問い合わせ窓口を実装する時（L2c: AgentBot＋n8n＋LightRAG構成の候補化）
   2. Captain がCommunity Editionに開放された時
   3. LINE公式アカウントのメッセージ課金との関係が判明した時
+
+---
+
+## 2026-09-29: activepieces-l3 — L3投入
+
+- **対象:** https://github.com/activepieces/activepieces
+- **判断:** L3投入(activepieces-l3)
+- **根拠:** 成熟度十分（star 24.8k / fork 4.3k / YC出身 / 0.92.0）。CEはMITで、n8n（Sustainable Use License）では難しい再販・組み込み案件の代替候補になる。全pieceがそのままMCPツールになる設計で、フロー資産とAIエージェントの道具を一元化できる点が参照価値。PGLite＋インメモリRedisで単体起動でき軽量。
+- **注記:** Yusuke承認（2026-09-29）。動画紹介リポ7本の一括評価から。事業の主軸はn8nのまま、比較・代替候補として投入。
+- **関連:** n8n（L3）、n8n-as-code（L3）、Composio（L3）、MCP Servers（L3）、Kestra（L3）、L0-009
+- **再検討条件:**
+  1. 顧客向けに自動化基盤をホスティング・再販する案件が発生した時
+  2. n8nのライセンス条件が変わった時
