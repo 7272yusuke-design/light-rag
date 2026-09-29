@@ -2180,3 +2180,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. 顧客案件で業務DB接続が必要になり実運用する時（L2c化の検討）
   2. ベクトル検索・埋め込み機能が追加された時
   3. API認証やシークレット管理の方式が変わった時
+
+---
+
+## 2026-09-29: chatwoot-l3 — L3投入
+
+- **対象:** https://github.com/chatwoot/chatwoot
+- **判断:** L3投入(chatwoot-l3)
+- **根拠:** 成熟度十分（star 37.3k / fork 9.1k / 2019年〜 / v4.18.0）。CEはMIT。LINEを含むオムニチャネル受信箱で日本の中小企業向け問い合わせ窓口に直結。AgentBot（pending→open引き継ぎ）でn8n・LightRAG・Claudeを接続できる。KVM2同居は小規模検証のみ可（公式最小4GB RAM／4コア推奨）。
+- **注記:** Yusuke承認（2026-09-29）。動画紹介リポ7本の一括評価から。Captainはセルフホストでも有料プラン前提のため、CEではAgentBot＋n8nで AI一次対応を組む構成を本命として記載。
+- **関連:** n8n（L3）、LightRAG（L3）、Twenty（L3）、AstrBot（L3）、Durable Execution + HITL承認フロー（L2）、L0-009
+- **再検討条件:**
+  1. 顧客案件でLINE問い合わせ窓口を実装する時（L2c: AgentBot＋n8n＋LightRAG構成の候補化）
+  2. Captain がCommunity Editionに開放された時
+  3. LINE公式アカウントのメッセージ課金との関係が判明した時
