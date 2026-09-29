@@ -2166,3 +2166,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. SNS（Instagram/TikTok/LinkedIn/小紅書）リサーチを含む顧客案件が発生した時
   2. クラウドブラウザ（remoteモード）が正式版になりVPS/n8nから呼べるようになった時
   3. 各プラットフォームの規約上の扱いが明確化した時
+
+---
+
+## 2026-09-29: db-mcp-server-freepeak-l3 — L3投入
+
+- **対象:** https://github.com/FreePeak/db-mcp-server
+- **判断:** L3投入(db-mcp-server-freepeak-l3)
+- **根拠:** 成熟度十分（star 431 / fork 69 / commit 275 / open issue 4 / MIT / CIあり）。Go単一バイナリでKVM2同居可。read_onlyの3層防御（分類器・DBエンジン・最小権限ユーザー、default deny）、max_rows、列マスキング、JSONL監査ログ、Claude向けunified-tools（約1.5kトークン固定）を備え、中小企業の業務DBをエージェントに安全につなぐ実務部品かつガードレール設計の参照実装として価値が高い。自社PostgreSQL(5433)の読み取り専用点検経路にも転用可能。
+- **注記:** Yusuke承認（2026-09-29）。SQL×ベクトル×KG統合における位置付け（保存層統合 vs エージェント層連合の後者のSQL部品）を本文に記載。
+- **関連:** Gridex（L3）、L0-009（自律実行の責任境界）、Cognee（L3）、LightRAG（L3）、Supabase（L3）、スキーマ駆動CLI + Lazy Tool Discovery（L2c）、プロバイダルーティング + 二段階探索（L2c）
+- **再検討条件:**
+  1. 顧客案件で業務DB接続が必要になり実運用する時（L2c化の検討）
+  2. ベクトル検索・埋め込み機能が追加された時
+  3. API認証やシークレット管理の方式が変わった時
