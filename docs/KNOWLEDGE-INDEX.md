@@ -1,10 +1,10 @@
 <!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全265件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全269件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-09-24
-> 整合性: doc_full=265 / doc_status=265 / processed=265 (未処理=0)
-> グラフ側 (entities/relations): 265/265
+> 最終更新: 2026-09-30
+> 整合性: doc_full=269 / doc_status=269 / processed=269 (未処理=0)
+> グラフ側 (entities/relations): 269/269
 
 ## レイヤー別件数
 
@@ -14,7 +14,7 @@
 | L1 | 3 |
 | L2 | 20 |
 | L2c | 32 |
-| L3 | 209 |
+| L3 | 213 |
 
 
 ## L0
@@ -88,6 +88,7 @@
 ## L3
 
 - `a2a-protocol-l3_lightrag.txt`
+- `activepieces-l3_lightrag.txt`
 - `agency-agents-msitarzewski-l3_lightrag.txt`
 - `agent-zero-l3_lightrag.txt`
 - `agile-studio-l3_lightrag.txt`
@@ -111,6 +112,7 @@
 - `cal-diy-l3_lightrag.txt`
 - `caveman-l3_lightrag.txt`
 - `ccxt-l3_lightrag.txt`
+- `chatwoot-l3_lightrag.txt`
 - `chroma-l3_lightrag.txt`
 - `claude-agent-sdk-python-l3_lightrag.txt`
 - `claude-code-action-l3_lightrag.txt`
@@ -131,6 +133,7 @@
 - `crawl4ai-l3_lightrag.txt`
 - `crewai-l3_lightrag.txt`
 - `daymade-skills-l3_lightrag.txt`
+- `db-mcp-server-freepeak-l3_lightrag.txt`
 - `deeptutor-l3_lightrag.txt`
 - `dify-l3_lightrag.txt`
 - `docmost-l3_lightrag.txt`
@@ -160,6 +163,7 @@
 - `hermes-agent-l3_lightrag.txt`
 - `hono-l3_lightrag.txt`
 - `hoppscotch-l3_lightrag.txt`
+- `hyperframes-heygen-l3_lightrag.txt`
 - `i-have-adhd-l3_lightrag.txt`
 - `impeccable-l3_lightrag.txt`
 - `inngest-l3_lightrag.txt`
