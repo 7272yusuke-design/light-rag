@@ -2261,3 +2261,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - **再検討条件:**
   1. 鮮度監視で再度ライセンス・移転の指摘が出た時
   2. odysseus・openclaudeを実案件で使う検討をする時（ライセンス再確認必須）
+
+---
+
+## 2026-09-30: cli-anything-web-l3（＋understand-anything-l3・cli-anything-l3更新） — L3投入
+
+- **対象:** https://github.com/ItamarZand88/CLI-Anything-WEB
+- **判断:** L3投入(cli-anything-web-l3（＋understand-anything-l3・cli-anything-l3更新）)
+- **根拠:** [新規] CLI-Anything-WEB（ItamarZand88、star 230、MIT、個人開発、作者が実験的と明記）: Webアプリの通信を記録してPython CLIを自動生成。HKUDS CLI-Anythingの Web版で、API非提供の業務Webシステムをn8n・エージェントから操作可能にする手段として参照価値が高い。ボット対策回避を含むため規約リスクと保守前提を本文に明記。
+[更新] understand-anything-l3: Lum1104→Egonex-AIへ移転（リポジトリID同一を確認）、star 14.7k→84.7k。cli-anything-l3: ライセンスがApache-2.0に一本化（要確認事項を解決）、star 20.5k→51.0k。
+- **注記:** Yusuke承認（2026-09-30）。既存2件はkb-ops delete（doc 2 / chunks 9 / vdb 9 / entities 2 / relations 2）→再投入。バックアップ: /docker/lightrag/backups/kbops-delete-20260930-034509.sql。改訂前後: /root/kb-update-20260930b/orig・new。
+- **関連:** cli-anything-l3, understand-anything-l3, mcp2cli（L3）, playwright-cli（L3）, n8n（L3）, socai-l3（見送り）, L0-009
+- **再検討条件:**
+  1. 顧客案件でAPI非提供の業務Webシステム連携が必要になった時（L2c化の検討）
+  2. CLI-Anything-WEBの保守が止まった、または大規模化した時
