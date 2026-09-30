@@ -1,10 +1,10 @@
 <!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全269件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全270件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
 > 最終更新: 2026-09-30
-> 整合性: doc_full=269 / doc_status=269 / processed=269 (未処理=0)
-> グラフ側 (entities/relations): 269/269
+> 整合性: doc_full=270 / doc_status=270 / processed=270 (未処理=0)
+> グラフ側 (entities/relations): 270/270
 
 ## レイヤー別件数
 
@@ -14,7 +14,7 @@
 | L1 | 3 |
 | L2 | 20 |
 | L2c | 32 |
-| L3 | 213 |
+| L3 | 214 |
 
 
 ## L0
@@ -122,6 +122,7 @@
 - `claude-octopus-l3_lightrag.txt`
 - `claude-video-l3_lightrag.txt`
 - `cli-anything-l3_lightrag.txt`
+- `cli-anything-web-l3_lightrag.txt`
 - `codegraph-l3_lightrag.txt`
 - `codex-plugin-cc-l3_lightrag.txt`
 - `cognee-l3_lightrag.txt`
