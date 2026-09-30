@@ -2245,3 +2245,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - **再検討条件:**
   1. 顧客案件で電子契約をワークフローに組み込み、SaaS利用が制約される場合
   2. 自社サービスの利用規約同意・契約締結を自動化する必要が出た時
+
+---
+
+## 2026-09-30: freshness-update-20260930（10件更新） — L3投入
+
+- **対象:** 複数（鮮度監視対応）
+- **判断:** L3投入(freshness-update-20260930（10件更新）)
+- **根拠:** 鮮度監視（Discord通知）の指摘10件に対応した既存エントリ更新。
+[評価に影響] odysseus: MIT→AGPL-3.0、odysseus-dev/odysseusへ移転（ライセンス変更の影響セクション追記）／ openclaude: Twigpine/openclaudeへ移転、LICENSEはAnthropicプロプライエタリ由来のNOTICEで投入時のMIT記載は誤り（業務利用は非推奨と明記）
+[制限緩和] deeptutor・open-interpreter: AGPL-3.0→Apache-2.0（open-interpreterはライセンス注意セクション書き換え、openinterpreter/openinterpreterへ改名）／ officecli: MIT→Apache-2.0 ／ arcads-claude-code: 明示なし→MIT
+[移転・改名のみ] anthropic-cookbook→anthropics/claude-cookbooks ／ antigravity-awesome-skills→sickn33/agentic-awesome-skills ／ everything-claude-code→affaan-m/ECC ／ mvp-builder→app-builders-club/mvp-builder（star 8→13、元々小規模）
+- **注記:** kb-ops delete（expected_counts: doc_status 10 / doc_full 10 / chunks 28 / vdb 28 / entities 10 / relations 10）→ 改訂版を再投入。バックアップ: /docker/lightrag/backups/kbops-delete-20260930-005031.sql（427MB）。改訂前後の本文: /root/kb-update-20260930/orig・new。ファイル名はすべて据え置き。各本文末尾に「更新履歴(鮮度監視対応)」を追記。
+- **関連:** anthropic-cookbook-l3, antigravity-awesome-skills-l3, arcads-claude-code-l3, deeptutor-l3, everything-claude-code-l3, mvp-builder-l3, odysseus-l3, officecli-l3, openclaude-l3, open-interpreter-l3
+- **再検討条件:**
+  1. 鮮度監視で再度ライセンス・移転の指摘が出た時
+  2. odysseus・openclaudeを実案件で使う検討をする時（ライセンス再確認必須）
