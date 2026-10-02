@@ -2288,3 +2288,17 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - **再検討条件:**
   1. リポジトリがアーカイブ化・更新停止した時
   2. 国内API（業務SaaS・行政）の一覧リポジトリが見つかった時（併記を検討）
+
+---
+
+## 2026-10-02: fast-jev-compaction-l3 — L3投入
+
+- **対象:** https://github.com/tamaratran/fast-jev-compaction
+- **判断:** L3投入(fast-jev-compaction-l3)
+- **根拠:** star 7,322（2週間）/ MIT。Claude Codeの圧縮を要約から判定（残す・短くする・消す、原文保持、失敗時は標準要約へフォールバック）に置き換える参考実装。ツール採用より設計思想の参照価値が高い。セッション内容が外部API（TypeSafe/Jev）に送信されるため顧客案件では使用不可、作成翌日以降更新なし・Issue 101件で成熟度は低いことを明記。ぶら下がり先: L0-006、agent-memory-design-principles（L2）。
+- **注記:** Yusuke承認（2026-10-02）。同時に評価した gridex は gridex-l3（2026-08-22投入）と同一リポジトリで変化なしのため対応不要（説明文上のWindows/Linux対応は次回更新時に確認）。
+- **関連:** L0-006、agent-memory-design-principles（L2）、jev-social-l3（見送り）、socai-l3（見送り）、mcp2cli（L3）、graphify-mcp2cli-token-reduction（L2c）、gridex-l3
+- **再検討条件:**
+  1. 開発が再開・継続した時
+  2. Jevをセルフホストできる、または送信内容を制御できるようになった時
+  3. Claude Code標準の圧縮方式が変わった時
