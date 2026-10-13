@@ -1,10 +1,10 @@
 <!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全270件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全274件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-09-30
-> 整合性: doc_full=270 / doc_status=270 / processed=270 (未処理=0)
-> グラフ側 (entities/relations): 270/270
+> 最終更新: 2026-10-13
+> 整合性: doc_full=274 / doc_status=274 / processed=274 (未処理=0)
+> グラフ側 (entities/relations): 274/274
 
 ## レイヤー別件数
 
@@ -13,8 +13,8 @@
 | L0 | 1 |
 | L1 | 3 |
 | L2 | 20 |
-| L2c | 32 |
-| L3 | 214 |
+| L2c | 33 |
+| L3 | 217 |
 
 
 ## L0
@@ -63,6 +63,7 @@
 - `dealcopilot-domain-patterns-l2c_lightrag.txt`
 - `document-to-sns-image-pipeline-l2c_lightrag.txt`
 - `domain-skillpack-productized-service-l2c_lightrag.txt`
+- `existing-software-agent-access-l2c_lightrag.txt`
 - `graphify-mcp2cli-token-reduction-l2c_lightrag.txt`
 - `instinct-based-continuous-learning-l2c_lightrag.txt`
 - `intent-driven-skill-resolution-l2c_lightrag.txt`
@@ -143,6 +144,7 @@
 - `ecc-l3_lightrag.txt`
 - `everything-claude-code-l3_lightrag.txt`
 - `fabric-danielmiessler-l3_lightrag.txt`
+- `fast-jev-compaction-l3_lightrag.txt`
 - `ffmpeg-l3_lightrag.txt`
 - `figranium-l3_lightrag.txt`
 - `firecrawl-l3_lightrag.txt`
@@ -233,12 +235,14 @@
 - `ppt-master-l3_lightrag.txt`
 - `prd-skill-johnnychauvet-l3_lightrag.txt`
 - `presenton-l3_lightrag.txt`
+- `public-apis-l3_lightrag.txt`
 - `qdrant-l3_lightrag.txt`
 - `qmd-l3_lightrag.txt`
 - `quant-mind-l3_lightrag.txt`
 - `rag-anything-l3_lightrag.txt`
 - `ragas-explodinggradients-l3_lightrag.txt`
 - `ragflow-infiniflow-l3_lightrag.txt`
+- `rea-reverse-engineer-anything-l3_lightrag.txt`
 - `reflex-l3_lightrag.txt`
 - `remotion-l3_lightrag.txt`
 - `resend-react-email-l3_lightrag.txt`
