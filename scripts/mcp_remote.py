@@ -174,8 +174,8 @@ def do_upload_document(args):
     # overwrite: delete existing
     if overwrite:
         try:
-            result = api_request("/documents")
-            items = result.get("statuses", {}).get("processed", [])
+            from lr_docs import list_docs  # GET /documents removed in LightRAG v1.5.7
+            items = list_docs(LIGHTRAG_URL, token)
             for doc in items:
                 if doc.get("file_path", "") == file_name:
                     req = urllib.request.Request(

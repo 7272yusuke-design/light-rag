@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "batch_level3.sh is deprecated: GET /documents was removed in LightRAG v1.5.7. Use the [LightRAG] kb-ops workflow." >&2; exit 1
 set -euo pipefail
 cd /docker/lightrag
 

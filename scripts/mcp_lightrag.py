@@ -62,12 +62,8 @@ def search_knowledge(query: str, mode: str = "hybrid", project: str = "") -> str
 def list_knowledge() -> str:
     """LightRAGに蓄秝されたドキュメント一覧を表示する。"""
     token = get_token()
-    req = urllib.request.Request(
-        f"{LIGHTRAG_URL}/documents",
-        headers={"Authorization": f"Bearer {token}"},
-    )
-    with urllib.request.urlopen(req) as resp:
-        docs = json.loads(resp.read())
+    from lr_docs import list_docs  # GET /documents removed in LightRAG v1.5.7
+    docs = list_docs(LIGHTRAG_URL, token)
     if isinstance(docs, list):
         lines = []
         for d in docs[:50]:

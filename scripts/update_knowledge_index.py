@@ -9,9 +9,9 @@ data = urllib.parse.urlencode({"username": "admin", "password": "LightRag@2026!"
 token = json.loads(urllib.request.urlopen(f"{BASE}/login", data).read())["access_token"]
 
 # ドキュメント一覧取得
-req = urllib.request.Request(f"{BASE}/documents", headers={"Authorization": f"Bearer {token}"})
-raw = json.loads(urllib.request.urlopen(req).read())
-doc_list = raw.get("statuses", {}).get("processed", [])
+import sys; sys.path.insert(0, "/docker/lightrag/scripts")
+from lr_docs import list_docs  # GET /documents removed in LightRAG v1.5.7
+doc_list = list_docs(BASE, token)
 
 def parse_content(text):
     """content_summaryからメタ情報を抽出"""
