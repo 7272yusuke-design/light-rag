@@ -2302,3 +2302,16 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   1. 開発が再開・継続した時
   2. Jevをセルフホストできる、または送信内容を制御できるようになった時
   3. Claude Code標準の圧縮方式が変わった時
+
+---
+
+## 2026-10-13: rea-reverse-engineer-anything-l3（＋existing-software-agent-access-l2c） — L3投入
+
+- **対象:** https://github.com/morluto/rea
+- **判断:** L3投入(rea-reverse-engineer-anything-l3（＋existing-software-agent-access-l2c）)
+- **根拠:** REA: star 1,712 / MIT / commit 827 / 活発（2026-10-03リリース）。ソースのないネイティブ・Web・Electronアプリをエージェントに解析させ、推測と観察を区別した根拠記録を残す設計に参照価値。EULAによるリバースエンジニアリング禁止・コード流用禁止・ローカルPC前提を明記。L2c: 「ソースの有無 × 操作したいか理解したいか」の4象限で4つのL3を使い分ける選択パターン。公式API・DB直結を先に検討する判断フローを含む。
+- **注記:** Yusuke承認（2026-10-13）。LightRAG v1.5.7 へのアップデート直後の投入テストを兼ねて実施。同時に「ぶら下がり先」ルールにより L2c を新設（構成L3: cli-anything / cli-anything-web / understand-anything / rea）。
+- **関連:** cli-anything-l3, cli-anything-web-l3, understand-anything-l3, public-apis-l3, db-mcp-server-freepeak-l3, openmontage-l3, L0-009
+- **再検討条件:**
+  1. OpenMontage連携でCLI-Anything系を実装した時（L2c→L2昇格の判断）
+  2. REAのWindows対応・モバイル対応が正式化した時
