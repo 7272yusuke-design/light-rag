@@ -2,7 +2,7 @@
 # KNOWLEDGE-INDEX (LightRAG 蓄積済み 全274件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-10-13
+> 最終更新: 2026-10-14
 > 整合性: doc_full=274 / doc_status=274 / processed=274 (未処理=0)
 > グラフ側 (entities/relations): 274/274
 
