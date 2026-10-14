@@ -164,6 +164,15 @@ SELECT COUNT(*) FROM public.lightrag_doc_status;
 
 ---
 
+### INC-005: エンティティ統合の失敗と表記ゆれ一括統合（2026-10-14）
+- **症状**: `/graph/entities/merge` が Ollama の `input length exceeds the context length`（HTTP 400）で失敗。n8n / N8n / N8N などの表記ゆれが統合できなかった
+- **原因**: 統合時に関係線の説明文が連結されて再埋め込みされ、nomic-embed-text の文脈長（2048トークン、モデル側の上限で拡張不可）を超えた
+- **対策**: `.env` に `EMBEDDING_TOKEN_LIMIT=1200` を追加（v1.5.7 の安全な切り詰め機能）。以後、統合は正常に完了する
+- **APIの癖（v1.5.7）**: `/graph/entity/edit` と `/graph/entities/merge` は、成功していても HTTP 500 を返すことがある。成否はステータスコードではなく `GET /graph/entity/exists?name=` やサーバーログ、graphml で判定する
+- **一括統合の実績**: 1回目800組・2回目55組を統合（失敗0）。ノード 11,853→10,660、関係線 20,339→19,585。スクリプトは `/root/dup_merge_batch.py`（再実行時は完了分を飛ばす）。統合前バックアップは `backups/graph-before-dedup*-*.graphml` と `backups/pre-dedup*-*.sql`
+- **意図して残した組**: `Claude` と `.claude`、`Codex` と `.codex` など、製品名と設定フォルダ・コマンド名のように意味が違うもの
+- **再発防止**: DATA-SCHEMA.md「エンティティ純度の運用ルール」4・5（関連エントリは名前で書く、表記の統一）
+
 ## 6. 運用手順
 
 ### バックアップ（操作前に必ず実行）
