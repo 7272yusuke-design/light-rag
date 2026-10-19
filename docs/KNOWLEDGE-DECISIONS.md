@@ -2315,3 +2315,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
 - **再検討条件:**
   1. OpenMontage連携でCLI-Anything系を実装した時（L2c→L2昇格の判断）
   2. REAのWindows対応・モバイル対応が正式化した時
+
+---
+
+## 2026-10-19: kronos-l3 — L3投入
+
+- **対象:** https://github.com/shiyu-coder/Kronos
+- **判断:** L3投入(kronos-l3)
+- **根拠:** star 40.0k / fork 6.7k、MIT、AAAI 2026採択（arXiv 2508.02739）の金融ローソク足専用の時系列基盤モデル。45取引所・約120億本のOHLCVで事前学習し、専用トークナイザで数値を離散トークン化して自己回帰Transformerで予測する。論文では追加学習なしで価格予測RankICが最良TSFM比+93%、ボラティリティMAEが9%改善。公開モデルはmini 4.1M / small 24.7M / base 102.3Mと小さく、CPU推論の候補になる。公式デモがBTC/USDT予測であり、OpenClaw（仮想通貨の自動売買、TrinityCouncilによる議論型判断）に「定量の分析役」として数値予測を加える部品として直接の参照価値がある。Freqtradeの特徴量・フィルタとしての比較検証、ボラティリティ予測による損切り幅・ポジションサイズ調整にも使える。重複チェック3ステップ実施（list_knowledge全件にKronos/時系列系なし、naive検索でヒットなし、hybrid検索で関連はTradingAgents/QuantMind/Freqtrade/CCXTのみで別系統）。
+- **注記:** 制約を本文に明記: 公式が本番の売買システムではないと明言、公開バックテストは手数料・スリッページ・マーケットインパクト未考慮、予測は生シグナルでリスク管理は別途必要、largeは非公開、正式リリースなし・open issue 213、finetuneのコメントは一部AI生成、ハードウェア要件の公式記載なし（要実測）。L2c候補メモ（数値予測×LLM議論）は本文末尾に記載、実績がないため切り出しは保留。本文の関連エントリはファイル名ではなく名前で記載（DATA-SCHEMA.md エンティティ純度ルール4に準拠）。
+- **関連:** trinity-council-deliberation-l2c, freqtrade-l3, ccxt-l3, tradingagents-tauric-research-l3, quant-mind-l3, n8n-l3
+- **再検討条件:**
+  1. OpenClawにKronosの予測を組み込み、Freqtradeで予測あり・なしを比較検証した時点（L2c「数値予測×LLM議論のハイブリッド判断」の切り出しを判断）
+  2. KVM2または別ホストでKronos-small/miniの推論速度・メモリを実測した時点（常時稼働の可否を判断）
+  3. Kronos-largeが公開された時点、または正式リリース（バージョン付き）が出た時点
+  4. 仮想通貨データでの追加学習を実施した時点（finetuneの手順と結果を追記）
+  5. クライアント案件で価格・需要などの時系列予測が要件として発生した時点
