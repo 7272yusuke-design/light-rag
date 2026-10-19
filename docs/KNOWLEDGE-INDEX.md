@@ -1,10 +1,10 @@
 <!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全274件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全275件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-10-14
-> 整合性: doc_full=274 / doc_status=274 / processed=274 (未処理=0)
-> グラフ側 (entities/relations): 274/274
+> 最終更新: 2026-10-19
+> 整合性: doc_full=275 / doc_status=275 / processed=275 (未処理=0)
+> グラフ側 (entities/relations): 275/275
 
 ## レイヤー別件数
 
@@ -14,7 +14,7 @@
 | L1 | 3 |
 | L2 | 20 |
 | L2c | 33 |
-| L3 | 217 |
+| L3 | 218 |
 
 
 ## L0
@@ -173,6 +173,7 @@
 - `inspect-ai-l3_lightrag.txt`
 - `instagrapi-l3_lightrag.txt`
 - `kestra-l3_lightrag.txt`
+- `kronos-l3_lightrag.txt`
 - `langfuse-l3_lightrag.txt`
 - `langgraph-l3_lightrag.txt`
 - `last30days-skill-l3_lightrag.txt`
