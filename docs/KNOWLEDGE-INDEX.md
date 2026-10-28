@@ -1,10 +1,10 @@
 <!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全275件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全277件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-10-19
-> 整合性: doc_full=275 / doc_status=275 / processed=275 (未処理=0)
-> グラフ側 (entities/relations): 275/275
+> 最終更新: 2026-10-28
+> 整合性: doc_full=277 / doc_status=277 / processed=277 (未処理=0)
+> グラフ側 (entities/relations): 277/277
 
 ## レイヤー別件数
 
@@ -14,7 +14,7 @@
 | L1 | 3 |
 | L2 | 20 |
 | L2c | 33 |
-| L3 | 218 |
+| L3 | 220 |
 
 
 ## L0
@@ -99,6 +99,7 @@
 - `anthropic-claude-code-l3_lightrag.txt`
 - `anthropic-cookbook-l3_lightrag.txt`
 - `antigravity-awesome-skills-l3_lightrag.txt`
+- `anythingmcp-l3_lightrag.txt`
 - `arcads-claude-code-l3_lightrag.txt`
 - `art-openpipe-l3_lightrag.txt`
 - `astrbot-l3_lightrag.txt`
@@ -214,6 +215,7 @@
 - `openmanus-foundationagents-l3_lightrag.txt`
 - `openmontage-calesthio-l3_lightrag.txt`
 - `open-multi-agent-l3_lightrag.txt`
+- `open-notebook-l3_lightrag.txt`
 - `openseo-l3_lightrag.txt`
 - `openshorts-l3_lightrag.txt`
 - `openspec-spec-driven-dev-l3_lightrag.txt`
