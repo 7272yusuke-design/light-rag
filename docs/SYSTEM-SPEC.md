@@ -173,6 +173,12 @@ SELECT COUNT(*) FROM public.lightrag_doc_status;
 - **意図して残した組**: `Claude` と `.claude`、`Codex` と `.codex` など、製品名と設定フォルダ・コマンド名のように意味が違うもの
 - **再発防止**: DATA-SCHEMA.md「エンティティ純度の運用ルール」4・5（関連エントリは名前で書く、表記の統一）
 
+### INC-006: 投入時のベクトル変換タイムアウト（2026-10-28）
+- **症状**: open-notebook-l3 と anythingmcp-l3 の投入が `PGVectorStorage[entities] index flush failed: Embedding func: Worker execution timeout after 60s` で failed
+- **原因**: 新しい文書が n8n・Ollama・Claude などの大きな項目に説明を足し、一度に再変換する量が増えた（項目90件・関係121件など）。CPUだけのOllama（2 vCPU）で既定の同時処理8件・待ち時間30秒（内部上限60秒）を超えた
+- **対策**: `.env` に `EMBEDDING_TIMEOUT=180` と `EMBEDDING_FUNC_MAX_ASYNC=2` を追加して再起動。`POST /documents/reprocess_failed` で再処理し、両方 processed。バックアップは `.env.bak_before_embedtimeout_20261028`
+- **失敗時の手順**: `doc_status` の `error_msg` を確認 → 設定を直して再起動 → `POST /documents/reprocess_failed`（各文書につき再試行1回）
+
 ## 6. 運用手順
 
 ### バックアップ（操作前に必ず実行）
