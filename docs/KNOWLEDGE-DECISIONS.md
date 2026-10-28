@@ -2347,3 +2347,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. 複数ユーザー機能が実装された時点（チーム向けでSurfSenseとの比較をやり直す）
   4. AI研修カリキュラムの教材としてリサーチツールを選定する時点
   5. 顧客への導入実績ができた時点（L2c「顧客ごとに1台立てるセルフホスト型AIアプリの納品パターン」の切り出しを判断）
+
+---
+
+## 2026-10-28: anythingmcp-l3 — L3投入
+
+- **対象:** https://github.com/HelpCode-ai/anythingmcp
+- **判断:** L3投入(anythingmcp-l3)
+- **根拠:** 既存の社内システム（REST/OpenAPI、SOAP/WSDL、GraphQL、PostgreSQL/MySQL/SQL Server/Oracle/MongoDB等、既存MCPサーバー）をノーコードでMCPツールに変換し、Claude/ChatGPT/Copilotから使えるようにするゲートウェイ。AGPL-3.0、ドイツhelpcode.ai製で地元企業で本番利用中と記載。事業の柱「n8n自動化の次に、顧客の社内システムをエージェントに安全に開く」に直接当てはまり、SOAPやOracleなど中小企業に残る古いシステムにも対応する。設計参照として価値が高い要素: ツール単位のreadOnlyHint/destructiveHint注釈、役割ごとのツール絞り込み、SSO（Entra ID/Google/Okta/OIDC）とSCIMによる権限の自動取り消し、全呼び出しの監査ログ、応答整形による機密項目の除去、ログイン情報のAES-256-GCM暗号化。企業向け認証機能がセルフホスト版に含まれる点も納品向き。成熟度は低い（star 225 / watcher 1 / リリース版なし）ため注意つきで投入。重複チェック3ステップ実施（list_knowledge全件にAnythingMCPなし、hybrid検索で関連はdb-mcp-server/Smithery/MCP DevTools等で別系統、MCP系エントリ一覧でdb-mcp-server・Gridex・Composio・mcp2cli・Unkey・Activepiecesとの役割の違いを確認）。
+- **注記:** 制約を本文に明記: プロジェクトが小さい（star 225 / watcher 1 / リリース版なし、AI支援開発）、AGPL-3.0（社内でそのまま使うのは可、改造してネットワーク越しに他社提供する場合はソース公開義務、ee/は別ライセンス）、fallbackToRawの初期値が失敗時に元データを返す（納品時はfalseに変更）、ENCRYPTION_KEY紛失でログイン情報は全て入れ直し、配布イメージはamd64のみ、クイックスタートはTLSなし、レート制限なし（前段にUnkey等）、接続カタログの数がページ内で不一致、MCPの通信方式の記載なし。L2c候補メモ（db-mcp-server・Gridex・AnythingMCPの共通5要素）は本文末尾に記載、実績がないため切り出しは保留。関連エントリは名前で記載。
+- **関連:** db-mcp-server-freepeak-l3, gridex-l3, composio-l3, mcp2cli-l3, unkey-unkeyed-l3, activepieces-l3, n8n-l3
+- **再検討条件:**
+  1. 顧客から「社内システム（販売管理・在庫・CRM等）をClaudeから使いたい」という要望が出た時点（AnythingMCPとdb-mcp-server・Composioのどれを使うか判断）
+  2. SOAPやOracleなど古いシステムを持つ顧客の案件が発生した時点
+  3. AnythingMCPに正式リリース（バージョン付き）が出た時点、またはstar・コントリビュータが大きく増えた時点（成熟度を見直す）
+  4. 顧客環境で実際に導入した時点（L2c「既存の社内システムを権限と監査ログつきでエージェントに公開する」パターンの切り出しを判断）
+  5. 複数の顧客にマネージドで提供する形を検討する時点（AGPLの義務とee/のライセンスを再確認）
