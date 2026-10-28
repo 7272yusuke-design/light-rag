@@ -2331,3 +2331,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. Kronos-largeが公開された時点、または正式リリース（バージョン付き）が出た時点
   4. 仮想通貨データでの追加学習を実施した時点（finetuneの手順と結果を追記）
   5. クライアント案件で価格・需要などの時系列予測が要件として発生した時点
+
+---
+
+## 2026-10-28: open-notebook-l3 — L3投入
+
+- **対象:** https://github.com/lfnovo/open-notebook
+- **判断:** L3投入(open-notebook-l3)
+- **根拠:** star 40.6k / fork 4.7k / commit 1,019、MIT、最新v1.15.0（2026-10-04、2026年は23リリース）のセルフホスト型NotebookLM代替。資料取り込み（PDF/動画/音声/Web/Office）、出典付きチャット、全文+ベクトル検索、変換、1〜4話者のポッドキャスト生成、REST API、MCP連携を持ち、約20社のLLMとOllamaを含む埋め込みプロバイダに対応。Docker Compose 2サービス（SurrealDB + アプリ）と軽量。既存のSurfSense（チーム向け・外部連携27種以上・v0.0系で本番未対応）とは「1人用・小規模・軽量・正式リリース多数」で用途が分かれるため独立L3として投入。参照用途は、中小企業向けの「社内資料をGoogleに出さないNotebookLM」の1社1台納品、REST API/MCPによるn8n・Claudeとの連携、AI研修での受講者用リサーチツール、複数話者ポッドキャストによるコンテンツ制作。重複チェック3ステップ実施（list_knowledge全件でnotebook/podcast/surreal該当はnotebooklm-py・yt-pipeline・SurfSenseのみ、naive検索でヒットなし、KNOWLEDGE-DECISIONSでSurfSenseの判断内容を確認し差別化を確認）。
+- **注記:** 制約を本文に明記: 複数ユーザー機能なし（利用者ごと・顧客ごとに1台）、初期状態でパスワードなしかつ全ネットワークに公開して起動（納品時はOPEN_NOTEBOOK_PASSWORDかCloudflare Access等のアクセス制限が必須）、必要リソースの公式記載なし、SurrealDBのバックアップ手順を別途決める必要、暗号化キーの保管方法の記載が薄い、Anthropic単独では埋め込みがなく別プロバイダが必要。L2c候補メモ（顧客ごとに1台立てる納品パターン）は本文末尾に記載、実績がないため切り出しは保留。関連エントリは名前で記載。
+- **関連:** surfsense-l3, notebooklm-cli-full-l3, deeptutor-l3, skill-yt-pipeline-l3, lightrag-framework-l3, n8n-l3
+- **再検討条件:**
+  1. 中小企業の顧客から「社内資料を外部に出さずにAIで調べたい」という要望が出た時点（1社1台の導入を具体化）
+  2. KVM2または顧客環境で実際に起動し、メモリ・CPUを実測した時点
+  3. 複数ユーザー機能が実装された時点（チーム向けでSurfSenseとの比較をやり直す）
+  4. AI研修カリキュラムの教材としてリサーチツールを選定する時点
+  5. 顧客への導入実績ができた時点（L2c「顧客ごとに1台立てるセルフホスト型AIアプリの納品パターン」の切り出しを判断）
