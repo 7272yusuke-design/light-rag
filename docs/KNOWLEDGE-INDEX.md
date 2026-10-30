@@ -1,10 +1,10 @@
 <!-- AUTO:START (このマーカー間は inventory.sh が上書きする。手動編集禁止) -->
-# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全277件)
+# KNOWLEDGE-INDEX (LightRAG 蓄積済み 全281件)
 
 > 自動生成エリア。`bash /docker/lightrag/scripts/inventory.sh` で更新。
-> 最終更新: 2026-10-28
-> 整合性: doc_full=277 / doc_status=277 / processed=277 (未処理=0)
-> グラフ側 (entities/relations): 277/277
+> 最終更新: 2026-10-30
+> 整合性: doc_full=281 / doc_status=281 / processed=281 (未処理=0)
+> グラフ側 (entities/relations): 281/281
 
 ## レイヤー別件数
 
@@ -13,8 +13,8 @@
 | L0 | 1 |
 | L1 | 3 |
 | L2 | 20 |
-| L2c | 33 |
-| L3 | 220 |
+| L2c | 34 |
+| L3 | 223 |
 
 
 ## L0
@@ -68,6 +68,7 @@
 - `instinct-based-continuous-learning-l2c_lightrag.txt`
 - `intent-driven-skill-resolution-l2c_lightrag.txt`
 - `layout-preserving-retrieval-hybrid-l2c_lightrag.txt`
+- `legacy-desktop-app-ai-integration-l2c_lightrag.txt`
 - `llm-council-pattern-l2c_lightrag.txt`
 - `llm-token-reduction-proxy-l2c_lightrag.txt`
 - `miniclaw-sandbox-pattern-l2c_lightrag.txt`
@@ -164,6 +165,7 @@
 - `graphify-l3_lightrag.txt`
 - `gridex-l3_lightrag.txt`
 - `gstack-garrytan-l3_lightrag.txt`
+- `harvey-sales-agent-l3_lightrag.txt`
 - `hermes-agent-l3_lightrag.txt`
 - `hono-l3_lightrag.txt`
 - `hoppscotch-l3_lightrag.txt`
@@ -195,6 +197,7 @@
 - `mcpsnoop-l3_lightrag.txt`
 - `meetily-l3_lightrag.txt`
 - `microsoft-graphrag-l3_lightrag.txt`
+- `microsoft-ufo-l3_lightrag.txt`
 - `milvus-l3_lightrag.txt`
 - `multica-l3_lightrag.txt`
 - `mvp-builder-l3_lightrag.txt`
@@ -306,6 +309,7 @@
 - `waggle-l3_lightrag.txt`
 - `wardrobe-tandpfun-l3_lightrag.txt`
 - `watch-video-skill-l3_lightrag.txt`
+- `windows-mcp-cursortouch-l3_lightrag.txt`
 - `wshobson-agents-l3_lightrag.txt`
 - `zerolang-l3_lightrag.txt`
 
