@@ -2395,3 +2395,19 @@ skill系の旧版・v2版 × 18件、プロジェクト進捗系 × 2件、旧�
   3. L2不足の解消でL3→L2の依存マップを作る時点
   4. キリダスで紹介動画を文字起こしした時点（デモの具体的な測り方・教え方を本文に追記）
   5. 保存形式や内部のエージェント構成が文書化された時点、または間隔反復機能が追加された時点
+
+---
+
+## 2026-11-22: learnharness-l3 — L3投入
+
+- **対象:** https://github.com/amosblomqvist/learnharness
+- **判断:** L3投入(learnharness-l3)
+- **根拠:** 【更新 v1→v2】紹介動画「Agent Harness for Learning Things」の文字起こし（キリダスのyoutube-transcript、Gemini 2.5 Flash、22,058字、22:36まで欠落なし）の内容を反映。追加した主な内容: 目的（労力あたりの理解を最大化、最大の危険は「分かった気になる」こと）、理解と使えるの区別（手がかりによる想起、教える=理解を入れる／練習=手がかりを広げる）、正誤でなく過程のデータ（考えたこと欄・自信スライダー）、探る段階の二分探索と既存グラフによる高速化、1歩=予想→教わる→確認、練習の難しさの2軸（組み合わせる考えの数・手がかりのなじみ）、学習者モデルの形式（命題と推論の流れ、矢印=推論の向き）、現状の限界（グラフは網羅のみで習得度は未反映）。参照用途に「L2を命題と推論の向きで書く手本」「網羅と習得の区別（L3投入済み／L2実案件検証済み）の裏付け」「備忘録化の説明と対策（再評価条件=手がかり）」を追加し、L2c候補メモを2本に拡充。
+- **注記:** kb-opsで差し替え: count（doc-e77436f6…、doc_chunks 3）→ delete DONE（remaining 0、バックアップ /docker/lightrag/backups/kbops-delete-20261122-104519.sql、454MB）→ upload_document（5929 bytes）→ sync SYNCED（282/282、orphans 0、INDEXはno_change）。文字起こしはキリダスn8n（n8n-pantheon）の「キリダス拡張_YouTube台本取得」（sLyGhgb5aHUaB1vd）で取得、費用約0.17ドル、サーバーにキャッシュ済み（/var/lib/kiridas/yt/nfTDljFG2g0.json）。動画由来の内容はGeminiの書き起こしに基づくため細部の聞き間違いの可能性を本文に明記。
+- **関連:** deeptutor-l3, understand-anything-l3, open-notebook-l3, surfsense-l3, watch-video-skill-l3, video-to-knowledge-pipeline-l2c, firecrawl-l3, lightrag-framework-l3
+- **再検討条件:**
+  1. AI研修カリキュラム（入門編）の設計で「測る→前提の地図→予想させて1歩ずつ教える」の流れを使う時点（L2c候補1の切り出し判断）
+  2. 既存L3からL2を1本「命題と推論の向き」の形式で書いた時点（L2c候補2の切り出し判断）
+  3. 研修で受講者にLearnHarnessを配布して使う時点（Windows未署名・外部送信・AGPLの扱いを確認）
+  4. LearnHarnessが練習結果をグラフに反映する（習得度の表示）機能を実装した時点
+  5. 保存形式が文書化された時点、または間隔反復機能が追加された時点
